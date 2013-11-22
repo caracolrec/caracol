@@ -1,0 +1,46 @@
+{
+  "name": "Caracol",
+  "version": "0.0.0",
+  "authors": [
+    "adamwitzel@gmail.com",
+    "rickcerf@gmail.com",
+    "michaelmunson1@gmail.com"
+  ],
+  "description": "Tailor-made recommendation for communities",
+  "main": "server.js",
+  "keywords": [
+    "'recommendation",
+    "engine'",
+    "'search'",
+    "'community'",
+    "'social'",
+    "'social",
+    "search'",
+    "'social",
+    "recommendation'",
+    "'long-form",
+    "search'",
+    "'vertical",
+    "search'",
+    "'bookmarking",
+    "recommendation",
+    "engine'",
+    "'community-based",
+    "search'",
+    "'reddit'",
+    "'bookmarklets'"
+  ],
+  "license": "MIT",
+  "homepage": "caracol.io",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "~1.5.2"
+  }
+}
