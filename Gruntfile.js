@@ -12,9 +12,15 @@ module.exports = function(grunt) {
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
     stylus: {
-      options: {},
-      Caracol:{
+      compile: {
+        options: {},
+        caracol: {
+          files: {
+            'stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
+          }
+        }
       }
+
     },
     concat: {
       options: {
