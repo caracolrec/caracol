@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['lib/<%= pkg.name %>.js'],
+        src: ['public/../<%= pkg.name %>.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -37,11 +37,11 @@ module.exports = function(grunt) {
         banner: '<%= banner %>'
       },
       dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
+        files: 'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
       }
     },
     jshint: {
+      files: ['public/../*.js', 'src/*.js', 'src/routes/*.js', 'test/*.js']
       options: {
         curly: true,
         eqeqeq: true,
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  //TODO look at 'qunit',
+  //TODO add qunit to run tests
   grunt.registerTask('default', ['stylus', 'jshint', 'concat', 'uglify']);
 
 };
