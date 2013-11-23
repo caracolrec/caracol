@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         options: {},
         caracol: {
           files: {
-            'stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
+            'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
           }
         }
       }
@@ -62,13 +62,13 @@ module.exports = function(grunt) {
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
-      }
+      // lib_test: {
+      //   src: ['lib/**/*.js', 'test/**/*.js']
+      // }
     },
-    qunit: {
-      files: ['test/**/*.html']
-    },
+    // qunit: {
+    //   files: ['test/**/*.html']
+    // },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -90,6 +90,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['stylus', 'jshint', 'qunit', 'concat', 'uglify']);
+  //TODO look at 'qunit',
+  grunt.registerTask('default', ['stylus', 'jshint', 'concat', 'uglify']);
 
 };
