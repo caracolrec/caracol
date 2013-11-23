@@ -12,9 +12,15 @@ module.exports = function(grunt) {
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
     stylus: {
-      options: {},
-      Caracol:{
+      compile: {
+        options: {},
+        caracol: {
+          files: {
+            'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
+          }
+        }
       }
+
     },
     concat: {
       options: {
@@ -56,13 +62,13 @@ module.exports = function(grunt) {
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
-      }
+      // lib_test: {
+      //   src: ['lib/**/*.js', 'test/**/*.js']
+      // }
     },
-    qunit: {
-      files: ['test/**/*.html']
-    },
+    // qunit: {
+    //   files: ['test/**/*.html']
+    // },
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -84,6 +90,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['stylus', 'jshint', 'qunit', 'concat', 'uglify']);
+  //TODO look at 'qunit',
+  grunt.registerTask('default', ['stylus', 'jshint', 'concat', 'uglify']);
 
 };
