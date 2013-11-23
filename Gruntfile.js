@@ -13,10 +13,8 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         options: {},
-        caracol: {
-          files: {
-            'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
-          }
+        files: {
+          'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
         }
       }
 
@@ -76,10 +74,15 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'qunit']
+      stylus: {
+        files: 'public/stylesheets/stylus/*.styl',
+        tasks: ['stylus']
       }
+      //tests not integrated with watch
+      // lib_test: {
+      //   files: '<%= jshint.lib_test.src %>',
+      //   tasks: ['jshint:lib_test', 'qunit']
+      // }
     }
   });
 
