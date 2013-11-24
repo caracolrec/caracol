@@ -1,26 +1,22 @@
 javascript:
-function crcl(){
+function iprl5(){
   var d=document,
       z=d.createElement('scr'+'ipt'),
       b=d.body,
-      l=d.location,
-      u='127.0.0.1:3000';//development === localhost || production === //www.caracol.azurewebsites.net 
+      l=d.location;
   try{
     if(!b)
       throw(0);
-
     d.title='(Saving...) '
       +d.title;
-
     z.setAttribute('src',l.protocol
-      +u
-      +'/uri/'
-      +encodeURIComponent(l.href));
-
-    b.appendChild(z);
+      +'//www.instapaper.com/j/rTaiF9rUB6xU?u='
+      +encodeURIComponent(l.href)
+      +'&t='
+      +(new Date().getTime()));b.appendChild(z);
     }
   catch(e){
     alert('Please wait until the page has loaded.');
   }
-}crcl();
+}iprl5();
 void(0)
