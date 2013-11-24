@@ -8,7 +8,8 @@ function iprl5(){
     if(!b)
       throw(0);
     d.title='(Saving...) '
-      +d.title;z.setAttribute('src',l.protocol
+      +d.title;
+    z.setAttribute('src',l.protocol
       +'//www.instapaper.com/j/rTaiF9rUB6xU?u='
       +encodeURIComponent(l.href)
       +'&t='
