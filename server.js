@@ -6,8 +6,11 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
+var parser = require('./routes/parser');
 var http = require('http');
 var path = require('path');
+var request = require('superagent');
+var token = require(__dirname + '/config.js').token;
 
 var app = express();
 
@@ -33,6 +36,19 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/:uri', function(req, res){
+  console.log("namaste");
+  params = {
+    //todo uri --> url
+    url: req.params.uri,
+    token: token
+  };
+  console.log(params.url);
+  //Post MVP check to see if url data exists in db
+  parser.parser(params, function(response){
+    console.log(response);
+  });
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
