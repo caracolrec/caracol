@@ -11,6 +11,9 @@
     "jade": "*",
     "stylus": "*",
     "superagent": "~0.15.7"
+    "bookshelf": "~0.5.7",
+    "pg": "~2.8.3",
+    "knex": "~0.4.13"
   },
   "devDependencies": {
     "grunt": "~0.4.2",

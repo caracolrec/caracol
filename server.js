@@ -13,6 +13,8 @@ var fs = require('fs');
 // var request = require('superagent');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
+var caracolDB = require('./dbsetup.js').caracolDB;
+
 var app = express();
 
 // all environments
