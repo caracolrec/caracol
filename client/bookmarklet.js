@@ -1,27 +1,10 @@
-javascript:
-function crcl(){
-  var d=document,
-      z=d.createElement('scr'+'ipt'),
-      b=d.body,
-      l=d.location,
-      //development === localhost || production === //www.caracol.azurewebsites.net 
-      u='127.0.0.1:3000';
-  try{
-    if(!b)
-      throw(0);
+href="javascript:
+var%20d=document;
+var%20l=d.location;
+var%20s=%20d.createElement('scri'+'pt');
+s.type='text/javascript';
+d.body.appendChild(s);
+s.src='//caracol.azurewebsites.net/app.js';
+void(0);"
 
-    d.title='(Saving...) '
-      +d.title;
-
-    z.setAttribute('src',l.protocol
-      +u
-      +'/app/' + encodeURIComponent(l.href)
-      +'&t=' + (new Date().getTime()));
-
-    b.appendChild(z);
-    }
-  catch(e){
-    alert('Please wait until the page has loaded.');
-  }
-}crcl();
-void(0)
+//no longer sending up the uri
