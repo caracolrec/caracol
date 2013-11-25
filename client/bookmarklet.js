@@ -4,7 +4,8 @@ function crcl(){
       z=d.createElement('scr'+'ipt'),
       b=d.body,
       l=d.location,
-      u='127.0.0.1:3000';//development === localhost || production === //www.caracol.azurewebsites.net 
+      //development === localhost || production === //www.caracol.azurewebsites.net 
+      u='127.0.0.1:3000';
   try{
     if(!b)
       throw(0);
