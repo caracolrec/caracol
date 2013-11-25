@@ -1,0 +1,1 @@
+function crcl(){var a=document,b=a.createElement("script"),c=a.body,d=a.location,e="127.0.0.1:3000";try{if(!c)throw 0;a.title="(Saving...) "+a.title,b.setAttribute("src",d.protocol+e+"/app/"+encodeURIComponent(d.href)+"&t="+(new Date).getTime()),c.appendChild(b)}catch(f){alert("Please wait until the page has loaded.")}}crcl();
