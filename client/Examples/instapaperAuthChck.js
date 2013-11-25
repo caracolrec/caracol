@@ -11,6 +11,5 @@
                          + "?u=" + e(l.href) 
                          + '&t=' + e(d.title) 
                          + '&s=' + e(s)
-                         + "&cookie_notice=1"
-  );
+                         + "&cookie_notice=1");
 })();
