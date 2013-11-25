@@ -9,10 +9,9 @@ var user = require('./routes/user');
 var parser = require('./routes/parser');
 var http = require('http');
 var path = require('path');
-var request = require('superagent');
+// var request = require('superagent');
 var token = require(__dirname + '/config.js').token;
 var params;
-
 var app = express();
 
 // all environments
@@ -36,19 +35,21 @@ if ('development' === app.get('env')) {
 }
 
 app.get('/', routes.index);
+
 app.get('/users', user.list);
-//route the serves up app.js script
-//query db with uri to see if favorited
+app.get('/script', function(req, res){
+  res.end('javascript:function crcl(){var a=document,b=a.createElement("script"),c=a.body,d=a.location,e="127.0.0.1:3000";try{if(!c)throw 0;a.title="(Saving...) "+a.title,b.setAttribute("src",d.protocol+e+"/app/"+encodeURIComponent(d.href)+"&t="+(new Date).getTime()),c.appendChild(b)}catch(f){alert("Please wait until the page has loaded.")}};crcl();');
+});
 app.get('/app/:uri', function(req, res){
   params = {
     //todo uri --> url
     url: req.params.uri,
     token: token
   };
-  //send script, attach promise after parser
   console.log(params.url);
   //Post MVP check to see if url data exists in db
   res.end(
+    //query db to see if favorited
     //send back script injection
     );
 });
@@ -61,7 +62,8 @@ app.get('/uri/:uri', function(req, res){
   console.log(params.url);
   res.end(parser.parser(params, function(response){
     //write data to db if it isn't already there
-  }))
+    console.log(response);
+  }));
 });
 //new get request
 //datestamp from visited bookmarket

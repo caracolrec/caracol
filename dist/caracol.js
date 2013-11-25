@@ -12,10 +12,8 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         options: {},
-        caracol: {
-          files: {
-            'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
-          }
+        files: {
+          'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
         }
       }
 
@@ -36,7 +34,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>'],
+          'dist/bookmarklet.js': ['client/bookmarklet.js']
         }
       }
     },
@@ -75,10 +74,15 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      lib_test: {
-        files: '<%= jshint.lib_test.src %>',
-        tasks: ['jshint:lib_test', 'qunit']
+      stylus: {
+        files: 'public/stylesheets/stylus/*.styl',
+        tasks: ['stylus']
       }
+      //tests not integrated with watch
+      // lib_test: {
+      //   files: '<%= jshint.lib_test.src %>',
+      //   tasks: ['jshint:lib_test', 'qunit']
+      // }
     }
   });
 
@@ -96,11 +100,20 @@ module.exports = function(grunt) {
 
 };
 
+var config = {
+  token: '3a94d79c91f97112e52dbf3ca5759f53dc3d1ea4'
+};
+module.exports = config;
+
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
+var parser = require('./routes/parser');
 var http = require('http');
 var path = require('path');
+// var request = require('superagent');
+var token = require(__dirname + '/config.js').token;
+var params;
 
 var app = express();
 
@@ -125,7 +138,37 @@ if ('development' === app.get('env')) {
 }
 
 app.get('/', routes.index);
+
 app.get('/users', user.list);
+
+app.get('/app/:uri', function(req, res){
+  params = {
+    //todo uri --> url
+    url: req.params.uri,
+    token: token
+  };
+  console.log(params.url);
+  //Post MVP check to see if url data exists in db
+  res.end(
+    //query db to see if favorited
+    //send back script injection
+    );
+});
+
+app.get('/uri/:uri', function(req, res){
+  params = {
+    url: req.params.uri,
+    token: token
+  };
+  console.log(params.url);
+  res.end(parser.parser(params, function(response){
+    //write data to db if it isn't already there
+    console.log(response);
+  }));
+});
+//new get request
+//datestamp from visited bookmarket
+//weighting upvote/downvote
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
