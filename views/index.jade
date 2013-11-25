@@ -3,4 +3,4 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  a(href='javascript:function crcl(){var a=document,b=a.createElement("script"),c=a.body,d=a.location,e="127.0.0.1:3000";try{if(!c)throw 0;a.title="(Saving...) "+a.title,b.setAttribute("src",d.protocol+e+"/app/"+encodeURIComponent(d.href)+"&t="+(new Date).getTime()),c.appendChild(b)}catch(f){alert("Please wait until the page has loaded.")}};crcl();') caracol
+  a(href="javascript:var%20d=document;var%20l=d.location;var%20s=%20d.createElement('scri'+'pt');s.type='text/javascript';d.body.appendChild(s);s.src='//caracol.azurewebsites.net/app.js';void(0);") caracol
