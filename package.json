@@ -1,14 +1,16 @@
 {
-  "name": "application-name",
+  "name": "caracol",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha test/*.js"
   },
   "dependencies": {
     "express": "3.4.4",
     "jade": "*",
-    "stylus": "*"
+    "stylus": "*",
+    "superagent": "~0.15.7"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
@@ -19,8 +21,5 @@
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-qunit": "~0.3.0",
     "grunt-contrib-watch": "~0.5.3"
-  },
-  "scripts": {
-    "test": "expresso test/*"
   }
 }
