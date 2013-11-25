@@ -15,8 +15,8 @@ function crcl(){
 
     z.setAttribute('src',l.protocol
       +u
-      +'/uri/'
-      +encodeURIComponent(l.href));
+      +'/app/' + encodeURIComponent(l.href)
+      +'&t=' + (new Date().getTime()));
 
     b.appendChild(z);
     }
