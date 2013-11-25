@@ -11,6 +11,7 @@ var http = require('http');
 var path = require('path');
 var request = require('superagent');
 var token = require(__dirname + '/config.js').token;
+var params;
 
 var app = express();
 
@@ -36,19 +37,35 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/:uri', function(req, res){
-  console.log("namaste");
+//route the serves up app.js script
+//query db with uri to see if favorited
+app.get('/app/:uri', function(req, res){
   params = {
     //todo uri --> url
     url: req.params.uri,
     token: token
   };
+  //send script, attach promise after parser
   console.log(params.url);
   //Post MVP check to see if url data exists in db
-  parser.parser(params, function(response){
-    console.log(response);
-  });
+  res.end(
+    //send back script injection
+    );
 });
+
+app.get('/uri/:uri', function(req, res){
+  params = {
+    url: req.params.uri,
+    token: token
+  };
+  console.log(params.url);
+  res.end(parser.parser(params, function(response){
+    //write data to db if it isn't already there
+  }))
+});
+//new get request
+//datestamp from visited bookmarket
+//weighting upvote/downvote
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
