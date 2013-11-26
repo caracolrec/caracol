@@ -17,9 +17,12 @@
     clipping: s
    });
   console.log("party");
+<<<<<<< HEAD
   setTimeout(function(){
     console.log("time");
   }, 1500);
+=======
+>>>>>>> post request route
   req.open('POST', '//localhost:3000/uri', true);
   req.setRequestHeader('Content-Type', 'application/JSON');
   req.send(data);
