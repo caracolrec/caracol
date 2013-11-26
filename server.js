@@ -11,7 +11,7 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 // var request = require('superagent');
-var token = require(__dirname + '/config.js').token;
+var token = require(__dirname + '/config.js').token || process.env.APPSETTING_readability_key;
 var params;
 var app = express();
 
@@ -42,10 +42,10 @@ app.get('/app/:u/:t/*', function(req, res){
   params = {
     //todo uri --> url
     //decodeURI()
-    url: req.params.u,
+    url: decodeURI(req.params.u),
     token: token
   };
-  console.log("A", req.params.u);
+  console.log("A", encodeURI(params.url));
   //Post MVP check to see if url data exists in db
   fs.readFile('./client/app.js', function(error, data){
     if (error) {
@@ -59,7 +59,7 @@ app.get('/app/:u/:t/*', function(req, res){
 
 app.get('/uri/:uri', function(req, res){
   params = {
-    url: req.options.uri,
+    url: req.params.uri,
     token: token
   };
 
