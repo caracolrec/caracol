@@ -47,6 +47,7 @@ app.get('/app/:u/:t/*', function(req, res){
     token: token
   };
   //Post MVP check to see if url data exists in db
+
   fs.readFile('./client/app.js', function(error, data){
     if (error) {
       console.log(error);
@@ -57,16 +58,24 @@ app.get('/app/:u/:t/*', function(req, res){
     //query db to see if favorited
 });
 
-app.get('/uri/:uri', function(req, res){
+app.options('/*', function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.send(200, res.header);
+});
+
+app.post('/uri', function(req, res){
+  console.log('post received', req.body);
   params = {
-    url: req.params.uri,
+    url: req.body.uri,
     token: token
   };
-
+  res.header("Access-Control-Allow-Origin", "*");
   res.end(parser.parser(params, function(response){
     //write data to db if it isn't already there
 
-    console.log('response', response);
+    console.log('response', response.body);
+
   }));
 });
 //new get request

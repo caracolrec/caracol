@@ -13,7 +13,8 @@ function iprl5(){
       +'//www.instapaper.com/j/rTaiF9rUB6xU?u='
       +encodeURIComponent(l.href)
       +'&t='
-      +(new Date().getTime()));b.appendChild(z);
+      +(new Date().getTime()));
+    b.appendChild(z);
     }
   catch(e){
     alert('Please wait until the page has loaded.');

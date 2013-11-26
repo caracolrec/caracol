@@ -40,6 +40,7 @@ var SimpleParseripb585655 = (function() {
     }
     return null;
   };
+
   var getContentUsingXPaths = function(xpaths) {
     var result, i;
     for (i in xpaths) {
@@ -52,37 +53,41 @@ var SimpleParseripb585655 = (function() {
       catch(e) { }
     }
   };
-  return { getBasicPageInfo: function() {
-    var canonical_url,
-    links = document.getElementsByTagName('link'),
-    params = {url: document.URL}, 
-             i, 
-             title,
-             // XPaths
-             titleXPaths;
-    // Attempt to get the canonical url
-    canonical_url = getContentFromTag('meta', 'property', 'og:url');
-    if (canonical_url) {
-      params.canonical_url = canonical_url;
-    } else {
-      for (i = 0; i < links.length; i++) {
-        if (links[i].getAttribute('rel') === 'canonical') {
-          params.canonical_url = links[i].getAttribute('href');
-          break;
+
+  return { 
+    getBasicPageInfo: function() {
+      var canonical_url,
+      links = document.getElementsByTagName('link'),
+      params = {url: document.URL}, 
+               i, 
+               title,
+               // XPaths
+               titleXPaths;
+      // Attempt to get the canonical url
+      canonical_url = getContentFromTag('meta', 'property', 'og:url');
+      if (canonical_url) {
+        params.canonical_url = canonical_url;
+      } else {
+        for (i = 0; i < links.length; i++) {
+          if (links[i].getAttribute('rel') === 'canonical') {
+            params.canonical_url = links[i].getAttribute('href');
+            break;
+          }
         }
       }
-    }
-    // Think about only grabbing the title if its canonical or parsed
-    title = getContentFromTag('meta', 'property', 'og:title');
+      // Think about only grabbing the title if its canonical or parsed
+      title = getContentFromTag('meta', 'property', 'og:title');
 
-    if (!title) {
-      title = document.title;
+      if (!title) {
+        title = document.title;
+      }
+      params.title = scrubTitle(title);
+      return params;
     }
-    params.title = scrubTitle(title);
-    return params;
-  }
   }
 })();
+
+
 var bodyipb585655, 
     _greaderipb585655, 
     btxTitleipb585655 = '', 
@@ -96,18 +101,19 @@ function jbsipb585655(html) {
     return html; /* too big to deflate quickly */
     return '<' + '![D[' + jbs_deflate(html);
   }
-  function btx_singlePageURLipb585655(bodyNode) {
-    var singlePageXPs = new Array();
-    for (var i = 0; i < singlePageXPs.length; i++) {
-      try {
-        var result = document.evaluate(singlePageXPs[i], bodyNode, null, XPathResult.FIRST_ORDERED_NODE_TYPE);
-        if (result.singleNodeValue) {
-          return (result.singleNodeValue.nodeType == 1 && result.singleNodeValue.nodeName.toLowerCase() == 'a' ? result.singleNodeValue.getAttribute('href') : result.singleNodeValue.textContent);
-        }
-      } catch(e){ }
-    }
-    return false;
+
+function btx_singlePageURLipb585655(bodyNode) {
+  var singlePageXPs = new Array();
+  for (var i = 0; i < singlePageXPs.length; i++) {
+    try {
+      var result = document.evaluate(singlePageXPs[i], bodyNode, null, XPathResult.FIRST_ORDERED_NODE_TYPE);
+      if (result.singleNodeValue) {
+        return (result.singleNodeValue.nodeType == 1 && result.singleNodeValue.nodeName.toLowerCase() == 'a' ? result.singleNodeValue.getAttribute('href') : result.singleNodeValue.textContent);
+      }
+    } catch(e){ }
   }
+  return false;
+}
 
 function btx_nextPageURLipb585655(bodyNode, currentURL) {
   if (currentURL.indexOf('#') >= 0)
@@ -223,49 +229,53 @@ function _ipSendipb585655(href, title, from_greader) {
   e = encodeURIComponent,
   z = d.createElement('scr'+'ipt'),
 
-p = (from_greader ? 'gr=1&' : '') +
-'a=&k=rTaiF9rUB6xU&u=' + e(url) + '&t=' + e(title) +
-'&can_url=' + (canonical_url ? e(canonical_url) : '') +
-'&s=' + e(s.length < 10240 ? s : '') +
-'&tzd=' + e(tzd)
+  p = (from_greader ? 'gr=1&' : '') +
+  'a=&k=rTaiF9rUB6xU&u=' + e(url) + '&t=' + e(title) +
+  '&can_url=' + (canonical_url ? e(canonical_url) : '') +
+  '&s=' + e(s.length < 10240 ? s : '') +
+  '&tzd=' + e(tzd)
 
 
-var b = _greaderipb585655 ? '' : jbsipb585655(bodyipb585655);
-if (b.length > 512000) b = '';
+  var b = _greaderipb585655 ? '' : jbsipb585655(bodyipb585655);
+  if (b.length > 512000) b = '';
 
-_corsipb585655(
-'POST', 'http://www.instapaper.com/bookmarklet/post_v5',
-"cors=&" + "ch=cUHvDza1LAWWN5UMad80GUPM0&cp=gLOJdAJ7uyhep.fNAFvI.7ovkgNIlzGx&ce=&cu=224229" +
-"&" + p + "&b=" + e(b),
-function() { _clipb585655_close(); },
-function() {
+  _corsipb585655(
+    'POST', 
+    'http://www.instapaper.com/bookmarklet/post_v5',
+    "cors=&" + "ch=cUHvDza1LAWWN5UMad80GUPM0&cp=gLOJdAJ7uyhep.fNAFvI.7ovkgNIlzGx&ce=&cu=224229" + "&" + p + "&b=" + e(b),
+    function() { 
+      _clipb585655_close(); 
+    },
+    function() {
+      var i=document.createElement('iframe');
+      i.setAttribute('name', 'ipb585655');
+      i.setAttribute('id', 'ipb585655');
+      i.setAttribute('allowtransparency', 'true');
+      i.setAttribute('style', 'border: 0; width: 1px; height: 1px; position: absolute; left: 0; top: 0;');
+      i.setAttribute('onload', 'frameDidLoadipb585655++; frameLoadedipb585655();');
+      document.body.appendChild(i);
+      p = e(p).replace(/'/g, '%27');
+      b = e(b).replace(/'/g, '%27');
+      window.frames['ipb585655'].document.write(
+      '<html><body style="background-color: transparent;">' +
 
-var i=document.createElement('iframe');
-i.setAttribute('name', 'ipb585655');
-i.setAttribute('id', 'ipb585655');
-i.setAttribute('allowtransparency', 'true');
-i.setAttribute('style', 'border: 0; width: 1px; height: 1px; position: absolute; left: 0; top: 0;');
-i.setAttribute('onload', 'frameDidLoadipb585655++; frameLoadedipb585655();');
-document.body.appendChild(i);
-p = e(p).replace(/'/g, '%27');
-b = e(b).replace(/'/g, '%27');
-window.frames['ipb585655'].document.write(
-'<html><body style="background-color: transparent;">' +
+      '<form action="http://www.instapaper.com/bookmarklet/post_v5" method="post" id="f" accept-charset="utf-8">' +
+      '<input type="hidden" name="p" id="p" value=""/>' +
+      '<input type="hidden" name="b" id="b" value=""/>' +
+      '<input type="hidden" name="id" value="ipb585655"/>' +
 
-'<form action="http://www.instapaper.com/bookmarklet/post_v5" method="post" id="f" accept-charset="utf-8">' +
-'<input type="hidden" name="p" id="p" value=""/>' +
-'<input type="hidden" name="b" id="b" value=""/>' +
-'<input type="hidden" name="id" value="ipb585655"/>' +
+      '</form>' +
+      "<scr"+"ipt>var e=encodeURIComponent,w=window,d=document,f=d.getElementById('f');" +
+      "d.getElementById('b').value=decodeURIComponent('" + b + "');d.getElementById('p').value=decodeURIComponent('" + p + "');" +
+      "d.getElementById('f').submit();" +
+      "</scr"+"ipt></body></html>"
+      );
+    }
+  );
 
-'</form>' +
-"<scr"+"ipt>var e=encodeURIComponent,w=window,d=document,f=d.getElementById('f');" +
-"d.getElementById('b').value=decodeURIComponent('" + b + "');d.getElementById('p').value=decodeURIComponent('" + p + "');" +
-"d.getElementById('f').submit();" +
-"</scr"+"ipt></body></html>"
-);
 }
-);
-}
+
+
 function updateOverlaySizeipb585655()
 {
 var o = document.getElementById('ovipb585655');
