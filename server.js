@@ -11,7 +11,7 @@ var http = require('http');
 var path = require('path');
 var fs = require('fs');
 // var request = require('superagent');
-var token = require(__dirname + '/config.js').token || process.env.APPSETTING_readability_key;
+var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
 var app = express();
 
