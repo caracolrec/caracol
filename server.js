@@ -9,6 +9,7 @@ var user = require('./routes/user');
 var parser = require('./routes/parser');
 var http = require('http');
 var path = require('path');
+var fs = require('fs');
 // var request = require('superagent');
 var token = require(__dirname + '/config.js').token;
 var params;
@@ -37,36 +38,38 @@ if ('development' === app.get('env')) {
 app.get('/', routes.index);
 
 app.get('/users', user.list);
-app.get('/script', function(req, res){
-  res.end('javascript:function crcl(){var a=document,b=a.createElement("script"),c=a.body,d=a.location,e="127.0.0.1:3000";try{if(!c)throw 0;a.title="(Saving...) "+a.title,b.setAttribute("src",d.protocol+e+"/app/"+encodeURIComponent(d.href)+"&t="+(new Date).getTime()),c.appendChild(b)}catch(f){alert("Please wait until the page has loaded.")}};crcl();');
-});
-app.get('/app/:uri', function(req, res){
+app.get('/app/:u/:t/*', function(req, res){
   params = {
     //todo uri --> url
-    url: req.params.uri,
+    //decodeURI()
+    url: req.params.u,
     token: token
   };
-  console.log(params.url);
+  console.log("A", req.params.u);
   //Post MVP check to see if url data exists in db
-  res.end(
+  fs.readFile('./client/app.js', function(error, data){
+    if (error) {
+      console.log(error);
+    } else {
+      res.end(data);
+    }
+  });
     //query db to see if favorited
-    //send back script injection
-    );
 });
 
 app.get('/uri/:uri', function(req, res){
   params = {
-    url: req.params.uri,
+    url: req.options.uri,
     token: token
   };
-  console.log(params.url);
+
   res.end(parser.parser(params, function(response){
     //write data to db if it isn't already there
-    console.log(response);
+    console.log('response', response);
   }));
 });
 //new get request
-//datestamp from visited bookmarket
+//datestamp from visited bookmarklet
 //weighting upvote/downvote
 
 http.createServer(app).listen(app.get('port'), function(){
