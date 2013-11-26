@@ -2,6 +2,7 @@
 
 var express = require('express');
 var caracolPG = require('./dbsetup.js').caracolPG;
+
 var knex = require('./dbsetup.js').knex;
 
 module.exports.dbInsert = function(json){

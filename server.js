@@ -47,7 +47,6 @@ app.get('/app/:u/:t/*', function(req, res){
     token: token
   };
   //Post MVP check to see if url data exists in db
-
   fs.readFile('./client/app.js', function(error, data){
     if (error) {
       console.log(error);
@@ -73,9 +72,6 @@ app.post('/uri', function(req, res){
   res.header("Access-Control-Allow-Origin", "*");
   res.end(parser(params, function(response){
     //write data to db if it isn't already there
-
-    console.log('response', response.body);
-
   }));
 });
 //new get request
