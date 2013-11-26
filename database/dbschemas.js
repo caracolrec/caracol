@@ -6,10 +6,9 @@ var caracolDB = require('./dbsetup.js').caracolDB;
 
 // Also - write tests for basic functionality.  <-----
 
-// Are join tables created automatically?  How do we write to these tables? <---
-
 module.exports.User = Bookshelf.PG.Model.extend({
   tableName: 'users',
+  hasTimestamps: true,
   
   permittedAttributes: [
     'id', 'uuid', 'name', 'isMember', 'joinedDate',  //'passwordSALT'
@@ -41,7 +40,7 @@ module.exports.User = Bookshelf.PG.Model.extend({
 
   // },
   
-  clipping: function(){
+  clippings: function(){
     return this.hasMany(Clipping);
   }
 });
@@ -50,14 +49,13 @@ module.exports.User = Bookshelf.PG.Model.extend({
 module.exports.Clipping = Bookshelf.PG.Model.extend({
   
   tableName: 'clippings',
+  hasTimestamps: true,
   
   initialize: function(){
     this.on('creating', this.creating, this);
     this.on('saving', this.saving, this);
     this.on('saving', this.validate, this);
   },
-
-     // ADD HASTIMESTAMPS - understand how to use this - also uuid, etc.
 
   permittedAttributes: [
     'id', 'uuid', 'user', 'title', //'slug', //better understand - see ghost API, post.js, ll67-72
@@ -69,7 +67,7 @@ module.exports.Clipping = Bookshelf.PG.Model.extend({
   ],
 
   validate: function(){
-     //TO DO
+     //TO DO     <------<-------<------
      //need to escape our text
   },
 
@@ -79,7 +77,7 @@ module.exports.Clipping = Bookshelf.PG.Model.extend({
     //this.set('title', this.sanitize('title').trim());
   },
 
-  user: function(){
+  users: function(){
     return this.hasMany(User);
   }
 });
