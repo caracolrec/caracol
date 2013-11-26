@@ -55,7 +55,8 @@ app.get('/app/:u/:t/*', function(req, res){
     //query db to see if favorited
 });
 
-app.get('/uri/:uri', function(req, res){
+app.post('/uri', function(req, res){
+  console.log("post received",req.body);
   params = {
     url: decodeURI(req.params.uri),
     token: token
