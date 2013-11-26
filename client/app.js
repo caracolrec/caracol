@@ -4,3 +4,7 @@
 
 
 console.log('party');
+
+setTimeout(function(){
+  console.log("time");
+}, 1500);
