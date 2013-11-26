@@ -13,7 +13,7 @@ var fs = require('fs');
 // var request = require('superagent');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
-var caracolDB = require('./dbsetup.js').caracolDB;
+var caracolDB = require('./database/dbsetup.js').caracolDB;
 
 var app = express();
 
@@ -73,6 +73,7 @@ app.get('/uri/:uri', function(req, res){
 //new get request
 //datestamp from visited bookmarklet
 //weighting upvote/downvote
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
