@@ -13,7 +13,7 @@ var fs = require('fs');
 // var request = require('superagent');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
-var caracolDB = require('./database/dbsetup.js').caracolDB;
+var caracolPG = require('./database/dbsetup.js').caracolPG;
 
 var app = express();
 
@@ -39,15 +39,13 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 
-app.get('/users', user.list);
+//app.get('/users', user.list);
+
 app.get('/app/:u/:t/*', function(req, res){
   params = {
-    //todo uri --> url
-    //decodeURI()
     url: decodeURI(req.params.u),
     token: token
   };
-  console.log("A", encodeURI(params.url));
   //Post MVP check to see if url data exists in db
   fs.readFile('./client/app.js', function(error, data){
     if (error) {
@@ -67,6 +65,7 @@ app.get('/uri/:uri', function(req, res){
 
   res.end(parser.parser(params, function(response){
     //write data to db if it isn't already there
+
     console.log('response', response);
   }));
 });
