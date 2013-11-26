@@ -58,7 +58,6 @@ app.get('/app/:u/:t/*', function(req, res){
     //query db to see if favorited
 });
 
-<<<<<<< HEAD
 app.options('/*', function(req, res){
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -67,10 +66,6 @@ app.options('/*', function(req, res){
 
 app.post('/uri', function(req, res){
   console.log('post received', req.body);
-=======
-app.post('/uri', function(req, res){
-  console.log("post received",req.body);
->>>>>>> post request route
   params = {
     url: req.body.uri,
     token: token
