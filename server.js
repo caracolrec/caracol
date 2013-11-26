@@ -63,7 +63,6 @@ app.options('/*', function(req, res){
 
 app.post('/uri', function(req, res){
   console.log('post received', req.body);
-
   params = {
     url: req.body.uri,
     token: token
