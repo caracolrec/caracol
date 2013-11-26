@@ -42,13 +42,9 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/app/:u/:t/*', function(req, res){
   params = {
-    //todo uri --> url
-    //decodeURI()
     url: decodeURI(req.params.u),
     token: token
   };
-  console.log("A", encodeURI(params.url));
-  //Post MVP check to see if url data exists in db
   fs.readFile('./client/app.js', function(error, data){
     if (error) {
       console.log(error);
@@ -61,10 +57,11 @@ app.get('/app/:u/:t/*', function(req, res){
 
 app.get('/uri/:uri', function(req, res){
   params = {
-    url: req.params.uri,
+    url: decodeURI(req.params.uri),
     token: token
   };
 
+  console.log(params);
   res.end(parser.parser(params, function(response){
     //write data to db if it isn't already there
     console.log('response', response);
