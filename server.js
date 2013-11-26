@@ -58,11 +58,11 @@ app.get('/app/:u/:t/*', function(req, res){
 app.post('/uri', function(req, res){
   console.log("post received",req.body);
   params = {
-    url: decodeURI(req.params.uri),
+    url: decodeURI(req.body.uri),
     token: token
   };
 
-  console.log(params);
+  console.log(request.body);
   res.end(parser.parser(params, function(response){
     //write data to db if it isn't already there
     console.log('response', response);
