@@ -20,7 +20,7 @@
   setTimeout(function(){
     console.log("time");
   }, 1500);
-  req.open('POST', '//localhost:3000/uri', true);
+  req.open('POST', '//caracol.azurewebsites.net', true);
   req.setRequestHeader('Content-Type', 'application/JSON');
   req.send(data);
 })();
