@@ -74,10 +74,8 @@ app.post('/uri', function(req, res){
     //write data to db if it isn't already there
   }));
 });
-//new get request
 //datestamp from visited bookmarklet
 //weighting upvote/downvote
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
