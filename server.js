@@ -15,6 +15,7 @@ var fs = require('fs');
 var params;
 var caracolPG = require('./database/dbsetup.js').caracolPG;
 var dbClient = require('./database/dbclient.js');
+var algorithm = require('./controllers/algorithm.js');
 
 var app = express();
 
@@ -82,3 +83,5 @@ app.post('/uri', function(req, res){
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+algorithm.helloWorld();
