@@ -26,7 +26,7 @@
     console.log("time");
   }, 1500);
 
-  $('body').append('<script src="bower_components/angular/angular.js"></script><div ng-app="app" style="height: 20px, position: fixed, background: pink">hello friends</div>');
+  $('body').append('<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script><div ng-app="app" style="height: 20px, position: fixed, background: pink">hello friends</div>');
   //do the original db query here;
   req.open('POST', route, true);
   req.setRequestHeader('Content-Type', 'application/JSON');
