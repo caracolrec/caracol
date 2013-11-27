@@ -1,6 +1,7 @@
 /* bookmarklet will inject a script that loads this page
 ** need a route in the server for the script tag url
 */
+// '<iframe src"//localhost:3000/script"></iframe>';
 (function() {
   var route;
   var d = document,
@@ -19,14 +20,16 @@
   //must manually toggle for deployment
   //TODO there's gotta be a beter way
   //add a listener
-  route = '//localhost:3000/uri';
-  //route = '//caracol.azurewebsites.net/uri';
+  // route = '//localhost:3000/uri';
+  route = '//caracol.azurewebsites.net/uri';
   console.log("party");
   setTimeout(function(){
     console.log("time");
   }, 1500);
+  //check if angular is already loaded
+  //conditional with angular method
 
-  $('body').append('<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script><div ng-app="app" style="height: 20px, position: fixed, background: pink">hello friends</div>');
+  $('body').append('<iframe src="//caracol.azurewebsites.net/script"></iframe>');
   //do the original db query here;
   req.open('POST', route, true);
   req.setRequestHeader('Content-Type', 'application/JSON');

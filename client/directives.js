@@ -1,8 +1,8 @@
 var directives = angular.module('app.directives', []);
-directives.directive('firstDirective', function() {
+directives.directive('ngHome', function() {
   return {
     restrict: 'A',
     require: '^ngModel',
-    templateUrl: ''
+    templateUrl: 'client/partials/home.html'
   };
 });
