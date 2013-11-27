@@ -6,7 +6,7 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
-var parser = require('./routes/parser');
+var parser = require('./routes/parser').parser;
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
@@ -47,7 +47,6 @@ app.get('/app/:u/:t/*', function(req, res){
     token: token
   };
   //Post MVP check to see if url data exists in db
-
   fs.readFile('./client/app.js', function(error, data){
     if (error) {
       console.log(error);
@@ -71,11 +70,8 @@ app.post('/uri', function(req, res){
     token: token
   };
   res.header("Access-Control-Allow-Origin", "*");
-  res.end(parser.parser(params, function(response){
+  res.end(parser(params, function(response){
     //write data to db if it isn't already there
-
-    console.log('response', response.body);
-
   }));
 });
 //new get request
