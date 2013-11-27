@@ -77,7 +77,7 @@ module.exports.Clipping = caracolPG.Model.extend({
 
   permittedAttributes: [
     'id', 'uuid', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
-    'created_at',    // can just use native db tstamp? 
+    'first_insert',    // can just use native db tstamp? - this is distinguished from date_published
     //'language' - not in mvp
     'word_count','total_pages', 'date_published', 'dek', 
     'lead_image_url',   // need this?
@@ -120,9 +120,9 @@ module.exports.JournalEntry = caracolPG.Model.extend({
   permittedAttributes: [
     'id', 'uuid', 'user_id', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
     'first_insert',    // can just use native db tstamp?
-    // not mvp: 'upvoteStatus', 'downvoteStatus', 'bookmarkStatus', 'lastBookmarkTime', 'lastUpvoteTime', 'lastDownvoteTime',  // 'last_update' - could also store history of upvotes and downvotes - not in mvp
     // not mvp: 'language'  
-    'word_count','total_pages', 'date_published', 'dek', 
+    'word_count', 'date_published', 'last_update', 'dek'  //summary?
+    //  Database
     //  not mvp: 'lead_image_url',   // need this?
     //  not mvp: 'next_page_id', 'rendered_pages' //how to use - for i < rendered_pages {go to next page} ?
   ],
@@ -164,8 +164,6 @@ var User_Clipping = caracolPG.Model.extend({
   ]
 
 });
-
-
 
 Users = caracolPG.Collection.extend({
   model: User
