@@ -26,6 +26,7 @@
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-qunit": "~0.3.0",
     "grunt-contrib-watch": "~0.5.3",
-    "chai": "~1.8.1"
+    "chai": "~1.8.1",
+    "zerorpc": "~0.9.3"
   }
 }
