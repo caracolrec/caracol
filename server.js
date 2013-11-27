@@ -14,6 +14,7 @@ var fs = require('fs');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
 var caracolPG = require('./database/dbsetup.js').caracolPG;
+var dbClient = require('./database/dbclient.js');
 
 var app = express();
 
@@ -70,8 +71,9 @@ app.post('/uri', function(req, res){
     token: token
   };
   res.header("Access-Control-Allow-Origin", "*");
-  res.end(parser(params, function(response){
-    //write data to db if it isn't already there
+
+  res.end(parser.parser(params, function(response){
+    dbClient.dbInsert(response.body);
   }));
 });
 //datestamp from visited bookmarklet
