@@ -1,5 +1,9 @@
-var express = require('express');
-var caracolPG = require('./dbsetup.js').caracolPG;
+var User,
+    Users,
+    Clipping,
+    Clippings,
+    express = require('express'),
+    caracolPG = require('./dbsetup.js').caracolPG;
 
 // require validator
 
@@ -49,6 +53,12 @@ module.exports.User = caracolPG.Model.extend({
   clippings: function(){
     return this.hasMany(Clipping);
   }
+  
+  //not in mvp
+  // fora: function(){
+  //   return this.hasMany(Forum);
+  // }
+
 });
 
 
@@ -66,9 +76,8 @@ module.exports.Clipping = caracolPG.Model.extend({
   },
 
   permittedAttributes: [
-    'id', 'uuid', 'user', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
-    'created_at',    // can just use native db tstamp?
-    'upvoteStatus', 'downvoteStatus', 'bookmarkStatus', 'lastBookmarkTime', 'lastUpvoteTime', 'lastDownvoteTime',  // 'last_update' - could also store history of upvotes and downvotes - not in mvp
+    'id', 'uuid', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
+    'created_at',    // can just use native db tstamp? 
     //'language' - not in mvp
     'word_count','total_pages', 'date_published', 'dek', 
     'lead_image_url',   // need this?
@@ -107,9 +116,10 @@ module.exports.JournalEntry = caracolPG.Model.extend({
     this.on('saving', this.validate, this);
   },
 
+  //title, content, date_published
   permittedAttributes: [
     'id', 'uuid', 'user_id', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
-    'created_at',    // can just use native db tstamp?
+    'first_insert',    // can just use native db tstamp?
     // not mvp: 'upvoteStatus', 'downvoteStatus', 'bookmarkStatus', 'lastBookmarkTime', 'lastUpvoteTime', 'lastDownvoteTime',  // 'last_update' - could also store history of upvotes and downvotes - not in mvp
     // not mvp: 'language'  
     'word_count','total_pages', 'date_published', 'dek', 
@@ -136,4 +146,43 @@ module.exports.JournalEntry = caracolPG.Model.extend({
     return this.BelongsToOne(User);
   }
 });
+
+
+var User_Clipping = caracolPG.Model.extend({
+  tableName: 'User_Clippings',
+  hasTimestamps: true,
+  initialize: function(){
+    this.on('creating', this.creating, this);
+    this.on('saving', this.saving, this);
+    this.on('saving', this.validate, this);
+  },
+  //use created_at from insert into clippings
+  permittedAttributes: [
+  'id', 'uuid', 'user_id', 'clipping_id',    //'created_at',
+  'vote', 'bookmarkStatus', 'lastBookmarkTime',
+  'lastVoteTime'  // 'last_update' - could also store history of upvotes and downvotes - not in mvp
+  ]
+
+});
+
+
+
+Users = caracolPG.Collection.extend({
+  model: User
+});
+
+Clippings = caracolPG.Collection.extend({
+  model: Clipping
+});
+
+module.exports = {
+  User: User,
+  Users: Users,
+  Clipping: Clipping,
+  Clippings: Clippings
+};
+
+// module.exports.Forum = caracolPG.Model.extend({
+
+// });
 
