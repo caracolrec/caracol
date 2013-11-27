@@ -48,7 +48,7 @@ app.get('/app/:u/:t/*', function(req, res){
     token: token
   };
   //Post MVP check to see if url data exists in db
-  fs.readFile('./client/app.js', function(error, data){
+  fs.readFile('./client/script.js', function(error, data){
     if (error) {
       console.log(error);
     } else {
@@ -76,10 +76,8 @@ app.post('/uri', function(req, res){
     dbClient.dbInsert(response.body);
   }));
 });
-//new get request
 //datestamp from visited bookmarklet
 //weighting upvote/downvote
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

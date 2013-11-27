@@ -8,3 +8,4 @@ node_modules/
 .DS_Store
 config.js
 dbconfig.json
+npm-debug.log
