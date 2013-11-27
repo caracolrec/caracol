@@ -17,7 +17,7 @@ User = caracolPG.Model.extend({
   hasTimestamps: true,
   
   permittedAttributes: [
-    'id', 'uuid', 'name', 'isMember', 'joinedDate',  //'passwordSALT'
+    'id',  'name', 'isMember', 'joinedDate',  //'passwordSALT'
   ],
 
   //patterned after ghost's post.js - ll 33-38 - http://goo.gl/7KjRR0
@@ -76,7 +76,7 @@ Clipping = caracolPG.Model.extend({
   },
 
   permittedAttributes: [
-    'id', 'uuid', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
+    'id',  'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
     'first_insert',    // can just use native db tstamp? - this is distinguished from date_published
     //'language' - not in mvp
     'word_count','total_pages', 'date_published', 'dek', 
@@ -118,7 +118,7 @@ JournalEntry = caracolPG.Model.extend({
 
   //title, content, date_published
   permittedAttributes: [
-    'id', 'uuid', 'user_id', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
+    'id',  'user_id', 'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
     'first_insert',    // can just use native db tstamp?
     // not mvp: 'language'  
     'word_count', 'date_published', 'last_update', 'dek'  //summary?
@@ -158,7 +158,7 @@ User_Clipping = caracolPG.Model.extend({
   },
   //use created_at from insert into clippings
   permittedAttributes: [
-  'id', 'uuid', 'user_id', 'clipping_id',    //'created_at',
+  'id',  'user_id', 'clipping_id',    //'created_at',
   'vote', 'bookmarkStatus', 'lastBookmarkTime',
   'lastVoteTime'  // 'last_update' - could also store history of upvotes and downvotes - not in mvp
   ]
