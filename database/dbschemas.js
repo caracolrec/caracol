@@ -12,7 +12,7 @@ var User,
 
 // Also - write tests for basic functionality.  <-----
 
-module.exports.User = caracolPG.Model.extend({
+User = caracolPG.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
   
@@ -64,7 +64,7 @@ module.exports.User = caracolPG.Model.extend({
 
 
 
-module.exports.Clipping = caracolPG.Model.extend({
+Clipping = caracolPG.Model.extend({
   
   tableName: 'clippings',
   hasTimestamps: true,
@@ -105,7 +105,7 @@ module.exports.Clipping = caracolPG.Model.extend({
 });
 
 
-module.exports.JournalEntry = caracolPG.Model.extend({
+JournalEntry = caracolPG.Model.extend({
   
   tableName: 'JournalEntries',
   hasTimestamps: true,
@@ -148,7 +148,7 @@ module.exports.JournalEntry = caracolPG.Model.extend({
 });
 
 
-var User_Clipping = caracolPG.Model.extend({
+User_Clipping = caracolPG.Model.extend({
   tableName: 'User_Clippings',
   hasTimestamps: true,
   initialize: function(){
