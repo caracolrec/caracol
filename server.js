@@ -47,7 +47,7 @@ app.get('/app/:u/:t/*', function(req, res){
     token: token
   };
   //Post MVP check to see if url data exists in db
-  fs.readFile('./client/app.js', function(error, data){
+  fs.readFile('./client/script.js', function(error, data){
     if (error) {
       console.log(error);
     } else {
