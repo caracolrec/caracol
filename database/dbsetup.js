@@ -15,7 +15,7 @@ module.exports.caracolPG = Bookshelf.initialize({
   }
 });
 
-module.exports.caracolKnex = Knex.initialize({
+module.exports.knex = Knex.initialize({
   client: 'pg',
   connection: {
     host     : '127.0.0.1',
