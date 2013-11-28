@@ -21,16 +21,14 @@
   //TODO there's gotta be a beter way
   //add a listener
 
-  route = '//localhost:3000/uri';
-  // route = '//caracol.cloudapp.net/uri';
+  // route = '//localhost:3000/uri';
+  route = '//caracol.cloudapp.net/uri';
   console.log("party");
   setTimeout(function(){
     console.log("time");
   }, 1500);
-  //check if angular is already loaded
-  //conditional with angular method
 
-  $('body').prepend('<iframe src="//localhost:3000/script"></iframe>');
+  $('body').prepend('<iframe src="//caracol.cloudapp.net/script"></iframe>');
   //do the original db query here;
   req.open('POST', route, true);
   req.setRequestHeader('Content-Type', 'application/JSON');
