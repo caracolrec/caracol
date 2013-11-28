@@ -4,7 +4,8 @@
   "authors": [
     "adamwitzel@gmail.com",
     "rickcerf@gmail.com",
-    "michaelmunson1@gmail.com"
+    "michaelmunson1@gmail.com",
+    "ihinsdale@gmail.com"
   ],
   "description": "Tailor-made recommendation for communities",
   "main": "server.js",
@@ -44,5 +45,13 @@
     "underscore": "~1.5.2",
     "jquery": "~2.0.3",
     "angular": "~1.2.2"
+  },
+  "devDependencies": {
+    "bootstrap": "2.3.2",
+    "angular-route": "~1.2.3",
+    "angular-bootstrap": "~0.7.0"
+  },
+  "resolutions": {
+    "bootstrap": "2.3.2"
   }
 }

@@ -1,11 +1,33 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
+block nav
+  .navbar.navbar-fixed-top
+    .navbar-inner
+      .navContainer
+        // .btn-navbar is used as the toggle for collapsed navbar content 
+        a.btn.btn-navbar(ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed")
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        // Be sure to leave the brand out there if you want it shown 
+        a.brand.pull-left(href='#') caracol
+        // Everything you want hidden at 940px or less, place within here 
+        .nav-collapse.collapse(collapse="isCollapsed")
+          // .nav, .navbar-search, .navbar-form, etc 
+          ul.nav.pull-right
+            li
+              a(href='#') Link1
+            li
+              a(href='#') Link2
+            li
+              a(href='#') Link3
 
-  a(href="javascript:function crcl(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body,l=d.location;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','//caracol.cloudapp.net/app/'+encodeURIComponent(l.href)+'/'+(new Date().getTime())+'/'+Math.random());b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}crcl();void(0)" class="bookmarklet") Caracol
-  
-  br
-  
-  a(href="javascript:function crcl(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body,l=d.location;try{if(!b)throw(0);d.title='(Saving...) '+d.title;z.setAttribute('src','//localhost:3000/app/'+encodeURIComponent(l.href)+'/'+(new Date().getTime())+'/'+Math.random());b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}crcl();void(0)" class="bookmarklet") Local Host Caracol
+block content
+  .container(ng-view='')
+
+  script(src='/bower_components/jquery/jquery.js')
+  script(src='/bower_components/angular/angular.min.js')
+  script(src='/bower_components/angular-route/angular-route.min.js')
+  script(src='/bower_components/angular-bootstrap/ui-bootstrap.js')
+
+  script(src='/scripts/app.js')
