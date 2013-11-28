@@ -1,11 +1,9 @@
 bin/
 .bin/
 express/
-jade/
-stylus/
-bower_components/
 node_modules/
 .DS_Store
 config.js
-dbconfig.js
+dbconfig.json
 npm-debug.log
+dbCredentials.txt

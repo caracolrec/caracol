@@ -14,12 +14,9 @@ exports.dbInsert = dbInsert = function(json){
   .then(function() {
     console.log('finished saving the clipping');
   }, function(){
-    console.log('Error saving the clipping')
+    console.log('Error saving the clipping');
   });
 
-}
+};
 
 dbInsert();
-
-
-

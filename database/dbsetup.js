@@ -8,7 +8,6 @@ module.exports.caracolPG = Bookshelf.initialize({
   client: 'pg',
   connection: {
     host     : credentials.host,    // when deploying on Azure, say 'credentials.localhost' here
-
     //need PORT here?
     //ALSO: note - need diff version for deployment (virtual machine?)
     user     : credentials.user,
