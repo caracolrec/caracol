@@ -16,6 +16,7 @@ var params;
 var caracolPG = require('./database/dbsetup.js').caracolPG;
 var dbClient = require('./database/dbclient.js');
 var algorithm = require('./controllers/algorithm.js');
+var async = require('async');
 var app = express();
 
 // all environments

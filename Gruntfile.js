@@ -14,7 +14,8 @@ module.exports = function(grunt) {
       compile: {
         options: {},
         files: {
-          'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl'
+          'public/stylesheets/caracol.css': 'public/stylesheets/stylus/caracol.styl',
+          'public/stylesheets/bookmarklet.css': 'public/stylesheets/stylus/bookmarklet/bookmarklet.styl'
         }
       }
 
