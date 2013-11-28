@@ -9,7 +9,7 @@ var tables = require('./dbschemas.js');
 
 exports.dbInsert = dbInsert = function(json){
 
-  new tables.Clipping({title: 'this is a test', content: 'whammy wowie zowie'})
+  new tables.Clipping({title: json.title, content: json.content, uri: json.url, word_count: json.word_count})
   .save()
   .then(function() {
     console.log('finished saving the clipping');
@@ -18,5 +18,3 @@ exports.dbInsert = dbInsert = function(json){
   });
 
 };
-
-dbInsert();

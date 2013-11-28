@@ -77,7 +77,7 @@ Clipping = caracolPG.Model.extend({
 
   permittedAttributes: [
     'id',  'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
-    'first_insert',    // can just use native db tstamp? - this is distinguished from date_published
+    'first_insert', 'uri',    // can just use native db tstamp? - this is distinguished from date_published
     //'language' - not in mvp
     'word_count','total_pages', 'date_published', 'dek', 
     'lead_image_url',   // need this?

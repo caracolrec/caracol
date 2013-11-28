@@ -22,15 +22,13 @@
   //add a listener
 
   // route = '//localhost:3000/uri';
-  route = '//caracol.azurewebsites.net/uri';
+  route = '//caracol.cloudapp.net/uri';
   console.log("party");
   setTimeout(function(){
     console.log("time");
   }, 1500);
-  //check if angular is already loaded
-  //conditional with angular method
 
-  $('body').append('<iframe src="//caracol.azurewebsites.net/script"></iframe>');
+  $('body').prepend('<iframe src="//caracol.cloudapp.net/script"></iframe>');
   //do the original db query here;
   req.open('POST', route, true);
   req.setRequestHeader('Content-Type', 'application/JSON');
