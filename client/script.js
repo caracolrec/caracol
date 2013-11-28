@@ -21,8 +21,8 @@
   //TODO there's gotta be a beter way
   //add a listener
 
-  route = '//localhost:3000/uri';
-  // route = '//caracol.cloudapp.net/uri';
+  // route = '//localhost:3000/uri';
+  route = '//caracol.cloudapp.net/uri';
   console.log("party");
   setTimeout(function(){
     console.log("time");
