@@ -17,6 +17,8 @@
     "coveralls": "~2.5.0",
     "mocha-lcov-reporter": "0.0.1",
     "async": "~0.2.9"
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
