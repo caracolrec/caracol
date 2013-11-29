@@ -2,18 +2,21 @@
 
 angular.module('caracolApp', [
   'ngRoute',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'caracolApp.controllers',
+  'caracolApp.services'
 ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: '/views/main.html'
-      })
-      //.when('/in', {
-      //  templateUrl: '/app/views/main.html',
-      //  controller: 'MainCtrl'
-      //})
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+.config(function ($routeProvider) {
+  $routeProvider
+    .when('/', {
+      templateUrl: '/views/main.html',
+      controller: 'MainCtrl'
+    })
+    .when('/clippings', {
+     templateUrl: '/views/clippings.html',
+     controller: 'ClippingsCtrl'
+    })
+    .otherwise({
+      redirectTo: '/'
+    });
+});

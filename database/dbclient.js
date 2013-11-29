@@ -18,3 +18,16 @@ exports.dbInsert = dbInsert = function(json){
   });
 
 };
+
+exports.dbFetch = dbFetch = function(fetchClippingsOlderThanThisClippingId, callback) {
+  // not actually making use of fetchClippingsOlderThanThisClippingId yet
+  new tables.Clippings()
+  .fetch()
+  .then(function(results) {
+    console.log('successfully grabbed clippings from the db:', results);
+    callback(null, results);
+  }, function(error) {
+    console.log('there was an error fetching clippings from the db:', error);
+    callback(error);
+  });
+};
