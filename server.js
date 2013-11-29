@@ -130,6 +130,7 @@ app.post('/uri', function(req, res){
 //datestamp from visited bookmarklet
 //weighting upvote/downvote
 
+
 // app.post('/login', passport.authenticate('local', { successRedirect: '/',
 //                                                  failureRedirect: '/login' }));
 
@@ -163,6 +164,28 @@ passport.deserializeUser(function(id, done) {
     //return?
     done(err, user);
   });
+
+// route for loading user's clippings
+app.get('/fetchMyClippings', function(req, res) {
+  var oldestClippingId;
+  console.log('typeof oldestClippingId:', typeof req.query.oldestClippingId);
+  if (req.query.oldestClippingId !== 'null') {
+    oldestClippingId = req.query.oldestClippingId;
+  }
+  async.waterfall([
+    function(callback) {
+      dbClient.dbFetch(oldestClippingId, callback);
+    },
+    function(clippings, callback) {
+      console.log('about to send clippings back to client');
+      res.send(clippings);
+      callback(null);
+    }
+  ]);
+});
+
+// route for storing a vote from the user's clippings view
+app.get('/vote', function(req, res) {
 });
 
 
