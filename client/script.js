@@ -11,7 +11,6 @@
       x = d.selection,
       s = String(t ? t(): (k)? k(): (x ? x.createRange().text : '')),
       e = encodeURIComponent,
-    req = new XMLHttpRequest(),
    data = JSON.stringify({
     uri: l.href,
     title: d.title,
@@ -22,11 +21,11 @@
   //TODO there's gotta be a beter way
   //add a listener
 
-  // route = '//localhost:3000/uri';
-  route = '//caracol.cloudapp.net/uri';
+  route = '//localhost:3000/uri';
+  // route = '//caracol.cloudapp.net/uri';
 
-  $('body').prepend('<div style="position:fixed;height:0px;width: 100%;top: 0px;z-index: 9999"><iframe class="frame" src="//caracol.cloudapp.net/script" style="left:10%;position:absolute;height:115px;width:235px"></iframe></div>');
-  // $('body').prepend('<div style="position:fixed;height:0px;width: 100%;top: 0px;z-index: 9999"><iframe class="frame" src="//localhost:3000/script" style="left:10%;position:absolute;height:115px;width:235px"></iframe></div>');
+  // $('body').prepend('<div class="caracolContainer"><iframe class="frame" src="//caracol.cloudapp.net/script"></iframe></div>');
+  $('body').prepend('<div class="caracolContainer" style="position:fixed;height:0px;z-index:99999"><iframe class="frame" src="//localhost:3000/script" style="background:transparent;position:absolute; z-index:999999;left:10px;height:115px;"></iframe></div>');
   
   $.post(route, data).done(function(){
     console.log('finished');

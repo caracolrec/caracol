@@ -75,7 +75,6 @@ app.get('/client/:module', function(req, res){
 app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
     async.eachSeries(
-    //TODO add iframe styling here!!!
     ['./public/bower_components/jquery/jquery.min.js', './client/script.js'],
     function(filename, cb) {
       fs.readFile(filename, function(error, data) {
