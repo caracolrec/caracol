@@ -13,7 +13,7 @@ sudo apt-get install python-setuptools
 sudo apt-get install python-pip
 sudo apt-get install python-dev
 
-sudo pip install psycopg
+sudo pip install psycopg2
 
 sudo pip install -U numpy
 sudo pip install -U pyyaml nltk
