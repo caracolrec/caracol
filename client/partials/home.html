@@ -9,12 +9,13 @@
     <link href="stylesheets/bookmarklet.css" rel="stylesheet"></link>
   </head>
   <body ng-app="app" class="main">
-    <div>Welcome to Caracol</div>
-    <div>Your neighborhood long-form recommendation engine</div>
-    <div>:)</div>
-    <button>Upvote</button>
-    <button>Downvote</button>
+    <div ng-controller="VoteCtrl">
+      <div>Welcome to Caracol</div>
+      <div>Your neighborhood long-form recommendation engine</div>
+      <div>:)</div>
+      <div ng-click="getInfo()">{{url}}</div>
+      <button ng-click="vote()">Upvote</button>
+      <button ng-click="vote()">Downvote</button>
+    </div>
   </body>
 </html>
-
-

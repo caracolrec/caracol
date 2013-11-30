@@ -49,15 +49,6 @@ if ('development' === app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/script', function(req, res){
-  fs.readFile('./client/partials/home.html', function(error, data){
-    if (error) {
-      console.log(error);
-    } else {
-      res.end(data);
-    }
-  });
-});
 
 app.get('/script', function(req, res){
   fs.readFile('./client/partials/home.html', function(error, data){
@@ -80,13 +71,7 @@ app.get('/client/:module', function(req, res){
   });
 });
 
-//app.get('/users', user.list);
-app.get('/app/:u/:t/*', function(req, res){
-  params = {
-    url: decodeURI(req.params.u),
-    token: token
-  };
-
+app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
   //Post MVP check to see if url data exists in db
     async.eachSeries(
@@ -127,8 +112,14 @@ app.post('/uri', function(req, res){
     dbClient.dbInsert(response.body);
   }));
 });
-//datestamp from visited bookmarklet
-//weighting upvote/downvote
+
+app.post('/vote', function(req, res){
+  console.log('here');
+  console.log(req.body);
+  // res.end(function(voteStatus){
+    //write to database
+  // });
+});
 
 
 // app.post('/login', passport.authenticate('local', { successRedirect: '/',

@@ -17,21 +17,18 @@
     title: d.title,
     clipping: s,
    });
+   var encodedURI = encodeURIComponent(data.uri);
   //must manually toggle for deployment
   //TODO there's gotta be a beter way
   //add a listener
 
-  route = '//localhost:3000/uri';
-  // route = '//caracol.cloudapp.net/uri';
-  console.log("party");
-  setTimeout(function(){
-    console.log("time");
-  }, 1500);
+  // route = '//localhost:3000/uri';
+  route = '//caracol.cloudapp.net/uri';
 
-  // $('body').prepend('<iframe src="//caracol.cloudapp.net/script"></iframe>');
-  $('body').prepend('<div style="position:fixed;height:0px;width: 100%;top: 0px;z-index: 9999"><iframe class="frame" src="//localhost:3000/script" style="left:10%;position:absolute;height:115px;width:235px"></iframe></div>');
-  //do the original db query here;
-  req.open('POST', route, true);
-  req.setRequestHeader('Content-Type', 'application/JSON');
-  req.send(data);
+  $('body').prepend('<div style="position:fixed;height:0px;width: 100%;top: 0px;z-index: 9999"><iframe class="frame" src="//caracol.cloudapp.net/script" style="left:10%;position:absolute;height:115px;width:235px"></iframe></div>');
+  // $('body').prepend('<div style="position:fixed;height:0px;width: 100%;top: 0px;z-index: 9999"><iframe class="frame" src="//localhost:3000/script" style="left:10%;position:absolute;height:115px;width:235px"></iframe></div>');
+  
+  $.post(route, data).done(function(){
+    console.log('finished');
+  });
 })();
