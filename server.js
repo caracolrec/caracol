@@ -10,6 +10,9 @@ var parser = require('./routes/parser');
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
+var passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
+
 //var request = require('superagent');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
@@ -17,6 +20,10 @@ var caracolPG = require('./database/dbsetup.js').caracolPG;
 var dbClient = require('./database/dbclient.js');
 var algorithm = require('./controllers/algorithm.js');
 var async = require('async');
+
+//elsewhere:
+var User = require('./database/dbschemas.js').User;
+
 var app = express();
 
 // all environments
@@ -30,6 +37,8 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(app.router);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -120,6 +129,65 @@ app.post('/uri', function(req, res){
 });
 //datestamp from visited bookmarklet
 //weighting upvote/downvote
+
+
+// app.post('/login', passport.authenticate('local', { successRedirect: '/',
+//                                                  failureRedirect: '/login' }));
+
+
+
+//REFACTOR OPPORTUNITY!!:  (stars on the floor - pick 'em up!)
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
+
+//RETURN TO THIS - a better serialization.  Maybe hash, include session start time? 
+passport.serializeUser(function(user, done) {
+  //return?
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    //return?
+    done(err, user);
+  });
+
+// route for loading user's clippings
+app.get('/fetchMyClippings', function(req, res) {
+  var oldestClippingId;
+  console.log('typeof oldestClippingId:', typeof req.query.oldestClippingId);
+  if (req.query.oldestClippingId !== 'null') {
+    oldestClippingId = req.query.oldestClippingId;
+  }
+  async.waterfall([
+    function(callback) {
+      dbClient.dbFetch(oldestClippingId, callback);
+    },
+    function(clippings, callback) {
+      console.log('about to send clippings back to client');
+      res.send(clippings);
+      callback(null);
+    }
+  ]);
+});
+
+// route for storing a vote from the user's clippings view
+app.get('/vote', function(req, res) {
+});
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

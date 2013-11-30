@@ -17,7 +17,7 @@ User = caracolPG.Model.extend({
   hasTimestamps: true,
   
   permittedAttributes: [
-    'id',  'name', 'isMember', 'joinedDate',  //'passwordSALT'
+    'id',  'username', 'isMember', 'joinedDate',  //'passwordSALT'
   ],
 
   //patterned after ghost's post.js - ll 33-38 - http://goo.gl/7KjRR0
@@ -37,6 +37,13 @@ User = caracolPG.Model.extend({
     //need to do this for various fields? do this in validate:
     //this.set('title', this.sanitize('title').trim());
   },
+
+  //this could eventually go on a base model <--------
+  findOne = function(userObj, authCallback){
+  new User(userObj).fetch().then(
+    function(model){authCallback(null, model);},
+    function(err){authCallback(err, null);}
+  };
 
   creating: function(){
     //TO DO
@@ -76,8 +83,9 @@ Clipping = caracolPG.Model.extend({
   },
 
   permittedAttributes: [
-    'id',  'title', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
-    'first_insert', 'uri',    // can just use native db tstamp? - this is distinguished from date_published
+
+    'id',  'title', 'uri', 'content', //'slug', //better understand - see ghost API, post.js, ll67-72
+    'first_insert',    // can just use native db tstamp? - this is distinguished from date_published
     //'language' - not in mvp
     'word_count','total_pages', 'date_published', 'dek', 
     'lead_image_url',   // need this?
