@@ -16,7 +16,7 @@
     "knex": "~0.4.13",
     "coveralls": "~2.5.0",
     "mocha-lcov-reporter": "0.0.1",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
     "passport": "~0.1.17",
     "passport-local": "~0.1.6"
   },

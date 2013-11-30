@@ -1,4 +1,5 @@
 import zerorpc
+import psycopg # the Python driver for Postgres
 
 class HelloRPC(object):
     def hello(self, name):
