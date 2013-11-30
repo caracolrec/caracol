@@ -155,6 +155,7 @@ passport.deserializeUser(function(id, done) {
     //return?
     done(err, user);
   });
+});
 
 // route for loading user's clippings
 app.get('/fetchMyClippings', function(req, res) {
@@ -176,8 +177,7 @@ app.get('/fetchMyClippings', function(req, res) {
 });
 
 // route for storing a vote from the user's clippings view
-app.get('/vote', function(req, res) {
-});
+
 
 
 http.createServer(app).listen(app.get('port'), function(){
@@ -185,3 +185,5 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 algorithm.helloWorld();
+
+
