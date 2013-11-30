@@ -97,7 +97,6 @@ app.options('/*', function(req, res){
 });
 
 app.post('/uri', function(req, res){
-  console.log('post received', req.body);
   params = {
     url: req.body.uri,
     token: token
@@ -105,7 +104,7 @@ app.post('/uri', function(req, res){
   res.header("Access-Control-Allow-Origin", "*");
 
   res.end(parser(params, function(response){
-    dbClient.dbInsert(response.body);
+    dbClient.dbInsert(response);
   }));
 });
 
@@ -164,13 +163,16 @@ app.get('/fetchMyClippings', function(req, res) {
 });
 
 // route for storing a vote from the user's clippings view
-app.get('/vote', function(req, res) {
-  console.log('here');
+app.post('/vote', function(req, res) {
   console.log(req.body);
-  res.end();
-  // res.end(function(voteStatus){
-    //write to database
-  // });
+  params = {
+    // clipping_id: req.body.clipping_id,
+    vote: req.body.vote
+    // bookmarkStatus: req.body.bookmarkStatus,
+    // lastBookmarkTime: req.body.lastBookmarkTime,
+    // lastVoteTime: req.body.lastVoteTime
+  };
+  res.end(dbClient.dbVote(params));
 });
 
 http.createServer(app).listen(app.get('port'), function(){
