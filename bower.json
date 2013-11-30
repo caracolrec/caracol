@@ -50,8 +50,5 @@
     "bootstrap": "2.3.2",
     "angular-route": "~1.2.3",
     "angular-bootstrap": "~0.7.0"
-  },
-  "resolutions": {
-    "bootstrap": "2.3.2"
   }
 }
