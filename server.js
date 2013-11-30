@@ -113,15 +113,6 @@ app.post('/uri', function(req, res){
   }));
 });
 
-app.post('/vote', function(req, res){
-  console.log('here');
-  console.log(req.body);
-  // res.end(function(voteStatus){
-    //write to database
-  // });
-});
-
-
 // app.post('/login', passport.authenticate('local', { successRedirect: '/',
 //                                                  failureRedirect: '/login' }));
 
@@ -177,6 +168,11 @@ app.get('/fetchMyClippings', function(req, res) {
 
 // route for storing a vote from the user's clippings view
 app.get('/vote', function(req, res) {
+  console.log('here');
+  console.log(req.body);
+  // res.end(function(voteStatus){
+    //write to database
+  // });
 });
 
 
