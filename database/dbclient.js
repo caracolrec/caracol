@@ -7,7 +7,6 @@ var tables = require('./dbschemas.js');
 var algorithm = require('../controllers/algorithm.js');
 
 exports.dbInsert = dbInsert = function(json){
-  console.log(json);
   new tables.Clipping({title: json.title, content: json.content, uri: json.url, word_count: json.word_count})
   .save()
   .then(function(model) {
@@ -29,5 +28,17 @@ exports.dbFetch = dbFetch = function(fetchClippingsOlderThanThisClippingId, call
   }, function(error) {
     console.log('there was an error fetching clippings from the db:', error);
     callback(error);
+  });
+};
+
+
+exports.dbVote = dbVote = function(json){
+  console.log('called', json);
+  new tables.User_Clipping({vote: json.vote})
+  .save()
+  .then(function(){
+    console.log('finished saving the vote');
+  }, function(){
+    console.log('there was an error saving the vote');
   });
 };
