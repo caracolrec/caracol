@@ -6,7 +6,7 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
-var parser = require('./routes/parser');
+var parser = require('./routes/parser').parser;
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
-
+//TODO refactor into 
 app.get('/', routes.index);
 
 app.get('/script', function(req, res){
@@ -71,23 +71,20 @@ app.get('/client/:module', function(req, res){
   });
 });
 
+
 app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
-  //Post MVP check to see if url data exists in db
     async.eachSeries(
-    // Pass items to iterate over
+    //TODO add iframe styling here!!!
     ['./public/bower_components/jquery/jquery.min.js', './client/script.js'],
-    // Pass iterator function that is called for each item
     function(filename, cb) {
       fs.readFile(filename, function(error, data) {
         if (!error) {
           res.write(data);
         }
-        // Calling cb makes it go to the next item.
         cb(error);
       });
     },
-    // Final callback after each item has been iterated over.
     function(error) {
       res.end();
     }
@@ -108,7 +105,7 @@ app.post('/uri', function(req, res){
   };
   res.header("Access-Control-Allow-Origin", "*");
 
-  res.end(parser.parser(params, function(response){
+  res.end(parser(params, function(response){
     dbClient.dbInsert(response.body);
   }));
 });
@@ -171,6 +168,7 @@ app.get('/fetchMyClippings', function(req, res) {
 app.get('/vote', function(req, res) {
   console.log('here');
   console.log(req.body);
+  res.end();
   // res.end(function(voteStatus){
     //write to database
   // });
