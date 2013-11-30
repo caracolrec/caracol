@@ -75,10 +75,6 @@ app.get('/client/:module', function(req, res){
 app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
     async.eachSeries(
-<<<<<<< HEAD
-=======
-    //TODO add iframe styling here!!!
->>>>>>> train some unruly syntax
     ['./public/bower_components/jquery/jquery.min.js', './client/script.js'],
     function(filename, cb) {
       fs.readFile(filename, function(error, data) {
@@ -108,11 +104,7 @@ app.post('/uri', function(req, res){
   res.header("Access-Control-Allow-Origin", "*");
 
   res.end(parser(params, function(response){
-<<<<<<< HEAD
-    dbClient.dbInsert(response);
-=======
     dbClient.dbInsert(response.body);
->>>>>>> train some unruly syntax
   }));
 });
 
