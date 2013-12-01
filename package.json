@@ -18,7 +18,8 @@
     "mocha-lcov-reporter": "0.0.1",
     "async": "~0.2.9",
     "passport": "~0.1.17",
-    "passport-local": "~0.1.6"
+    "passport-local": "~0.1.6",
+    "mocha": "~1.9.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
@@ -30,6 +31,7 @@
     "grunt-contrib-qunit": "~0.3.0",
     "grunt-contrib-watch": "~0.5.3",
     "chai": "~1.8.1",
-    "zerorpc": "~0.9.3"
+    "zerorpc": "~0.9.3",
+    "grunt-mocha-cov": "0.0.7"
   }
 }

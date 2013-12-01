@@ -10,6 +10,23 @@ module.exports = function(grunt) {
     //   '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
     //   ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
+    mochacov: {
+      coverage: {
+        options: {
+          coveralls: {
+            serviceName: 'travis-ci'
+          }
+        }
+      },
+      test: {
+        options: {
+          reporter: 'spec'
+        }
+      },
+      options: {
+        files: 'test/*.js'
+      }
+    },
     stylus: {
       compile: {
         options: {},
@@ -95,9 +112,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-mocha-cov');
+
 
   // Default task.
   //TODO add qunit to run tests
   grunt.registerTask('default', ['stylus', 'jshint', 'concat', 'uglify']);
-
+  grunt.registerTask('travis', ['mochacov:coverage']);
+  grunt.registerTask('test', ['mochacov:test']);
 };

@@ -10,7 +10,7 @@ controllers.controller('VoteCtrl', function($scope, VoteService){
     //grabs uri and vote status
     var user = "adam";
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
-    // VoteService.vote(user, vote);
+    // VoteService.vote(user, vote); --> will add when the db is more open-minded and willing to accept our users' preferences
     $scope.log(vote);
     $scope.voted = true;
   };
