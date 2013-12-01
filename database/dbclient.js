@@ -34,7 +34,7 @@ exports.dbFetch = dbFetch = function(fetchClippingsOlderThanThisClippingId, call
 
 exports.dbVote = dbVote = function(json){
   console.log('called', json);
-  new tables.User_Clipping({vote: json.vote})
+  new tables.User_Clipping({})
   .save()
   .then(function(){
     console.log('finished saving the vote');
