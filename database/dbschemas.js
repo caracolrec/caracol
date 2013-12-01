@@ -39,11 +39,12 @@ User = caracolPG.Model.extend({
   },
 
   //this could eventually go on a base model <--------
-  findOne = function(userObj, authCallback){
-  new User(userObj).fetch().then(
-    function(model){authCallback(null, model);},
-    function(err){authCallback(err, null);}
-  };
+  findOne: function(userObj, authCallback){
+    new User(userObj).fetch().then(
+      function(model){authCallback(null, model);},
+      function(err){authCallback(err, null);}
+    );
+  },
 
   creating: function(){
     //TO DO
