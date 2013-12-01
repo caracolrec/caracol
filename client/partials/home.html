@@ -13,8 +13,10 @@
       <div>Welcome to Caracol</div>
       <div>Your neighborhood long-form recommendation engine</div>
       <div>:)</div>
-      <button ng-click="vote(1)">Upvote</button>
-      <button ng-click="vote(0)">Downvote</button>
+      <button ng-click="vote(1)" ng-show="!voted">Upvote</button>
+      <button ng-click="vote(0)" ng-show="!voted">Downvote</button>
+      <button ng-click="revert('like')" ng-show="like && voted">Successfully Upvoted</button>
+      <button ng-click="revert('dislike')" ng-show="dislike && voted">Successfully Downvoted</button>
     </div>
   </body>
 </html>
