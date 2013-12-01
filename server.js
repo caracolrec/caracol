@@ -104,7 +104,7 @@ app.post('/uri', function(req, res){
   res.header("Access-Control-Allow-Origin", "*");
 
   res.end(parser(params, function(response){
-    dbClient.dbInsert(response);
+    dbClient.dbInsert(response.body);
   }));
 });
 
