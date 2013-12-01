@@ -13,6 +13,9 @@ var fs = require('fs');
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
+// create logFile for storing server log
+var logFile = fs.createWriteStream('./serverLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
+
 //var request = require('superagent');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
@@ -31,7 +34,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
-app.use(express.logger('dev'));
+app.use(express.logger({stream: logFile}));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
