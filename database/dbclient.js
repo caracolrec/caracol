@@ -4,15 +4,15 @@ var express = require('express');
 var caracolPG = require('./dbsetup.js').caracolPG;
 var knex = caracolPG.knex; // require('./dbsetup.js').knex;
 var tables = require('./dbschemas.js');
-
-
+var algorithm = require('../controllers/algorithm.js');
 
 exports.dbInsert = dbInsert = function(json){
 
   new tables.Clipping({title: json.title, content: json.content, uri: json.url, word_count: json.word_count})
   .save()
-  .then(function() {
+  .then(function(model) {
     console.log('finished saving the clipping');
+    algorithm.removeHTMLAndTokenize(model.id);
   }, function(){
     console.log('Error saving the clipping');
   });
