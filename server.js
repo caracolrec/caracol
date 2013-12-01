@@ -175,11 +175,25 @@ app.get('/fetchMyClippings', function(req, res) {
   }
   async.waterfall([
     function(callback) {
-      dbClient.dbFetch(oldestClippingId, callback);
+      dbClient.fetchClippings(oldestClippingId, callback);
     },
     function(clippings, callback) {
       console.log('about to send clippings back to client');
       res.send(clippings);
+      callback(null);
+    }
+  ]);
+});
+
+// route for loading recommendations for a user
+app.get('/fetchRecommendations', function(req, res) {
+  async.waterfall([
+    function(callback) {
+      dbClient.fetchRecommendations(callback);
+    },
+    function(recs, callback) {
+      console.log('about to send recs back to client:', recs);
+      res.send(recs);
       callback(null);
     }
   ]);

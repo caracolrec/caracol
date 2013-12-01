@@ -5,6 +5,7 @@ var caracolPG = require('./dbsetup.js').caracolPG;
 var knex = caracolPG.knex; // require('./dbsetup.js').knex;
 var tables = require('./dbschemas.js');
 var algorithm = require('../controllers/algorithm.js');
+var _ = require('underscore');
 
 exports.dbInsert = dbInsert = function(json){
 
@@ -19,7 +20,7 @@ exports.dbInsert = dbInsert = function(json){
 
 };
 
-exports.dbFetch = dbFetch = function(fetchClippingsOlderThanThisClippingId, callback) {
+exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisClippingId, callback) {
   // not actually making use of fetchClippingsOlderThanThisClippingId yet
   new tables.Clippings()
   .fetch()
@@ -28,6 +29,18 @@ exports.dbFetch = dbFetch = function(fetchClippingsOlderThanThisClippingId, call
     callback(null, results);
   }, function(error) {
     console.log('there was an error fetching clippings from the db:', error);
+    callback(error);
+  });
+};
+
+exports.fetchRecommendations = fetchRecommendations = function(callback) {
+  new tables.Recommendations()
+  .fetch({ withRelated: ['clipping'] })
+  .then(function(results) {
+    console.log('results of db query look like:',results);
+    callback(null, results);
+  }, function(error) {
+    console.log('error fetching recs from the db:', error);
     callback(error);
   });
 };

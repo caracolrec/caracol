@@ -16,6 +16,10 @@ angular.module('caracolApp', [
      templateUrl: '/views/clippings.html',
      controller: 'ClippingsCtrl'
     })
+    .when('/recommendations', {
+      templateUrl: '/views/recommendations.html',
+      controller: 'RecsCtrl'
+    })
     .otherwise({
       redirectTo: '/'
     });
