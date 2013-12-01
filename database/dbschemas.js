@@ -2,6 +2,10 @@ var User,
     Users,
     Clipping,
     Clippings,
+    JournalEntry,
+    User_Clipping,
+    Recommendation,
+    Recommendations,
     express = require('express'),
     caracolPG = require('./dbsetup.js').caracolPG;
 
@@ -116,7 +120,7 @@ Clipping = caracolPG.Model.extend({
 
 JournalEntry = caracolPG.Model.extend({
   
-  tableName: 'JournalEntries',
+  tableName: 'journal_entries',
   hasTimestamps: true,
   
   initialize: function(){
@@ -152,13 +156,13 @@ JournalEntry = caracolPG.Model.extend({
   },
 
   author: function(){
-    return this.BelongsToOne(User);
+    return this.belongsTo(User);
   }
 });
 
 
 User_Clipping = caracolPG.Model.extend({
-  tableName: 'User_Clippings',
+  tableName: 'user_clippings',
   hasTimestamps: true,
   initialize: function(){
     this.on('creating', this.creating, this);
@@ -170,9 +174,56 @@ User_Clipping = caracolPG.Model.extend({
   'id',  'user_id', 'clipping_id',    //'created_at',
   'vote', 'bookmarkStatus', 'lastBookmarkTime',
   'lastVoteTime'  // 'last_update' - could also store history of upvotes and downvotes - not in mvp
-  ]
+  ],
+  validate: function(){
+     //TO DO     <------<-------<------
+     //need to escape our text
+  },
+
+  creating: function(){
+    //TO DO
+  },
+
+  saving: function(){
+    this.attributes = this.pick(this.permittedAttributes); //pick: bookshelf provides?
+    //need to do this for various fields? do this in validate:
+    //this.set('title', this.sanitize('title').trim());
+  },
 
 });
+
+Recommendation = caracolPG.Model.extend({
+  tableName: 'recommendations',
+  hasTimestamps: true,
+  initialize: function() {
+    this.on('creating', this.creating, this);
+    this.on('saving', this.saving, this);
+    this.on('saving', this.validate, this);
+  },
+
+  permittedAttributes: [
+    'id', 'user_id', 'clipping_id', 'rank', 'computed_at'
+  ],
+
+  validate: function(){
+     //TO DO     <------<-------<------
+     //need to escape our text
+  },
+
+  creating: function(){
+    //TO DO
+  },
+
+  saving: function(){
+    this.attributes = this.pick(this.permittedAttributes); //pick: bookshelf provides?
+    //need to do this for various fields? do this in validate:
+    //this.set('title', this.sanitize('title').trim());
+  },
+
+  clipping: function() {
+    return this.belongsTo(Clipping);
+  }
+})
 
 Users = caracolPG.Collection.extend({
   model: User
@@ -182,11 +233,17 @@ Clippings = caracolPG.Collection.extend({
   model: Clipping
 });
 
+Recommendations = caracolPG.Collection.extend({
+  model: Recommendation
+});
+
 module.exports = {
   User: User,
   Users: Users,
   Clipping: Clipping,
-  Clippings: Clippings
+  Clippings: Clippings,
+  Recommendation: Recommendation,
+  Recommendations: Recommendations
 };
 
 // module.exports.Forum = caracolPG.Model.extend({
