@@ -5,6 +5,7 @@ var caracolPG = require('./dbsetup.js').caracolPG;
 var knex = caracolPG.knex; // require('./dbsetup.js').knex;
 var tables = require('./dbschemas.js');
 var algorithm = require('../controllers/algorithm.js');
+var _ = require('underscore');
 
 exports.dbInsert = dbInsert = function(json){
   new tables.Clipping({title: json.title, content: json.content, uri: json.url, word_count: json.word_count})
@@ -18,7 +19,7 @@ exports.dbInsert = dbInsert = function(json){
 
 };
 
-exports.dbFetch = dbFetch = function(fetchClippingsOlderThanThisClippingId, callback) {
+exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisClippingId, callback) {
   // not actually making use of fetchClippingsOlderThanThisClippingId yet
   new tables.Clippings()
   .fetch()
@@ -31,7 +32,6 @@ exports.dbFetch = dbFetch = function(fetchClippingsOlderThanThisClippingId, call
   });
 };
 
-
 exports.dbVote = dbVote = function(json){
   console.log('called', json);
   new tables.User_Clipping({})
@@ -40,5 +40,17 @@ exports.dbVote = dbVote = function(json){
     console.log('finished saving the vote');
   }, function(){
     console.log('there was an error saving the vote');
+  });
+};
+
+exports.fetchRecommendations = fetchRecommendations = function(callback) {
+  new tables.Recommendations()
+  .fetch({ withRelated: ['clipping'] })
+  .then(function(results) {
+    console.log('results of db query look like:',results);
+    callback(null, results);
+  }, function(error) {
+    console.log('error fetching recs from the db:', error);
+    callback(error);
   });
 };

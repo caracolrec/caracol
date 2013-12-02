@@ -15,6 +15,7 @@ sudo apt-get install python-dev
 
 sudo apt-get install python-psycopg2
 sudo pip install beautifulsoup4
+sudo apt-get install libxml2-dev libxslt-dev
 sudo pip install lxml
 
 sudo pip install -U numpy
