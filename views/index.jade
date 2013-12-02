@@ -18,9 +18,7 @@ block nav
             li
               a(href='#/clippings') My Clippings
             li
-              a(href='#') Link2
-            li
-              a(href='#') Link3
+              a(href='#/recommendations') Recommendations
 
 block content
   .container(ng-view='')
@@ -34,6 +32,8 @@ block content
   script(src='/scripts/controllers/init.js')
   script(src='/scripts/controllers/main.js')
   script(src='/scripts/controllers/clippings.js')
+  script(src='/scripts/controllers/recommendations.js')
   script(src='/scripts/services/init.js')
   script(src='/scripts/services/clippings.js')
   script(src='/scripts/services/vote.js')
+  script(src='/scripts/services/recommendations.js')

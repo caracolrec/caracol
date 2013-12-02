@@ -13,6 +13,9 @@ var fs = require('fs');
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
+// create logFile for storing server log
+var logFile = fs.createWriteStream('./serverLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
+
 //var request = require('superagent');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
 var params;
@@ -31,7 +34,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
-app.use(express.logger('dev'));
+app.use(express.logger({stream: logFile}));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
@@ -166,11 +169,25 @@ app.get('/fetchMyClippings', function(req, res) {
   }
   async.waterfall([
     function(callback) {
-      dbClient.dbFetch(oldestClippingId, callback);
+      dbClient.fetchClippings(oldestClippingId, callback);
     },
     function(clippings, callback) {
       console.log('about to send clippings back to client');
       res.send(clippings);
+      callback(null);
+    }
+  ]);
+});
+
+// route for loading recommendations for a user
+app.get('/fetchRecommendations', function(req, res) {
+  async.waterfall([
+    function(callback) {
+      dbClient.fetchRecommendations(callback);
+    },
+    function(recs, callback) {
+      console.log('about to send recs back to client:', recs);
+      res.send(recs);
       callback(null);
     }
   ]);
