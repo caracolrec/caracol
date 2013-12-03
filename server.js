@@ -14,7 +14,7 @@ var passport = require('passport');
 
 // create logFile for storing server log
 var logFile = fs.createWriteStream('./serverLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
-
+var _ = require('underscore');
 //var request = require('superagent');
 var token = process.env.APPSETTING_readability_key || require(__dirname + '/config/config.js').token;
 var params;
@@ -103,6 +103,28 @@ app.get('/client/:module', function(req, res){
   });
 });
 
+//following two are temp for demo
+
+app.get('/public/bower_components/angular-cookies/angular-cookies.min.js', function(req, res){
+  fs.readFile('./public/bower_components/angular-cookies/angular-cookies.min.js', function(error, data){
+    if (error){
+      console.log(error);
+    } else {
+      res.end(data);
+    }
+  });
+});
+
+app.get('/public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(req, res){
+  fs.readFile('./public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(error, data){
+    if (error){
+      console.log(error);
+    } else {
+      res.end(data);
+    }
+  });
+});
+
 app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
     async.eachSeries(
@@ -128,7 +150,6 @@ app.options('/*', function(req, res){
 });
 
 app.post('/uri', function(req, res){
-  console.log(req.body.uri);
   params = {
     url: decodeURIComponent(req.body.uri),
     token: token
@@ -138,10 +159,9 @@ app.post('/uri', function(req, res){
   async.waterfall([
     function(callback){
       parser(params, callback);
-      console.log('here');
     },
     function(response, callback){
-      console.log('about to send clipping id to client:', response);
+      response.url = params.url;
       dbClient.dbInsert(response, callback);
     },
     function(clipping_id, callback){
@@ -185,6 +205,7 @@ app.get('/fetchRecommendations', function(req, res) {
   ]);
 });
 
+//TODO failing server side
 // route for storing a vote from the user's clippings view
 app.post('/vote/:clipping_id', function(req, res) {
   params = {

@@ -67,7 +67,10 @@ exports.dbInsert = dbInsert = function(json, callback){
 
 exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisClippingId, callback) {
   // not actually making use of fetchClippingsOlderThanThisClippingId yet
-  new tables.Clippings()
+  new tables.Clippings({id: fetchClippingsOlderThanThisClippingId})
+  // below is for local storage solution
+  // .query()
+  // .where({id: fetchClippingsOlderThanThisClippingId})
   .fetch()
   .then(function(results) {
     console.log('successfully grabbed clippings from the db:', results);
