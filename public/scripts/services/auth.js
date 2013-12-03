@@ -1,5 +1,3 @@
-'use strict'
-
 angular.module('caracolApp.services')
 .factory('AuthService', ['$q', '$http', function($q, $http) {
   var service = {
