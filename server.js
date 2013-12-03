@@ -10,14 +10,13 @@ var parser = require('./routes/parser').parser;
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
-var passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
 
 // create logFile for storing server log
 var logFile = fs.createWriteStream('./serverLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
 
 //var request = require('superagent');
-var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
+var token = process.env.APPSETTING_readability_key || require(__dirname + '/config/config.js').token;
 var params;
 var caracolPG = require('./database/dbsetup.js').caracolPG;
 var dbClient = require('./database/dbclient.js');
@@ -28,6 +27,9 @@ var async = require('async');
 var User = require('./database/dbschemas.js').User;
 
 var app = express();
+
+//bootstrap passport config
+require('./config/passport')(passport);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -122,41 +124,6 @@ app.post('/uri', function(req, res){
       callback(null);
     }
   ]);
-});
-
-// app.post('/login', passport.authenticate('local', { successRedirect: '/',
-//                                                  failureRedirect: '/login' }));
-
-
-
-//REFACTOR OPPORTUNITY!!:  (stars on the floor - pick 'em up!)
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
-    });
-  }
-));
-
-//RETURN TO THIS - a better serialization.  Maybe hash, include session start time? 
-passport.serializeUser(function(user, done) {
-  //return?
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    //return?
-    done(err, user);
-  });
 });
 
 // route for loading user's clippings
