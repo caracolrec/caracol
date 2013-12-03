@@ -1,7 +1,5 @@
-'use strict';
-
 angular.module('caracolApp.controllers')
-.controller('MainCtrl', function($scope, AuthService) {
+.controller('AuthCtrl', function($scope, AuthService) {
   $scope.user = {};
   $scope.signedIn = false;
   $scope.createNewUser = function(){
