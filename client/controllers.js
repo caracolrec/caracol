@@ -8,9 +8,9 @@ controllers.controller('VoteCtrl', function($scope, VoteService){
 
   $scope.vote = function(vote){
     //grabs uri and vote status
-    var user = "adam";
+    var user_id = 0;
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
-    // VoteService.vote(user, vote); --> will add when the db is more open-minded and willing to accept our users' preferences
+    VoteService.vote(user_id, vote, $scope.clipping_id.toNumber()); //--> will add when the db is more open-minded and willing to accept our users' preferences
     $scope.log(vote);
     $scope.voted = true;
   };

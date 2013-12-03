@@ -109,15 +109,16 @@ app.post('/uri', function(req, res){
   res.header("Access-Control-Allow-Origin", "*");
   async.waterfall([
     function(callback){
-      parser(params);
+      parser(params, callback);
+      console.log('here');
     },
     function(response, callback){
       console.log('about to send clipping id to client:', response);
       dbClient.dbInsert(response, callback);
     },
     function(clipping_id, callback){
-      console.log('sent clipping as response');
-      res.send(clipping_id);
+      clipping_id = clipping_id.toString();
+      res.end(clipping_id);
       callback(null);
     }
   ]);

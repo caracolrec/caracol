@@ -4,9 +4,9 @@ services.factory('VoteService', function($q, $http) {
     vote: function(user_id, vote, clipping_id){
       var d = $q.defer();
       $http.post('/vote/'+clipping_id, {
-        vote: vote
-        // user_id: user_id,
-
+        vote: vote,
+        user_id: user_id,
+        clipping_id: clipping_id
       }).success(function(data){
         d.resolve(data);
       }).error(function(data){
@@ -25,7 +25,6 @@ services.factory('VoteService', function($q, $http) {
       $http.post('/uri', {
         uri: uri
       }).success(function(data){
-        console.log(data);
         d.resolve(data);
       }).error(function(data){
         d.reject(data);
