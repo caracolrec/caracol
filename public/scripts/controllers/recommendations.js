@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('caracolApp.controllers')
-.controller('RecsCtrl', function($scope, RecsService) {
+.controller('RecsCtrl', function($rootScope, $scope, RecsService) {
+  $rootScope.active = [false, true];
   $scope.loadRecs = function() {
     console.log('loadRecs firing');
     if (RecsService.timeOfLastFetch) {
