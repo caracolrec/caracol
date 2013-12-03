@@ -1,5 +1,6 @@
-body
-  padding-top: 50px
+@media (min-width: 980px)
+  body
+    padding-top: 50px
 
 .rec, .clipping
   padding-bottom: 20px
@@ -7,6 +8,7 @@ body
 .recRank, .clippingMeta
   font-weight: bold
   color: white
+  font-size: 12px
 
 .recRank
   background-color: #ffac40
@@ -26,11 +28,11 @@ body
 .clippingContent
   border-bottom: 1px solid #61d8a2
 
-.navbar .nav > li a
+.navbar .nav > li > a
   text-decoration: none
   text-shadow: none
   font-family: 'Signika Negative', sans-serif
-
+  padding: 0
 
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
@@ -58,25 +60,33 @@ body
 .buttonContainer
   margin: 5px
   padding: 4px
+  height: 30px
   background-color: #ffffff
   border-radius: 3px
   border: 1px solid #d4d4d4
 
-.active > .clipNavButton
+.navbar .nav a.buttonContainer:hover
+  background-color: #ffffff
+
+.navbar .nav > li.active > a.buttonContainer
+  color: #ffffff
+
+.navbar .nav > li.active > a.clipNavButton
+.navbar .nav > li.active > a.clipNavButton:hover
   background-color: #61d8a2
 
-.active > .recNavButton
+.navbar .nav > li.active > a.recNavButton,
+.navbar .nav > li.active > a.recNavButton:hover
   background-color: #ffac40
 
-.clipNavButton > a
+.navbar .nav > li > a.clipNavButton
   color: #61d8a2
 
-.recNavButton > a
+.navbar .nav > li > a.recNavButton
   color: #ffac40
 
-.active > .clipNavButton > a,
-.active > .recNavButton > a
-  color: #ffffff
+.navButtonText
+  padding: 5px 5px
 
 .brandImage
   padding-top: 5px

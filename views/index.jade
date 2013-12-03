@@ -17,11 +17,11 @@ block nav
           // .nav, .navbar-search, .navbar-form, etc 
           ul.nav.pull-right
             li(ng-class='{active: active[0]}')
-              .buttonContainer.clipNavButton
-                a(href='#/clippings') My Clippings
+              a.buttonContainer.clipNavButton(href='#/clippings')
+                .navButtonText My Clippings
             li(ng-class='{active: active[1]}')
-              .buttonContainer.recNavButton
-                a(href='#/recommendations') Recommendations
+              a.buttonContainer.recNavButton(href='#/recommendations')
+                .navButtonText Recommendations
 
 block content
   .container(ng-view='')
