@@ -227,7 +227,7 @@ Recommendation = caracolPG.Model.extend({
   clipping: function() {
     return this.belongsTo(Clipping);
   }
-})
+});
 
 Users = caracolPG.Collection.extend({
   model: User
