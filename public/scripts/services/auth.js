@@ -14,6 +14,7 @@ angular.module('caracolApp.services')
         d.resolve(data);
       })
       .error(function(error, status) {
+        console.log('login error', error);
         d.reject(error);
       });
       return d.promise;
@@ -31,7 +32,7 @@ angular.module('caracolApp.services')
         d.resolve(data);
       })
       .error(function(error, status) {
-        console.log('login error');
+        console.log('login error', error);
         d.reject(error);
       });
       return d.promise;

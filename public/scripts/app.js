@@ -3,6 +3,7 @@
 angular.module('caracolApp', [
   'ngRoute',
   'ui.bootstrap',
+  'angularLocalStorage',
   'caracolApp.services',
   'caracolApp.controllers'
 ])

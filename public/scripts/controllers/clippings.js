@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('caracolApp.controllers')
-.controller('ClippingsCtrl', function($rootScope, $scope, ClippingsService, VoteService) {
+.controller('ClippingsCtrl', function($rootScope, $scope, storage, ClippingsService, VoteService) {
   $rootScope.active = [true, false];
   $scope.loadClippings = function() {
     console.log('loadClippings firing');
@@ -10,12 +10,12 @@ angular.module('caracolApp.controllers')
       $scope.clippings = ClippingsService.currentClippings;
     } else {
       console.log('need to fetch clippings from db');
+      // ClippingsService.getClippings(storage.get('clippings'+storage.get('caracolID'))[0])
       ClippingsService.getClippings()
       .then(function(clippings) {
         $scope.clippings = clippings;
       });
     }
   };
-
   $scope.loadClippings();
 });
