@@ -6,16 +6,18 @@
     <script src="client/controllers.js"></script>
     <script src="client/directives.js"></script>
     <script src="client/services.js"></script>
+    <link href="stylesheets/lib/topcoat-desktop-dark.css" rel="stylesheet"></link>
     <link href="stylesheets/bookmarklet.css" rel="stylesheet"></link>
   </head>
-  <body ng-app="app" class='main'>
-    <div>Welcome to Caracol</div>
-    <div>Your neighborhood long-form recommendation engine</div>
-    <div>:)</div>
-    <button>Bookmark</button>
-    <button>Upvote</button>
-    <button>Downvote</button>
+  <body ng-app="app" class="main">
+    <div ng-controller="VoteCtrl">
+      <div>Welcome to Caracol</div>
+      <div>Your neighborhood long-form recommendation engine</div>
+      <div>:)</div>
+      <button class="topcoat-button" ng-click="vote(1)" ng-show="!voted">Upvote</button>
+      <button class="topcoat-button" ng-click="vote(0)" ng-show="!voted">Downvote</button>
+      <button class="topcoat-button" ng-click="revert('like')" ng-show="like && voted">Successfully Upvoted</button>
+      <button class="topcoat-button" ng-click="revert('dislike')" ng-show="dislike && voted">Successfully Downvoted</button>
+    </div>
   </body>
 </html>
-
-

@@ -11,26 +11,23 @@
       x = d.selection,
       s = String(t ? t(): (k)? k(): (x ? x.createRange().text : '')),
       e = encodeURIComponent,
-    req = new XMLHttpRequest(),
+      req = new XMLHttpRequest();
    data = JSON.stringify({
     uri: l.href,
     title: d.title,
     clipping: s,
    });
+   var encodedURI = encodeURIComponent(data.uri);
   //must manually toggle for deployment
   //TODO there's gotta be a beter way
   //add a listener
 
-  // route = '//localhost:3000/uri';
-  route = '//caracol.cloudapp.net/uri';
-  console.log("party");
-  setTimeout(function(){
-    console.log("time");
-  }, 1500);
-
-  $('body').prepend('<iframe src="//caracol.cloudapp.net/script"></iframe>');
-  //do the original db query here;
-  req.open('POST', route, true);
-  req.setRequestHeader('Content-Type', 'application/JSON');
-  req.send(data);
+  // route = '//caracol.cloudapp.net/uri';
+  
+  $('body').prepend('<div class="caracolContainer" style="position:fixed;height:0px;z-index:99999"><iframe class="frame" src="//caracol.cloudapp.net/script" style="background:transparent;position:absolute; z-index:999999;left:10px;height:115px;border: 4px solid rgb(153, 30, 35);border-radius:15px;box-shadow: -2px -2px 2px 2px rgb(220,196,28);"></iframe></div>');
+  
+  ///put in angular
+  // req.open('POST', route, true);
+  // req.setRequestHeader('Content-Type', 'application/JSON');
+  // console.log(req.send(data).responseText);
 })();

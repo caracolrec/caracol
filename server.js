@@ -6,7 +6,7 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
-var parser = require('./routes/parser');
+var parser = require('./routes/parser').parser;
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
@@ -50,17 +50,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
-
+//TODO refactor into 
 app.get('/', routes.index);
-app.get('/script', function(req, res){
-  fs.readFile('./client/partials/home.html', function(error, data){
-    if (error) {
-      console.log(error);
-    } else {
-      res.end(data);
-    }
-  });
-});
 
 app.get('/script', function(req, res){
   fs.readFile('./client/partials/home.html', function(error, data){
@@ -83,29 +74,19 @@ app.get('/client/:module', function(req, res){
   });
 });
 
-//app.get('/users', user.list);
-app.get('/app/:u/:t/*', function(req, res){
-  params = {
-    url: decodeURI(req.params.u),
-    token: token
-  };
 
+app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
-  //Post MVP check to see if url data exists in db
     async.eachSeries(
-    // Pass items to iterate over
     ['./public/bower_components/jquery/jquery.min.js', './client/script.js'],
-    // Pass iterator function that is called for each item
     function(filename, cb) {
       fs.readFile(filename, function(error, data) {
         if (!error) {
           res.write(data);
         }
-        // Calling cb makes it go to the next item.
         cb(error);
       });
     },
-    // Final callback after each item has been iterated over.
     function(error) {
       res.end();
     }
@@ -119,20 +100,29 @@ app.options('/*', function(req, res){
 });
 
 app.post('/uri', function(req, res){
-  console.log('post received', req.body);
+  console.log(req.body.uri);
   params = {
-    url: req.body.uri,
+    url: decodeURIComponent(req.body.uri),
     token: token
   };
+
   res.header("Access-Control-Allow-Origin", "*");
-
-  res.end(parser.parser(params, function(response){
-    dbClient.dbInsert(response.body);
-  }));
+  async.waterfall([
+    function(callback){
+      parser(params, callback);
+      console.log('here');
+    },
+    function(response, callback){
+      console.log('about to send clipping id to client:', response);
+      dbClient.dbInsert(response, callback);
+    },
+    function(clipping_id, callback){
+      clipping_id = clipping_id.toString();
+      res.end(clipping_id);
+      callback(null);
+    }
+  ]);
 });
-//datestamp from visited bookmarklet
-//weighting upvote/downvote
-
 
 // app.post('/login', passport.authenticate('local', { successRedirect: '/',
 //                                                  failureRedirect: '/login' }));
@@ -203,8 +193,15 @@ app.get('/fetchRecommendations', function(req, res) {
 });
 
 // route for storing a vote from the user's clippings view
-
-
+app.post('/vote/:clipping_id', function(req, res) {
+  console.log(req.body);
+  params = {
+    clipping_id: clipping_id,
+    vote: req.body.vote,
+    user_id: req.body.user_id
+  };
+  res.end(dbClient.dbVote(params));
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

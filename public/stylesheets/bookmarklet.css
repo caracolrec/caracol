@@ -1,1 +1,2 @@
-.main{position:fixed;margin:0;z-index:1;background:#ffc0cb}
+.main{position:absolute;margin:auto auto;text-align:center;z-index:1;opacity:1;background:-moz-linear-gradient(top,#c5772d 0%,#c4854a 100%);background:-webkit-linear-gradient(top,#c5772d 0%,#c4854a 100%);background:-o-linear-gradient(top,#c5772d 0%,#c4854a 100%)}
+.main button{background-color:#529bbb;margin:7px 7px}

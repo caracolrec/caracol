@@ -10,15 +10,18 @@ block nav
           span.icon-bar
           span.icon-bar
         // Be sure to leave the brand out there if you want it shown 
+        a.brandImage.pull-left(href='#')
         a.brand.pull-left(href='#') caracol
         // Everything you want hidden at 940px or less, place within here 
         .nav-collapse.collapse(collapse="isCollapsed")
           // .nav, .navbar-search, .navbar-form, etc 
           ul.nav.pull-right
-            li
-              a(href='#/clippings') My Clippings
-            li
-              a(href='#/recommendations') Recommendations
+            li(ng-class='{active: active[0]}')
+              .buttonContainer.clipNavButton
+                a(href='#/clippings') My Clippings
+            li(ng-class='{active: active[1]}')
+              .buttonContainer.recNavButton
+                a(href='#/recommendations') Recommendations
 
 block content
   .container(ng-view='')
