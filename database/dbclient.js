@@ -13,7 +13,29 @@ var dateTransform = function(ISOdatetime) {
   ISOdatetime = ISOdatetime.slice(0,19);
   ISOdatetime = ISOdatetime + '+00';
   return ISOdatetime;
-}
+};
+
+exports.createUser = createUser = function(json, callback){
+  new tables.User({username: json.username})
+  .save()
+  .then(function(model){
+    console.log('whoa we saved a user', model);
+  }, function(){
+    console.log('not so fast little man');
+  });
+};
+
+exports.findUser = findUser = function(json, callback){
+  new tables.Users(json)
+  .fetch()
+  .then(function(model){
+    console.log('we found you!', model);
+  }, function(results){
+    console.log('please signup!');
+  });
+};
+
+findUser('adam');
 
 exports.dbInsert = dbInsert = function(json, callback){
   new tables.Clipping({
@@ -21,7 +43,7 @@ exports.dbInsert = dbInsert = function(json, callback){
     content: json.content,
     uri: json.url,
     word_count: json.word_count,
-    first_insert: dateTransform(new Date().toISOString());
+    first_insert: dateTransform(new Date().toISOString()),
     total_pages: json.total_pages,
     date_published: json.date_published,
     dek: json.dek,
@@ -55,7 +77,11 @@ exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisCl
 
 exports.dbVote = dbVote = function(json){
   console.log('called', json);
-  new tables.User_Clipping({})
+  new tables.User_Clipping({
+    user_id: json.user_id,
+    clipping_id: json.clipping_id,
+    vote: json.vote
+  })
   .save()
   .then(function(){
     console.log('finished saving the vote');
