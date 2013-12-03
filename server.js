@@ -53,6 +53,32 @@ if ('development' === app.get('env')) {
 //TODO refactor into 
 app.get('/', routes.index);
 
+app.post('/signup', function(req, res){
+  async.waterfall([
+    function(callback) {
+      dbClient.createUser(req.body, callback);
+    },
+    function(userInfo, callback) {
+      console.log('sending up new user_id', userInfo);
+      res.send(userInfo);
+      callback(null);
+    }
+  ]);
+});
+
+app.get('/login', function(req, res){
+  async.waterfall([
+    function(callback) {
+      dbClient.findUser(req.body, callback);
+    },
+    function(user_id, callback) {
+      console.log('sending up the user_id', user_id);
+      res.send(user_id);
+      callback(null);
+    }
+  ]);
+});
+
 app.get('/script', function(req, res){
   fs.readFile('./client/partials/home.html', function(error, data){
     if (error) {
@@ -73,7 +99,6 @@ app.get('/client/:module', function(req, res){
     }
   });
 });
-
 
 app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
@@ -206,6 +231,3 @@ app.post('/vote/:clipping_id', function(req, res) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-
-
-
