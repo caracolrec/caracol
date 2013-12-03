@@ -8,7 +8,7 @@ body{padding-top:50px}
 .clippingContent{border-bottom:1px solid #61d8a2}
 .navbar .nav > li a{text-decoration:none;text-shadow:none;font-family:'Signika Negative',sans-serif}
 .navbar .nav > .active > a,.navbar .nav > .active > a:hover,.navbar .nav > .active > a:focus{box-shadow:none}
-.navbar .brand{font-size:24px;font-family:'Signika Negative',sans-serif;padding-left:35px;text-shadow:none;color:#ff9000}
+.navbar .brand{font-size:24px;font-family:'Signika Negative',sans-serif;text-shadow:none;color:#ff9000}
 .navbar-fixed-top .navbar-inner,.navbar-static-top .navbar-inner{-webkit-box-shadow:none !important;box-shadow:none !important}
 .navbar-inner{border:none;background-image:none;background-color:#ffeed8}
 .buttonContainer:hover{border:1px solid #ff9000}
@@ -18,3 +18,4 @@ body{padding-top:50px}
 .clipNavButton > a{color:#61d8a2}
 .recNavButton > a{color:#ffac40}
 .active > .clipNavButton > a,.active > .recNavButton > a{color:#fff}
+.brandImage{padding-top:5px;padding-bottom:5px;padding-left:25px;width:50px;height:31px;background-image:url("../../images/caracol3.png");background-repeat:no-repeat;background-position:center}
