@@ -1,7 +1,7 @@
 <h1>Yes!!!!!</h1>
 <p>Welcome to Caracol</p>
 <div ng-controller="AuthCtrl" ng-show="!signedIn">
-  <form>
+  <form ng-show="!signedIn">
   Login: <input type="text" name="user" ng-model="user.signin">
     <button type="submit" value="Submit" ng-click="login()"></button>
   </form>

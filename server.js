@@ -124,6 +124,8 @@ app.get('/public/bower_components/angularLocalStorage/src/angularLocalStorage.js
   });
 });
 
+//end demo temp routes
+
 app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
     async.eachSeries(
