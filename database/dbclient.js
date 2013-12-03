@@ -19,23 +19,28 @@ exports.createUser = createUser = function(json, callback){
   new tables.User({username: json.username})
   .save()
   .then(function(model){
-    console.log('whoa we saved a user', model);
+    console.log('whoa we saved a user', model.attributes);
+    callback(null, model.attributes);
   }, function(){
     console.log('not so fast little man');
+    callback(error);
   });
 };
 
 exports.findUser = findUser = function(json, callback){
-  new tables.Users(json)
-  .fetch()
+  new tables.Users({username: json.username})
+  .query()
+  .where({username: json.username})
   .then(function(model){
-    console.log('we found you!', model);
+    console.log('we found you!', model[0]);
+    callback(null, model[0]);
   }, function(results){
     console.log('please signup!');
+    callback(error);
   });
 };
 
-findUser('adam');
+findUser({username: 'adam'});
 
 exports.dbInsert = dbInsert = function(json, callback){
   new tables.Clipping({
