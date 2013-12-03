@@ -1,5 +1,3 @@
-'use strict'
-
 angular.module('caracolApp.services')
 .factory('AuthService', ['$q', '$http', function($q, $http) {
   var service = {
@@ -7,7 +5,9 @@ angular.module('caracolApp.services')
     signup: function(username) {
       var d = $q.defer();
       $http.post('/signup', {
-        username: username
+        params: {
+          username: username
+        }
       })
       .success(function(data, status) {
         console.log('thanks for signing up buddy');
@@ -22,13 +22,16 @@ angular.module('caracolApp.services')
     login: function(username) {
       var d = $q.defer();
       $http.get('/login', {
-        username: username
+        params: {
+          username: username
+        }
       })
       .success(function(data, status) {
         console.log('thanks for logging in buddy');
         d.resolve(data);
       })
       .error(function(error, status) {
+        console.log('login error');
         d.reject(error);
       });
       return d.promise;

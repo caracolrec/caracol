@@ -40,8 +40,6 @@ exports.findUser = findUser = function(json, callback){
   });
 };
 
-findUser({username: 'adam'});
-
 exports.dbInsert = dbInsert = function(json, callback){
   new tables.Clipping({
     title: json.title,
