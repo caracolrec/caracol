@@ -3,8 +3,8 @@
 angular.module('caracolApp', [
   'ngRoute',
   'ui.bootstrap',
-  'caracolApp.controllers',
-  'caracolApp.services'
+  'caracolApp.services',
+  'caracolApp.controllers'
 ])
 .config(function ($routeProvider) {
   $routeProvider

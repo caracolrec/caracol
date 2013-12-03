@@ -54,6 +54,7 @@ if ('development' === app.get('env')) {
 app.get('/', routes.index);
 
 app.post('/signup', function(req, res){
+  console.log(req.body);
   async.waterfall([
     function(callback) {
       dbClient.createUser(req.body, callback);
@@ -67,13 +68,14 @@ app.post('/signup', function(req, res){
 });
 
 app.get('/login', function(req, res){
+  console.log(req.query.username);
   async.waterfall([
     function(callback) {
-      dbClient.findUser(req.body, callback);
+      dbClient.findUser({username: req.query.username}, callback);
     },
     function(user_id, callback) {
-      console.log('sending up the user_id', user_id);
-      res.send(user_id);
+      console.log('sending up the user_id', user_id.id);
+      res.send({user_id: user_id.id});
       callback(null);
     }
   ]);
@@ -219,7 +221,6 @@ app.get('/fetchRecommendations', function(req, res) {
 
 // route for storing a vote from the user's clippings view
 app.post('/vote/:clipping_id', function(req, res) {
-  console.log(req.body);
   params = {
     clipping_id: clipping_id,
     vote: req.body.vote,
