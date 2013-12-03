@@ -21,7 +21,7 @@ exports.dbInsert = dbInsert = function(json, callback){
     content: json.content,
     uri: json.url,
     word_count: json.word_count,
-    first_insert: dateTransform(new Date().toISOString());
+    first_insert: dateTransform(new Date().toISOString()),
     total_pages: json.total_pages,
     date_published: json.date_published,
     dek: json.dek,
