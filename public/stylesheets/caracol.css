@@ -3,7 +3,7 @@ body{padding-top:50px}
 .recRank,.clippingMeta{font-weight:bold;color:#fff}
 .recRank{background-color:#ffac40}
 .clippingMeta{background-color:#61d8a2}
-.recTitle,.clippingTitle{font-style:italic;color:#65a5d1}
+.recTitle,.clippingTitle,.recTitle > a:hover,.clippingTitle > a:hover{font-style:italic;color:#08c}
 .recContent{border-bottom:1px solid #ffac40}
 .clippingContent{border-bottom:1px solid #61d8a2}
 .navbar .nav > li a{text-decoration:none;text-shadow:none;font-family:'Signika Negative',sans-serif}
