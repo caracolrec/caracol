@@ -1,39 +1,39 @@
 body
   padding-top: 50px
 
-.rec
+.rec, .clipping
   padding-bottom: 20px
 
-.recRank
+.recRank, .clippingMeta
   font-weight: bold
   color: white
+
+.recRank
   background-color: #ffac40
 
-.recTitle
+.clippingMeta
+  background-color: #61d8a2
+
+.recTitle, .clippingTitle
   font-style: italic
   color: #65a5d1
 
 .recContent
   border-bottom: 1px solid #ffac40
 
-.clippingTitle
-  color: red
-
 .clippingContent
-  color: blue
+  border-bottom: 1px solid #61d8a2
 
 .navbar .nav > li a
   text-decoration: none
   text-shadow: none
+  font-family: 'Signika Negative', sans-serif
 
 
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
 .navbar .nav > .active > a:focus
   box-shadow: none
-
-.navbar .nav > .active > a
-  color: #ffffff
 
 .navbar .brand
   font-size: 24px;
@@ -61,18 +61,20 @@ body
   border-radius: 3px
   border: 1px solid #d4d4d4
 
-.buttonContainer.clipNavButton
-  color: #61d8a2
-
-.buttonContainer.recNavButton
-  color: #ffac40
-
 .active > .clipNavButton
   background-color: #61d8a2
-  color: #ffffff
 
 .active > .recNavButton
   background-color: #ffac40
+
+.clipNavButton > a
+  color: #61d8a2
+
+.recNavButton > a
+  color: #ffac40
+
+.active > .clipNavButton > a,
+.active > .recNavButton > a
   color: #ffffff
 
 // 0H11Tw0w0w0w0

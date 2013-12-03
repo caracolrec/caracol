@@ -12,10 +12,6 @@ angular.module('caracolApp.controllers')
       console.log('need to fetch recs from db');
       RecsService.getRecs()
       .then(function(recs) {
-        for (var i = 0; i < recs.length; i++) {
-          recs[i].clipping.content_sans_html = recs[i].clipping.content_sans_html || '';
-          recs[i].displayedExcerpt = recs[i].clipping.content_sans_html.slice(0,250) + ' ...';
-        }
         $scope.recs = recs;
       });
     }
