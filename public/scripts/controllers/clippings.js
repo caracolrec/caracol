@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('caracolApp.controllers')
-.controller('ClippingsCtrl', function($scope, ClippingsService, VoteService) {
+.controller('ClippingsCtrl', function($rootScope, $scope, ClippingsService, VoteService) {
+  $rootScope.active = [true, false];
   $scope.loadClippings = function() {
     console.log('loadClippings firing');
     if (ClippingsService.timeOfLastFetch) {

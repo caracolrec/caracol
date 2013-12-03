@@ -1,3 +1,19 @@
-body{background-color:#f00;padding-top:40px}
+body{padding-top:50px}
+.rec{padding-bottom:20px}
+.recRank{font-weight:bold;color:#fff;background-color:#ffac40}
+.recTitle{font-style:italic;color:#65a5d1}
+.recContent{border-bottom:1px solid #ffac40}
 .clippingTitle{color:#f00}
 .clippingContent{color:#00f}
+.navbar .nav > li a{text-decoration:none;text-shadow:none}
+.navbar .nav > .active > a,.navbar .nav > .active > a:hover,.navbar .nav > .active > a:focus{box-shadow:none}
+.navbar .nav > .active > a{color:#fff}
+.navbar .brand{font-size:24px;font-family:'Signika Negative',sans-serif;padding-left:35px;text-shadow:none;color:#ff9000}
+.navbar-fixed-top .navbar-inner,.navbar-static-top .navbar-inner{-webkit-box-shadow:none !important;box-shadow:none !important}
+.navbar-inner{border:none;background-image:none;background-color:#ffeed8}
+.buttonContainer:hover{border:1px solid #ff9000}
+.buttonContainer{margin:5px;padding:4px;background-color:#fff;border-radius:3px;border:1px solid #d4d4d4}
+.buttonContainer.clipNavButton{color:#61d8a2}
+.buttonContainer.recNavButton{color:#ffac40}
+.active > .clipNavButton{background-color:#61d8a2;color:#fff}
+.active > .recNavButton{background-color:#ffac40;color:#fff}
