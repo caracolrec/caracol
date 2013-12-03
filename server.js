@@ -100,15 +100,27 @@ app.options('/*', function(req, res){
 });
 
 app.post('/uri', function(req, res){
+  console.log(req.body.uri);
   params = {
-    url: req.body.uri,
+    url: decodeURIComponent(req.body.uri),
     token: token
   };
-  res.header("Access-Control-Allow-Origin", "*");
 
-  res.end(parser(params, function(response){
-    dbClient.dbInsert(response.body);
-  }));
+  res.header("Access-Control-Allow-Origin", "*");
+  async.waterfall([
+    function(callback){
+      parser(params);
+    },
+    function(response, callback){
+      console.log('about to send clipping id to client:', response);
+      dbClient.dbInsert(response, callback);
+    },
+    function(clipping_id, callback){
+      console.log('sent clipping as response');
+      res.send(clipping_id);
+      callback(null);
+    }
+  ]);
 });
 
 // app.post('/login', passport.authenticate('local', { successRedirect: '/',
@@ -180,14 +192,12 @@ app.get('/fetchRecommendations', function(req, res) {
 });
 
 // route for storing a vote from the user's clippings view
-app.post('/vote', function(req, res) {
+app.post('/vote/:clipping_id', function(req, res) {
   console.log(req.body);
   params = {
-    // clipping_id: req.body.clipping_id,
-    vote: req.body.vote
-    // bookmarkStatus: req.body.bookmarkStatus,
-    // lastBookmarkTime: req.body.lastBookmarkTime,
-    // lastVoteTime: req.body.lastVoteTime
+    clipping_id: clipping_id,
+    vote: req.body.vote,
+    user_id: req.body.user_id
   };
   res.end(dbClient.dbVote(params));
 });

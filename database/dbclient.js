@@ -7,16 +7,17 @@ var tables = require('./dbschemas.js');
 var algorithm = require('../controllers/algorithm.js');
 var _ = require('underscore');
 
-exports.dbInsert = dbInsert = function(json){
+exports.dbInsert = dbInsert = function(json, callback){
   new tables.Clipping({title: json.title, content: json.content, uri: json.url, word_count: json.word_count})
   .save()
   .then(function(model) {
     console.log('finished saving the clipping');
+    callback(null, model.id);
     algorithm.removeHTMLAndTokenize(model.id);
   }, function(){
     console.log('Error saving the clipping');
+    callback(error);
   });
-
 };
 
 exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisClippingId, callback) {
