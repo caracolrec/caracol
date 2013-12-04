@@ -20,7 +20,8 @@
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
     "mocha": "~1.9.0",
-    "underscore": "*"
+    "underscore": "*",
+    "should": "~2.1.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
