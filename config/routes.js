@@ -1,10 +1,79 @@
 module.exports = function(app, passport, auth) {
+
+  /* -------------start of prefab MEAN routes-------------*/
     //User Routes
     var users = require('../controllers/users');
     app.get('/signin', users.signin);
     app.get('/signup', users.signup);
     app.get('/signout', users.signout);
+  /* -------------end of prefab MEAN routes-------------*/
 
+    //home rolled User routes
+    //TODO: refactor to utilize MEAN routing & functions
+    var async = require('async');
+
+    app.post('/signup', function(req, res){
+      console.log(req.body);
+      async.waterfall([
+        function(callback) {
+          dbClient.createUser(req.body, callback);
+        },
+        function(userInfo, callback) {
+          console.log('sending up new user_id', userInfo);
+          res.send(userInfo);
+          callback(null);
+        }
+      ]);
+    });
+
+    app.get('/login', function(req, res){
+      console.log(req.query.username);
+      async.waterfall([
+        function(callback) {
+          dbClient.findUser({username: req.query.username}, callback);
+        },
+        function(user_id, callback) {
+          res.send({user_id: user_id.id});
+          callback(null);
+        }
+      ]);
+    });
+
+      //following three are temp for demo
+      //TODO: Refactor somehow.
+
+      app.get('/public/bower_components/angular-cookies/angular-cookies.min.js', function(req, res){
+        fs.readFile('./public/bower_components/angular-cookies/angular-cookies.min.js', function(error, data){
+          if (error){
+            console.log(error);
+          } else {
+            res.end(data);
+          }
+        });
+      });
+
+      app.get('/public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(req, res){
+        fs.readFile('./public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(error, data){
+          if (error){
+            console.log(error);
+          } else {
+            res.end(data);
+          }
+        });
+      });
+
+      app.get('/public/bower_components/underscore/underscore-min.js', function(req, res){
+        fs.readFile('./public/bower_components/underscore/underscore-min.js', function(error, data){
+          if (error){
+            console.log(error);
+          } else {
+            res.end(data);
+          }
+        });
+      });
+
+      //end demo temp routes
+  /* -------------start of prefab MEAN routes-------------*/
     //Setting up the users api
     app.post('/users', users.create);
 
@@ -28,6 +97,7 @@ module.exports = function(app, passport, auth) {
 
     // //Finish with setting up the articleId param
     // app.param('articleId', articles.article);
+  /* -------------end of prefab MEAN routes-------------*/
 
     //Inject script onto current page
     var fs = require('fs');
@@ -54,7 +124,6 @@ module.exports = function(app, passport, auth) {
     });
 
     //
-    var async = require('async');
     app.get('/app/:url/:t/*', function(req, res){
       console.log('requesting app');
         async.eachSeries(
@@ -72,6 +141,7 @@ module.exports = function(app, passport, auth) {
         }
       );
     });
+
     //CORS preflight path
     app.options('/*', function(req, res){
       res.header('Access-Control-Allow-Origin', '*');
