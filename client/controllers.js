@@ -1,5 +1,5 @@
 var controllers = angular.module('app.controllers', []);
-controllers.controller('VoteCtrl', function($scope, VoteService){
+controllers.controller('VoteCtrl', function($scope, VoteService, storage){
   $scope.voted = false;
 
   $scope.log = function(vote){
@@ -8,9 +8,18 @@ controllers.controller('VoteCtrl', function($scope, VoteService){
 
   $scope.vote = function(vote){
     //grabs uri and vote status
-    var user_id = 0;
+    var clipping_id;
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
-    VoteService.vote(user_id, vote, $scope.clipping_id.toNumber()); //--> will add when the db is more open-minded and willing to accept our users' preferences
+    var user_id = storage.get('caracolID');
+    var clippings = storage.get('clippings' + user_id);
+    for (var i=0; i<clippings.length; i++){
+      if (clippings[i].url === url){
+        clipping_id = clippings[i].clipping_id;
+        console.log(clipping_id);
+      }
+    }
+
+    VoteService.vote(user_id, vote, clipping_id);
     $scope.log(vote);
     $scope.voted = true;
   };
