@@ -121,7 +121,6 @@ Clipping = caracolPG.Model.extend({
   }
 });
 
-
 JournalEntry = caracolPG.Model.extend({
   
   tableName: 'journal_entries',
@@ -246,6 +245,7 @@ module.exports = {
   Users: Users,
   Clipping: Clipping,
   Clippings: Clippings,
+  User_Clipping: User_Clipping,
   Recommendation: Recommendation,
   Recommendations: Recommendations
 };

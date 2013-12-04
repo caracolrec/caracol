@@ -40,7 +40,9 @@ exports.findUser = findUser = function(json, callback){
   });
 };
 
-exports.dbInsert = dbInsert = function(json, callback){
+exports.dbInsert = dbInsert = function(json, user_id, callback){
+  //prevent duplicate clippings
+  //duplicte scanning
   new tables.Clipping({
     title: json.title,
     content: json.content,
@@ -57,11 +59,25 @@ exports.dbInsert = dbInsert = function(json, callback){
   .save()
   .then(function(model) {
     console.log('finished saving the clipping');
-    callback(null, model.id);
+    insertUserClipping(user_id, model.id, callback);
     algorithm.removeHTMLAndTokenize(model.id);
   }, function(){
     console.log('Error saving the clipping');
     callback(error);
+  });
+};
+
+var insertUserClipping = function(user_id, clipping_id, callback){
+  new tables.User_Clipping({
+    user_id: user_id,
+    clipping_id: clipping_id
+  })
+  .save()
+  .then(function(model){
+    console.log('success to the user clipping table', model.attributes);
+    callback(null, model.attributes.clipping_id);
+  }, function(){
+    console.log('error adding to user_clippings');
   });
 };
 
@@ -82,17 +98,21 @@ exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisCl
 };
 
 exports.dbVote = dbVote = function(json){
+  //update query update user clippings set vote where user clipping ==
   console.log('called', json);
-  new tables.User_Clipping({
-    user_id: json.user_id,
-    clipping_id: json.clipping_id,
-    vote: json.vote
-  })
-  .save()
-  .then(function(){
-    console.log('finished saving the vote');
+  new tables.User_Clipping()
+  .query()
+  .where({user_id: json.user_id, clipping_id: json.clipping_id})
+  .then(function(model){
+    console.log(model[0].id);
+    new tables.User_Clipping({id: model[0].id})
+    .save({vote: json.vote}).then(function(model){
+      console.log('look what i did ma', model);
+    }, function(){
+      console.log('error saving to userclipping id');
+    });
   }, function(){
-    console.log('there was an error saving the vote');
+    console.log('welcome ot the danger zone');
   });
 };
 

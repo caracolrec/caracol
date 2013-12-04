@@ -8,7 +8,6 @@ exports.parser = function(params, callback){
       if(error){
         console.log('parser request error ', error);
       } else {
-        console.log(response.body);
         callback(null, response.body);
       }
     });

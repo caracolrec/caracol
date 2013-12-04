@@ -103,7 +103,7 @@ app.get('/client/:module', function(req, res){
   });
 });
 
-//following two are temp for demo
+//following three are temp for demo
 
 app.get('/public/bower_components/angular-cookies/angular-cookies.min.js', function(req, res){
   fs.readFile('./public/bower_components/angular-cookies/angular-cookies.min.js', function(error, data){
@@ -124,6 +124,18 @@ app.get('/public/bower_components/angularLocalStorage/src/angularLocalStorage.js
     }
   });
 });
+
+app.get('/public/bower_components/underscore/underscore-min.js', function(req, res){
+  fs.readFile('./public/bower_components/underscore/underscore-min.js', function(error, data){
+    if (error){
+      console.log(error);
+    } else {
+      res.end(data);
+    }
+  });
+});
+
+//end demo temp routes
 
 app.get('/app/:url/:t/*', function(req, res){
   console.log('requesting app');
@@ -154,7 +166,7 @@ app.post('/uri', function(req, res){
     url: decodeURIComponent(req.body.uri),
     token: token
   };
-
+  var user_id = req.body.user_id;
   res.header("Access-Control-Allow-Origin", "*");
   async.waterfall([
     function(callback){
@@ -162,10 +174,11 @@ app.post('/uri', function(req, res){
     },
     function(response, callback){
       response.url = params.url;
-      dbClient.dbInsert(response, callback);
+      dbClient.dbInsert(response, user_id, callback);
     },
     function(clipping_id, callback){
       clipping_id = clipping_id.toString();
+      console.log('clipping id', clipping_id);
       res.end(clipping_id);
       callback(null);
     }
@@ -209,7 +222,7 @@ app.get('/fetchRecommendations', function(req, res) {
 // route for storing a vote from the user's clippings view
 app.post('/vote/:clipping_id', function(req, res) {
   params = {
-    clipping_id: clipping_id,
+    clipping_id: req.params.clipping_id,
     vote: req.body.vote,
     user_id: req.body.user_id
   };

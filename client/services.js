@@ -19,11 +19,12 @@ services.factory('VoteService', function($q, $http) {
   return service;
 }).factory('UploadService', function($q, $http){
   var service = {
-    sendToURI: function(uri){
+    sendToURI: function(uri, user_id){
       console.log(uri);
       var d = $q.defer();
       $http.post('/uri', {
-        uri: uri
+        uri: uri,
+        user_id: user_id
       }).success(function(data){
         d.resolve(data);
       }).error(function(data){

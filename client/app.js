@@ -9,20 +9,20 @@ var app = angular.module('app', ['angularLocalStorage',
 app.run(function($q, $http, $rootScope, UploadService,storage){
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
   var uri = encodeURIComponent(url);
-  console.log('ok');
-  UploadService.sendToURI(uri)
+  var user_id = storage.get('caracolID');
+
+  UploadService.sendToURI(uri, user_id)
   .then(function(data){
 
     //sets up local storage id
-    var userID = storage.get('caracolID');
-    if (!storage.get('clippings'+userID)){
-      storage.set('clippings'+userID, [data]);
+    if (!storage.get('clippings'+user_id)){
+      storage.set('clippings'+user_id, [data]);
     } else {
-      var clippingsArr = storage.get('clippings'+userID);
-      clippingsArr.push(data);
-      storage.set('clippings'+userID, clippingsArr);
+      var clippingsArr = storage.get('clippings'+user_id);
+      var url = (window.location !== window.parent.location) ? document.referrer: document.location;
+      clippingsArr.push({url: url, clipping_id: Number(data)});
+      storage.set('clippings'+user_id, clippingsArr);
     }
-    console.log('clipping ids from storage', storage.get('clippings'+userID));
-    $rootScope.clipping_id = data;
+    console.log('clipping ids from storage', storage.get('clippings'+user_id));
   });
 });
