@@ -67,6 +67,7 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   });
 };
 
+<<<<<<< HEAD
 var insertUserClipping = function(user_id, clipping_id, callback){
   new tables.User_Clipping({
     user_id: user_id,
@@ -82,17 +83,21 @@ var insertUserClipping = function(user_id, clipping_id, callback){
 };
 
 exports.fetchClippings = fetchClippings = function(user_id, fetchClippingsOlderThanThisClippingId, callback) {
+=======
+exports.fetchClippings = fetchClippings = function(user_id, fetchClippingsOlderThanThisClippingId, batchSize, callback) {
+>>>>>>> pagination works for clippings, buttons disabled as appropriate
   console.log('fetchClippingsOlderThanThisClippingId:',fetchClippingsOlderThanThisClippingId);
+  console.log('batchSize is:', batchSize);
   var user_clippings = new tables.User_Clippings({comparator: function(model) {
       return -1 * model.id; // sort so that most recent clippings displayed first
     }
-  })
-  if (fetchClippingsOlderThanThisClippingId === null) {
+  });
+  if (fetchClippingsOlderThanThisClippingId === 0) {
     user_clippings
     .query(function(qb) {
       qb
       .orderBy('id', 'desc')
-      .limit(10);
+      .limit(batchSize);
       // once user_id is working, add .where('user_id', '=', '*').andWhere
     })
     .fetch({ withRelated: ['clipping'] })
@@ -110,7 +115,7 @@ exports.fetchClippings = fetchClippings = function(user_id, fetchClippingsOlderT
       qb
       .where('id', '<', fetchClippingsOlderThanThisClippingId)
       .orderBy('id', 'desc')
-      .limit(10);
+      .limit(batchSize);
       // once user_id is working, add .where('user_id', '=', '*').andWhere
     })
     .fetch({ withRelated: ['clipping'] })

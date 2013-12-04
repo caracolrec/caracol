@@ -6,6 +6,6 @@
   </div>
 </div>
 <ul class="pager">
-  <li><a href="" ng-click="loadClippings(page-1)">Previous</a></li>
-  <li><a href="" ng-click="loadClippings(page+1)">Next</a></li>
+  <li ng-class="{disabled: prevDisabled}" ng-click="prevDisabled || loadClippings(page-1)" ng-disabled="{{prevDisabled}}"><a href="">Previous</a></li>
+  <li ng-class="{disabled: nextDisabled}" ng-click="nextDisabled || loadClippings(page+1)" ng-disabled="{{nextDisabled}}"><a href="">Next</a></li>
 </ul>
