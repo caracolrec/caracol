@@ -206,16 +206,21 @@ app.get('/fetchMyClippings', function(req, res) {
 
 // route for loading recommendations for a user
 app.get('/fetchRecommendations', function(req, res) {
-  async.waterfall([
-    function(callback) {
-      dbClient.fetchRecommendations(callback);
-    },
-    function(recs, callback) {
-      console.log('about to send recs back to client:', recs);
-      res.send(recs);
-      callback(null);
-    }
-  ]);
+  if (!req.query.user_id) {
+    res.send(400, 'Poorly formed request; needs a user id')
+  // should also add handling for when user is not authorized --> respond with 401
+  } else {
+    async.waterfall([
+      function(callback) {
+        dbClient.fetchRecommendations(req.query.user_id, callback);
+      },
+      function(recs, callback) {
+        console.log('about to send recs back to client:', recs);
+        res.send(recs);
+        callback(null);
+      }
+    ]);
+  }
 });
 
 //TODO failing server side

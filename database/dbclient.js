@@ -81,13 +81,11 @@ var insertUserClipping = function(user_id, clipping_id, callback){
   });
 };
 
-exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisClippingId, callback) {
+exports.fetchClippings = fetchClippings = function(user_id, fetchClippingsOlderThanThisClippingId, callback) {
   // not actually making use of fetchClippingsOlderThanThisClippingId yet
-  new tables.Clippings({id: fetchClippingsOlderThanThisClippingId})
-  // below is for local storage solution
-  // .query()
-  // .where({id: fetchClippingsOlderThanThisClippingId})
-  .fetch()
+  new tables.User_Clippings()
+  .query('where', 'user_id', '=', user_id)
+  .fetch({ withRelated: ['clipping'] })
   .then(function(results) {
     console.log('successfully grabbed clippings from the db:', results);
     callback(null, results);
