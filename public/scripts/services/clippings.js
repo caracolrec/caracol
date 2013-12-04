@@ -3,13 +3,17 @@ angular.module('caracolApp.services')
   var service = {
     // store oauth token in here
     timeOfLastFetch: null,
+    maxPage: 0,
     currentClippings: [],
     oldestClippingId: 0,
     getClippings: function(oldestClippingId) {
-      oldestClippingId = oldestClippingId || null;
+      oldestClippingId = oldestClippingId || 0;
       var d = $q.defer();
       $http.get('/fetchMyClippings', {
-        params: {oldestClippingId: oldestClippingId}
+        params: {
+          user_id: 1, // change this later
+          oldestClippingId: oldestClippingId
+        }
       })
       .success(function(data, status) {
         service.timeOfLastFetch = new Date().getTime();
@@ -24,6 +28,7 @@ angular.module('caracolApp.services')
         service.currentClippings = service.currentClippings.concat(data);
         service.oldestClippingId = service.currentClippings[service.currentClippings.length - 1].id;
         console.log('oldestClippingId after getting batch of clippings is:', service.oldestClippingId);
+        service.maxPage += 1;
         d.resolve(service.currentClippings);
       })
       .error(function(reason, status) {

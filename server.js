@@ -188,31 +188,41 @@ app.post('/uri', function(req, res){
 // route for loading user's clippings
 app.get('/fetchMyClippings', function(req, res) {
   var oldestClippingId;
-  console.log('typeof oldestClippingId:', typeof req.query.oldestClippingId);
-  if (req.query.oldestClippingId !== 'null') {
+  if (req.query.oldestClippingId !== '0') {
     oldestClippingId = req.query.oldestClippingId;
+  } else {
+    oldestClippingId = null;
   }
-  async.waterfall([
-    function(callback) {
-      dbClient.fetchClippings(oldestClippingId, callback);
-    },
-    function(clippings, callback) {
-      console.log('about to send clippings back to client');
-      res.send(clippings);
-      callback(null);
-    }
-  ]);
-});
-
-// route for loading recommendations for a user
-app.get('/fetchRecommendations', function(req, res) {
   if (!req.query.user_id) {
     res.send(400, 'Poorly formed request; needs a user id')
   // should also add handling for when user is not authorized --> respond with 401
   } else {
     async.waterfall([
       function(callback) {
-        dbClient.fetchRecommendations(req.query.user_id, callback);
+        dbClient.fetchClippings(req.query.user_id, oldestClippingId, callback);
+      },
+      function(clippings, callback) {
+        console.log('about to send clippings back to client');
+        res.send(clippings);
+        callback(null);
+      }
+    ]);
+  }
+});
+
+// route for loading recommendations for a user
+app.get('/fetchRecommendations', function(req, res) {
+  var oldestRecId;
+  if (req.query.oldestRecId !== 'null') {
+    oldestRecId = req.query.oldestRecId;
+  }
+  if (!req.query.user_id) {
+    res.send(400, 'Poorly formed request; needs a user id')
+  // should also add handling for when user is not authorized --> respond with 401
+  } else {
+    async.waterfall([
+      function(callback) {
+        dbClient.fetchRecommendations(req.query.user_id, oldestRecId, callback);
       },
       function(recs, callback) {
         console.log('about to send recs back to client:', recs);

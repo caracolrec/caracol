@@ -3,17 +3,19 @@
 angular.module('caracolApp.controllers')
 .controller('ClippingsCtrl', function($rootScope, $scope, storage, ClippingsService, VoteService) {
   $rootScope.active = [true, false];
-  $scope.loadClippings = function() {
+  $scope.loadClippings = function(page) {
     console.log('loadClippings firing');
-    if (ClippingsService.timeOfLastFetch) {
+    $scope.page = page || 1;
+    if (ClippingsService.timeOfLastFetch && $scope.page <= ClippingsService.maxPage) {
       console.log('using already loaded clippings');
-      $scope.clippings = ClippingsService.currentClippings;
+      $scope.clippings = ClippingsService.currentClippings.slice(($scope.page - 1) * 10, $scope.page * 10);
+      window.scrollTo(0);
     } else {
       console.log('need to fetch clippings from db');
-      // ClippingsService.getClippings(storage.get('clippings'+storage.get('caracolID'))[0])
-      ClippingsService.getClippings()
+      ClippingsService.getClippings(ClippingsService.oldestClippingId)
       .then(function(clippings) {
-        $scope.clippings = clippings;
+        $scope.clippings = clippings.slice(($scope.page - 1) * 10, $scope.page * 10);
+        window.scrollTo(0);
       });
     }
   };

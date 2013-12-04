@@ -192,6 +192,9 @@ User_Clipping = caracolPG.Model.extend({
     //need to do this for various fields? do this in validate:
     //this.set('title', this.sanitize('title').trim());
   },
+  clipping: function() {
+    return this.belongsTo(Clipping);
+  }
 
 });
 
@@ -240,6 +243,10 @@ Recommendations = caracolPG.Collection.extend({
   model: Recommendation
 });
 
+User_Clippings = caracolPG.Collection.extend({
+  model: User_Clipping
+});
+
 module.exports = {
   User: User,
   Users: Users,
@@ -247,7 +254,8 @@ module.exports = {
   Clippings: Clippings,
   User_Clipping: User_Clipping,
   Recommendation: Recommendation,
-  Recommendations: Recommendations
+  Recommendations: Recommendations,
+  User_Clippings: User_Clippings
 };
 
 // module.exports.Forum = caracolPG.Model.extend({

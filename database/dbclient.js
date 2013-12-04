@@ -82,17 +82,46 @@ var insertUserClipping = function(user_id, clipping_id, callback){
 };
 
 exports.fetchClippings = fetchClippings = function(user_id, fetchClippingsOlderThanThisClippingId, callback) {
-  // not actually making use of fetchClippingsOlderThanThisClippingId yet
-  new tables.User_Clippings()
-  .query('where', 'user_id', '=', user_id)
-  .fetch({ withRelated: ['clipping'] })
-  .then(function(results) {
-    console.log('successfully grabbed clippings from the db:', results);
-    callback(null, results);
-  }, function(error) {
-    console.log('there was an error fetching clippings from the db:', error);
-    callback(error);
-  });
+  console.log('fetchClippingsOlderThanThisClippingId:',fetchClippingsOlderThanThisClippingId);
+  var user_clippings = new tables.User_Clippings({comparator: function(model) {
+      return -1 * model.id; // sort so that most recent clippings displayed first
+    }
+  })
+  if (fetchClippingsOlderThanThisClippingId === null) {
+    user_clippings
+    .query(function(qb) {
+      qb
+      .orderBy('id', 'desc')
+      .limit(10);
+      // once user_id is working, add .where('user_id', '=', '*').andWhere
+    })
+    .fetch({ withRelated: ['clipping'] })
+    .then(function(results) {
+      console.log('successfully grabbed clippings from the db:', results);
+      callback(null, results);
+    }, function(error) {
+      console.log('there was an error fetching clippings from the db:', error);
+      callback(error);
+    });
+    // once user_id is working, add .query(function(qb){qb.where('user_id', '=', user_id)})
+  } else {
+    user_clippings
+    .query(function(qb) {
+      qb
+      .where('id', '<', fetchClippingsOlderThanThisClippingId)
+      .orderBy('id', 'desc')
+      .limit(10);
+      // once user_id is working, add .where('user_id', '=', '*').andWhere
+    })
+    .fetch({ withRelated: ['clipping'] })
+    .then(function(results) {
+      console.log('successfully grabbed clippings from the db:', results);
+      callback(null, results);
+    }, function(error) {
+      console.log('there was an error fetching clippings from the db:', error);
+      callback(error);
+    });
+  }
 };
 
 exports.dbVote = dbVote = function(json){
@@ -114,8 +143,12 @@ exports.dbVote = dbVote = function(json){
   });
 };
 
-exports.fetchRecommendations = fetchRecommendations = function(callback) {
-  new tables.Recommendations()
+exports.fetchRecommendations = fetchRecommendations = function(user_id, fetchRecsRankedWorseThanThisRank,callback) {
+  new tables.Recommendations({comparator: 'rank'})
+  .query(function(qb) {
+    qb.where('user_id', '=', '*').andWhere('rank', '>', fetchRecsRankedWorseThanThisRank);
+    // once user_id is working, add .where('user_id', '=', '*').andW
+  })
   .fetch({ withRelated: ['clipping'] })
   .then(function(results) {
     console.log('results of db query look like:',results);
