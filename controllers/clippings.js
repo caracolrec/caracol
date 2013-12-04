@@ -9,10 +9,10 @@
  * Find clipping by id
  */
 exports.clipping = function(req, res, next, id) {
-    Clipping.load(id, function(err, article) {
+    Clipping.load(id, function(err, clipping) {
         if (err) return next(err);
-        if (!article) return next(new Error('Failed to load article ' + id));
-        req.article = article;
+        if (!clipping) return next(new Error('Failed to load clipping ' + id));
+        req.clipping = clipping;
         next();
     });
 };
