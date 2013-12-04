@@ -11,8 +11,6 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage){
     var clipping_id, url = (window.location !== window.parent.location) ? document.referrer: document.location;
     var user_id = storage.get('caracolID');
     var clippings = storage.get('clippings' + user_id);
-    console.log('clippings', clippings);
-    console.log(url);
     for (var i=0; i<clippings.length; i++){
       if (clippings[i].url === url){
         clipping_id = clippings[i].clipping_id;
@@ -20,8 +18,7 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage){
       }
     }
 
-    console.log(user_id, vote, clipping_id);
-    VoteService.vote(user_id, vote, clipping_id); //--> will add when the db is more open-minded and willing to accept our users' preferences
+    VoteService.vote(user_id, vote, clipping_id);
     $scope.log(vote);
     $scope.voted = true;
   };
