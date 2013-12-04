@@ -15,47 +15,6 @@ module.exports = function(app, passport, auth) {
 
     app.get('/users/me', users.me);
 
-    // //Setting the facebook oauth routes
-    // app.get('/auth/facebook', passport.authenticate('facebook', {
-    //     scope: ['email', 'user_about_me'],
-    //     failureRedirect: '/signin'
-    // }), users.signin);
-
-    // app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    //     failureRedirect: '/signin'
-    // }), users.authCallback);
-
-    // //Setting the github oauth routes
-    // app.get('/auth/github', passport.authenticate('github', {
-    //     failureRedirect: '/signin'
-    // }), users.signin);
-
-    // app.get('/auth/github/callback', passport.authenticate('github', {
-    //     failureRedirect: '/signin'
-    // }), users.authCallback);
-
-    // //Setting the twitter oauth routes
-    // app.get('/auth/twitter', passport.authenticate('twitter', {
-    //     failureRedirect: '/signin'
-    // }), users.signin);
-
-    // app.get('/auth/twitter/callback', passport.authenticate('twitter', {
-    //     failureRedirect: '/signin'
-    // }), users.authCallback);
-
-    // //Setting the google oauth routes
-    // app.get('/auth/google', passport.authenticate('google', {
-    //     failureRedirect: '/signin',
-    //     scope: [
-    //         'https://www.googleapis.com/auth/userinfo.profile',
-    //         'https://www.googleapis.com/auth/userinfo.email'
-    //     ]
-    // }), users.signin);
-
-    // app.get('/auth/google/callback', passport.authenticate('google', {
-    //     failureRedirect: '/signin'
-    // }), users.authCallback);
-
     //Finish with setting up the userId param
     app.param('userId', users.user);
 
@@ -71,7 +30,7 @@ module.exports = function(app, passport, auth) {
     // app.param('articleId', articles.article);
     var fs = require('fs');
     app.get('/script', function(req, res){
-      fs.readFile('../client/partials/home.html', function(error, data){
+      fs.readFile('./client/partials/home.html', function(error, data){
         if (error) {
         console.log(error);
         } else {
@@ -82,7 +41,7 @@ module.exports = function(app, passport, auth) {
 
     app.get('/client/:module', function(req, res){
       var module = req.params.module;
-      fs.readFile('../client/' + module, function(error, data){
+      fs.readFile('./client/' + module, function(error, data){
         if (error){
           console.log(error);
         } else {
@@ -95,7 +54,7 @@ module.exports = function(app, passport, auth) {
     app.get('/app/:url/:t/*', function(req, res){
       console.log('requesting app');
         async.eachSeries(
-        ['../public/bower_components/jquery/jquery.min.js', '../client/script.js'],
+        ['./public/bower_components/jquery/jquery.min.js', './client/script.js'],
         function(filename, cb) {
           fs.readFile(filename, function(error, data) {
             if (!error) {
