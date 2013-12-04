@@ -28,6 +28,8 @@ module.exports = function(app, passport, auth) {
 
     // //Finish with setting up the articleId param
     // app.param('articleId', articles.article);
+
+    //Inject script onto current page
     var fs = require('fs');
     app.get('/script', function(req, res){
       fs.readFile('./client/partials/home.html', function(error, data){
@@ -39,6 +41,7 @@ module.exports = function(app, passport, auth) {
       });
     });
 
+    //loads controllers, directives, scripts, and services for bookmarklet
     app.get('/client/:module', function(req, res){
       var module = req.params.module;
       fs.readFile('./client/' + module, function(error, data){
@@ -50,6 +53,7 @@ module.exports = function(app, passport, auth) {
       });
     });
 
+    //
     var async = require('async');
     app.get('/app/:url/:t/*', function(req, res){
       console.log('requesting app');
