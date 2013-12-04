@@ -41,8 +41,8 @@ exports.findUser = findUser = function(json, callback){
 };
 
 exports.dbInsert = dbInsert = function(json, user_id, callback){
-  //prevent duplicate clippings
-  //duplicte scanning
+  //TODO prevent duplicate clippings by
+  //periodically scanning for duplictes in database
   new tables.Clipping({
     title: json.title,
     content: json.content,

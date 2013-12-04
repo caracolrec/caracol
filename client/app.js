@@ -13,13 +13,17 @@ app.run(function($q, $http, $rootScope, UploadService,storage){
 
   UploadService.sendToURI(uri, user_id)
   .then(function(data){
-
-    //sets up local storage id
+    
+    //this grabs the bookmarklets parent url
+    var url = (window.location !== window.parent.location) ? document.referrer: document.location;
+    
+    //sets up local storage clippings id
+    //TODO: change to object {'clippings': {user_id.toString(): {url: url, clipping_id: Number(data)}}}
     if (!storage.get('clippings'+user_id)){
-      storage.set('clippings'+user_id, [data]);
+      storage.set('clippings'+user_id, [{url: url, clipping_id: Number(data)}]);
     } else {
       var clippingsArr = storage.get('clippings'+user_id);
-      var url = (window.location !== window.parent.location) ? document.referrer: document.location;
+      
       clippingsArr.push({url: url, clipping_id: Number(data)});
       storage.set('clippings'+user_id, clippingsArr);
     }
