@@ -39,8 +39,6 @@ exports.createUser = createUser = function(json, callback){
   });
 };
 
-// createUser({username: 'virginia', password: 'turkey'});
-
 exports.findUser = findUser = function(json, callback){
   new tables.Users({username: json.username})
   .query()
@@ -79,9 +77,9 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   })
   .save()
   .then(function(model) {
-    console.log('HAHHHAAA', model.attributes.id, user_id);
+    console.log('HAHHHAAA', model.id, user_id);
     console.log('finished saving the clipping');
-    insertUserClipping(user_id, model.attributes.id, callback);
+    insertUserClipping(user_id, model.id, callback);
     algorithm.removeHTMLAndTokenize(model.attributes.id);
   }, function(){
     console.log('Error saving the clipping');
@@ -125,7 +123,7 @@ var insertUserClipping = function(user_id, clipping_id, callback){
   })
   .save()
   .then(function(model){
-    console.log('success to the user clipping table', model.attributes);
+    console.log('success to the user clipping table:', model.attributes);
     callback(null, model.attributes.clipping_id);
   }, function(error){
     console.log('error adding to user_clippings', error);

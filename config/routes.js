@@ -41,40 +41,40 @@ module.exports = function(app, passport, auth) {
       ]);
     });
 
-      //following three are temp for demo
-      //TODO: Refactor somehow.
+    //loads all dependencies and app for bookmarklet
+    app.get('/bookmarklet/dependencies', function(req, res){
+      async.eachSeries(
+        ['./public/bower_components/angular-cookies/angular-cookies.min.js',
+         './public/bower_components/angularLocalStorage/src/angularLocalStorage.js',
+         './public/bower_components/underscore/underscore-min.js',
+         './dist/bookmarklet/bookMarkletApp.js'],
+        function(filename, cb) {
+          console.log('well these are good');
+          fs.readFile(filename, function(error, data) {
+            if (!error) {
+              res.write(data);
+            }
+            cb(error);
+          });
+        },
+        function(error) {
+          res.end();
+        }
+      );
+    });
 
-      app.get('/public/bower_components/angular-cookies/angular-cookies.min.js', function(req, res){
-        fs.readFile('./public/bower_components/angular-cookies/angular-cookies.min.js', function(error, data){
-          if (error){
-            console.log(error);
-          } else {
-            res.end(data);
-          }
-        });
+    //loads css for bookmarklet
+    app.get('/dist/bookmarklet/caracol.css', function(req, res){
+      var module = req.params.module;
+      fs.readFile('./dist/bookmarklet/caracol.css', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
       });
+    });
 
-      app.get('/public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(req, res){
-        fs.readFile('./public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(error, data){
-          if (error){
-            console.log(error);
-          } else {
-            res.end(data);
-          }
-        });
-      });
-
-      app.get('/public/bower_components/underscore/underscore-min.js', function(req, res){
-        fs.readFile('./public/bower_components/underscore/underscore-min.js', function(error, data){
-          if (error){
-            console.log(error);
-          } else {
-            res.end(data);
-          }
-        });
-      });
-
-      //end demo temp routes
   /* -------------start of prefab MEAN routes-------------*/
     //Setting up the users api
     // app.post('/users', users.create);
@@ -107,29 +107,6 @@ module.exports = function(app, passport, auth) {
       fs.readFile('./dist/bookmarklet/templates/home.html', function(error, data){
         if (error) {
         console.log(error);
-        } else {
-          res.end(data);
-        }
-      });
-    });
-
-    //loads controllers, directives, scripts, and services for bookmarklet
-    app.get('/dist/bookmarklet/bookmarkletApp.js', function(req, res){
-      var module = req.params.module;
-      fs.readFile('./dist/bookmarklet/bookmarkletApp.js', function(error, data){
-        if (error){
-          console.log(error);
-        } else {
-          res.end(data);
-        }
-      });
-    });
-
-    app.get('/dist/bookmarklet/caracol.css', function(req, res){
-      var module = req.params.module;
-      fs.readFile('./dist/bookmarklet/caracol.css', function(error, data){
-        if (error){
-          console.log(error);
         } else {
           res.end(data);
         }
