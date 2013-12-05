@@ -5,7 +5,7 @@ angular.module('caracolApp.services')
     timeOfLastFetch: null,
     maxPageVisited: 0,
     currentRecs: [],
-    oldestRecId: 0,
+    lastRecId: 0,
     batchSize: 10,
     getRecs: function(currentPage) {
       if (service.timeOfLastFetch) {
@@ -22,7 +22,7 @@ angular.module('caracolApp.services')
         console.log('need to fetch recs from db for the first time');
         var requestSize = service.batchSize + 1;
       }
-      return FetchService.fetch('recs', service.oldestRecId, requestSize)
+      return FetchService.fetch('recs', service.lastRecId, requestSize)
         .then(function(data) {
           service.updateState(data);
         });
@@ -30,8 +30,8 @@ angular.module('caracolApp.services')
     updateState: function(recs) {
       service.timeOfLastFetch = new Date().getTime();
       service.currentRecs = service.currentRecs.concat(recs);
-      service.oldestRecId = service.currentRecs[service.currentRecs.length - 1].id;
-      console.log('lastId after getting latest batch of recs:', service.oldestRecId);
+      service.lastRecId = service.currentRecs[service.currentRecs.length - 1].id;
+      console.log('lastId after getting latest batch of recs:', service.lastRecId);
       service.maxPageVisited += 1;
     }
   };
