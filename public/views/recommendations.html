@@ -5,3 +5,7 @@
     <div class="recContent">{{rec.displayedExcerpt}}</div>
   </div>
 </div>
+<ul class="pager">
+  <li ng-class="{disabled: prevDisabled}" ng-click="prevDisabled || loadRecs(page-1)" ng-disabled="{{prevDisabled}}"><a href="">Previous</a></li>
+  <li ng-class="{disabled: nextDisabled}" ng-click="nextDisabled || loadRecs(page+1)" ng-disabled="{{nextDisabled}}"><a href="">Next</a></li>
+</ul>

@@ -185,19 +185,15 @@ app.post('/uri', function(req, res){
   ]);
 });
 
-// route for loading user's clippings
-app.get('/fetchMyClippings', function(req, res) {
-  console.log('oldestClippingId:', req.query.oldestClippingId);
-  console.log('typeof oldestClippingId:', typeof req.query.oldestClippingId);
-  console.log('typeof oldestClippingId parsed:', typeof parseInt(req.query.oldestClippingId));
+var handleFetching = function(clippings_or_recs, req, res) {
   // improve this checking
-  if (!req.query.user_id || parseInt(req.query.oldestClippingId) < 0 || !req.query.batchSize) {
+  if (!req.query.user_id || parseInt(req.query.lastId) < 0 || !req.query.batchSize) {
     res.send(400, 'Poorly formed request')
   // should also add handling for when user is not authorized --> respond with 401
   } else {
     async.waterfall([
       function(callback) {
-        dbClient.fetchClippings(req.query.user_id, parseInt(req.query.oldestClippingId), req.query.batchSize, callback);
+        dbClient.fetch(clippings_or_recs, req.query.user_id, parseInt(req.query.lastId), req.query.batchSize, callback);
       },
       function(clippings, callback) {
         console.log('about to send clippings back to client');
@@ -206,29 +202,16 @@ app.get('/fetchMyClippings', function(req, res) {
       }
     ]);
   }
+}
+
+// route for loading user's clippings
+app.get('/fetchMyClippings', function(req, res) {
+  handleFetching('clippings', req, res);
 });
 
 // route for loading recommendations for a user
-app.get('/fetchRecommendations', function(req, res) {
-  var oldestRecId;
-  if (req.query.oldestRecId !== 'null') {
-    oldestRecId = req.query.oldestRecId;
-  }
-  if (!req.query.user_id) {
-    res.send(400, 'Poorly formed request; needs a user id')
-  // should also add handling for when user is not authorized --> respond with 401
-  } else {
-    async.waterfall([
-      function(callback) {
-        dbClient.fetchRecommendations(req.query.user_id, oldestRecId, callback);
-      },
-      function(recs, callback) {
-        console.log('about to send recs back to client:', recs);
-        res.send(recs);
-        callback(null);
-      }
-    ]);
-  }
+app.get('/fetchMyRecommendations', function(req, res) {
+  handleFetching('recs', req, res);
 });
 
 //TODO failing server side
