@@ -16,7 +16,9 @@ var dateTransform = function(ISOdatetime) {
 };
 
 exports.createUser = createUser = function(json, callback){
-  new tables.User({username: json.username})
+  //TODO do not allow duplicate names to be inserted
+  _.extend(json, User.encryptPassword(json.password));
+  new tables.User({username: json.username.toLocaleLowerCase(), passwordSALT: json.passwordSALT, hashed_password: json.hashed_password})
   .save()
   .then(function(model){
     console.log('whoa we saved a user', model.attributes);

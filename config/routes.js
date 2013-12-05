@@ -2,15 +2,17 @@ module.exports = function(app, passport, auth) {
 
   /* -------------start of prefab MEAN routes-------------*/
     //User Routes
-    var users = require('../controllers/users');
-    app.get('/signin', users.signin);
-    app.get('/signup', users.signup);
-    app.get('/signout', users.signout);
+    // var users = require('../controllers/users');
+    // app.get('/signin', users.signin);
+    // app.get('/signup', users.signup);
+    // app.get('/signout', users.signout);
   /* -------------end of prefab MEAN routes-------------*/
 
     //home rolled User routes
     //TODO: refactor to utilize MEAN routing & functions
     var async = require('async');
+    var crypto = require('crypto');
+    var _ = require('underscore');
 
     app.post('/signup', function(req, res){
       console.log(req.body);
@@ -75,17 +77,17 @@ module.exports = function(app, passport, auth) {
       //end demo temp routes
   /* -------------start of prefab MEAN routes-------------*/
     //Setting up the users api
-    app.post('/users', users.create);
+    // app.post('/users', users.create);
 
-    app.post('/users/session', passport.authenticate('local', {
-        failureRedirect: '/signin',
-        failureFlash: 'Invalid email or password.'
-    }), users.session);
+    // app.post('/users/session', passport.authenticate('local', {
+    //     failureRedirect: '/signin',
+    //     failureFlash: 'Invalid email or password.'
+    // }), users.session);
 
-    app.get('/users/me', users.me);
+    // app.get('/users/me', users.me);
 
-    //Finish with setting up the userId param
-    app.param('userId', users.user);
+    // //Finish with setting up the userId param
+    // app.param('userId', users.user);
 
     // //Article Routes
     // var articles = require('../app/controllers/articles');
