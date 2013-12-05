@@ -40,9 +40,16 @@ exports.findUser = findUser = function(json, callback){
   });
 };
 
+
 exports.dbInsert = dbInsert = function(json, user_id, callback){
   //TODO prevent duplicate clippings by
   //periodically scanning for duplictes in database
+
+  //check: clipping already exists?
+
+  //if so, capture that clipping id
+  //if not, return the new clipping id
+
   new tables.Clipping({
     title: json.title,
     content: json.content,
@@ -60,6 +67,35 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   .then(function(model) {
     console.log('finished saving the clipping');
     insertUserClipping(user_id, model.id, callback);
+    algorithm.removeHTMLAndTokenize(model.id);
+  }, function(){
+    console.log('Error saving the clipping');
+    callback(error);
+  });
+
+
+  'id',  'user_id', 'clipping_id',    //'created_at',
+  'vote', 'bookmarkStatus', 'lastBookmarkTime',
+  'lastVoteTime' 
+
+  //check: user_clipping already exists?
+  new tables.User_Clipping({
+    title: json.title,
+    content: json.content,
+    uri: json.url,
+    word_count: json.word_count,
+    first_insert: dateTransform(new Date().toISOString()),
+    total_pages: json.total_pages,
+    date_published: json.date_published,
+    dek: json.dek,
+    lead_image_url: json.lead_image_url,
+    next_page_id: json.next_page_id,
+    rendered_pages: json.rendered_pages
+  })
+  .save()
+  .then(function(model) {
+    console.log('finished saving the clipping');
+    callback(null, model.id);
     algorithm.removeHTMLAndTokenize(model.id);
   }, function(){
     console.log('Error saving the clipping');
