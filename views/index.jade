@@ -1,7 +1,7 @@
 extends layout
 
 block nav
-  .navbar.navbar-fixed-top
+  .navbar.navbar-fixed-top#top
     .navbar-inner
       .navContainer
         // .btn-navbar is used as the toggle for collapsed navbar content 
@@ -40,7 +40,9 @@ block content
   script(src='/scripts/controllers/recommendations.js')
   script(src='/scripts/controllers/auth.js')
   script(src='/scripts/services/init.js')
+  script(src='/scripts/services/fetch.js')
   script(src='/scripts/services/clippings.js')
   script(src='/scripts/services/vote.js')
   script(src='/scripts/services/recommendations.js')
   script(src='/scripts/services/auth.js')
+

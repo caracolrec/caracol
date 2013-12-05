@@ -117,20 +117,46 @@ var insertUserClipping = function(user_id, clipping_id, callback){
   });
 };
 
-exports.fetchClippings = fetchClippings = function(fetchClippingsOlderThanThisClippingId, callback) {
-  // not actually making use of fetchClippingsOlderThanThisClippingId yet
-  new tables.Clippings({id: fetchClippingsOlderThanThisClippingId})
-  // below is for local storage solution
-  // .query()
-  // .where({id: fetchClippingsOlderThanThisClippingId})
-  .fetch()
+exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisId, batchSize, callback) {
+  console.log('fetchClippingsOlderThanThisClippingId:',fetchOlderThanThisId);
+  console.log('batchSize is:', batchSize);
+  if (clippings_or_recs === 'clippings') {
+    var compar = function(model) {
+      return -1 * model.id; // sort so that most recent clippings displayed first
+    };
+    var coll = new tables.User_Clippings({ comparator: compar });
+  } else if (clippings_or_recs === 'recs') {
+    var compar = 'rank';
+    var coll = new tables.Recommendations({ comparator: compar });
+  }
+
+  var queryBuilder;
+  if (fetchOlderThanThisId === 0) {
+    queryBuilder = function(qb) {
+      qb
+      .orderBy('id', 'desc')
+      .limit(batchSize);
+      // once user_id is working, add .where('user_id', '=', '*').andWhere
+    };
+  } else {
+    queryBuilder = function(qb) {
+      qb
+      .where('id', '<', fetchOlderThanThisId)
+      .orderBy('id', 'desc')
+      .limit(batchSize);
+      // once user_id is working, add .where('user_id', '=', '*').andWhere
+    };
+  }
+  coll.query(queryBuilder)
+  .fetch({ withRelated: ['clipping'] })
   .then(function(results) {
-    console.log('successfully grabbed clippings from the db:', results);
+    console.log('successfully grabbed', clippings_or_recs, 'from the db:', results);
     callback(null, results);
   }, function(error) {
-    console.log('there was an error fetching clippings from the db:', error);
+    console.log('there was an error fetching', clippings_or_recs, 'from the db:', error);
     callback(error);
   });
+  // once user_id is working, add .query(function(qb){qb.where('user_id', '=', user_id)})
 };
 
 exports.dbVote = dbVote = function(json){
@@ -149,17 +175,5 @@ exports.dbVote = dbVote = function(json){
     });
   }, function(){
     console.log('welcome ot the danger zone');
-  });
-};
-
-exports.fetchRecommendations = fetchRecommendations = function(callback) {
-  new tables.Recommendations()
-  .fetch({ withRelated: ['clipping'] })
-  .then(function(results) {
-    console.log('results of db query look like:',results);
-    callback(null, results);
-  }, function(error) {
-    console.log('error fetching recs from the db:', error);
-    callback(error);
   });
 };

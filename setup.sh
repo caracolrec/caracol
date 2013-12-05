@@ -21,6 +21,13 @@ sudo pip install lxml
 sudo pip install -U numpy
 sudo pip install -U pyyaml nltk
 
+# from command line, type:
+# python
+# import nltk
+# nltk.download()
+# d
+# punkt
+
 sudo apt-get install libzmq-dev
 sudo pip install pyzmq
 sudo apt-get install libevent-dev

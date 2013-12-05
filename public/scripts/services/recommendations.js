@@ -1,27 +1,38 @@
 angular.module('caracolApp.services')
-.factory('RecsService', ['$q', '$http', function($q, $http) {
+.factory('RecsService', ['$q', '$http', 'FetchService', function($q, $http, FetchService) {
   var service = {
     // store oauth token in here
     timeOfLastFetch: null,
+    maxPageVisited: 0,
     currentRecs: [],
-    getRecs: function() {
-      var d = $q.defer();
-      $http.get('/fetchRecommendations', {comparator: 'rank'})
-      .success(function(data, status) {
-        service.timeOfLastFetch = new Date().getTime();
-        console.log('success getting recs, they look like:', data);
-        for (var i = 0; i < data.length; i++) {
-          data[i].clipping.content_sans_html = data[i].clipping.content_sans_html || '';
-          data[i].displayedExcerpt = data[i].clipping.content_sans_html.slice(0,250) + ' ...';
+    oldestRecId: 0,
+    batchSize: 10,
+    getRecs: function(currentPage) {
+      if (service.timeOfLastFetch) {
+        if (currentPage <= service.maxPageVisited) {
+          console.log('using already loaded recs');
+          var d = $q.defer();
+          d.resolve(service.currentRecs);
+          return d.promise;
+        } else {
+          console.log('need to fetch recs from db');
+          var requestSize = service.batchSize;
         }
-        service.currentRecs = service.currentRecs.concat(data);
-        d.resolve(service.currentRecs);
-      })
-      .error(function(reason, status) {
-        console.log('error getting recs:', reason);
-        d.reject(reason);
-      });
-      return d.promise;
+      } else {
+        console.log('need to fetch recs from db for the first time');
+        var requestSize = service.batchSize + 1;
+      }
+      return FetchService.fetch('recs', service.oldestRecId, requestSize)
+        .then(function(data) {
+          service.updateState(data);
+        });
+    },
+    updateState: function(recs) {
+      service.timeOfLastFetch = new Date().getTime();
+      service.currentRecs = service.currentRecs.concat(recs);
+      service.oldestRecId = service.currentRecs[service.currentRecs.length - 1].id;
+      console.log('lastId after getting latest batch of recs:', service.oldestRecId);
+      service.maxPageVisited += 1;
     }
   };
 
