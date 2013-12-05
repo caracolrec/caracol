@@ -45,13 +45,15 @@ def fetchTokenizedClippings(tokenized_ids):
     # Remove html from the content and tokenize
 
     for cl_id in tokenized_ids:
+      # print cl_id
+      print "\n\n"
     #range(first_tokenized, last_tokenized):
       cur.execute("SELECT content_sans_html_tokenized FROM clippings WHERE id=(%s)", ([cl_id]) )
       
       #word_tokenize("hello there world how ya doin!")  #(cur.fetchone()[0])
       tokenizedContent = cur.fetchone()[0]  #[word for sent in sent_tokenize(cur.fetchone()[0]) for word in word_tokenize(sent)]
 
-      tokenizedContent = removePunctuation(tokenizedContent)
+      tokenizedContent = filter(tokenizedContent)
 
       #nltk.word_tokenize(nltk.sent_tokenize(cur.fetchone()[0]))
       corpus.append(tokenizedContent)
@@ -63,7 +65,7 @@ def fetchTokenizedClippings(tokenized_ids):
 
     return corpus
 
-def removePunctuation(strs):
+def filter(strs):
     # print "\n\n\n\n\n\nbefore:\n\n"
     # for article in strs:
     #   print article
@@ -72,11 +74,22 @@ def removePunctuation(strs):
 
     stopwords = "a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your"
     stopwords = stopwords.split(",")
-    stripped = [trim(token).lower() for token in strs if token not in string.punctuation and token not in stopwords]
+    filtered = [trim(token.lower()) for token in strs if "\'" not in token and token not in string.punctuation]
+    filtered = [trim(token) for token in filtered if len(token) > 0]
+    filtered = [trim(token) for token in filtered if token not in stopwords]
+    concat = ''.join(filtered)
 
-    print "\n\n\n\n\n\nafter:\n\n"
-    print stripped
-    print ":\n\n"
+    tokens_once = frozenset(word for word in frozenset(filtered) if concat.count(word) == 1)
+    
+    # print "\n\n T1: \n\n"
+    # print tokens_once
+
+    filtered = [word for word in filtered if word not in tokens_once]
+
+    return filtered
+    # print "\n\n\n\n\n\nafter:\n\n"
+    # print stripped
+    # print ":\n\n"
 
 def trim(s):
     if s.endswith(".\""): s = s[:-2]
@@ -84,13 +97,16 @@ def trim(s):
     if s.startswith("\"") or s.startswith("."): s = s[1:]
     unicodeStart = string.find(s,'\xe2')
     if unicodeStart != -1: 
-      unicodeEnd = unicodeStart + 12
+      unicodeEnd = unicodeStart + 3
       s = s[:unicodeStart] + s[unicodeEnd:]
     return s
 
 
 
-corpus = fetchTokenizedClippings([2])
+corpus = fetchTokenizedClippings([2,3])
+
+print corpus
+
 # for clipping in corpus:
 #   print "\n\n\n\n\n\n" + str(clipping) + ":\n\n"
 #   print clipping
