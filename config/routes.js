@@ -104,7 +104,7 @@ module.exports = function(app, passport, auth) {
     //Inject script onto current page
     var fs = require('fs');
     app.get('/script', function(req, res){
-      fs.readFile('../client/partials/home.html', function(error, data){
+      fs.readFile('./dist/bookmarklet/templates/home.html', function(error, data){
         if (error) {
         console.log(error);
         } else {
@@ -114,9 +114,20 @@ module.exports = function(app, passport, auth) {
     });
 
     //loads controllers, directives, scripts, and services for bookmarklet
-    app.get('/client/:module', function(req, res){
+    app.get('/dist/bookmarklet/bookmarkletApp.js', function(req, res){
       var module = req.params.module;
-      fs.readFile('./client/' + module, function(error, data){
+      fs.readFile('./dist/bookmarklet/bookmarkletApp.js', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
+      });
+    });
+
+    app.get('/dist/bookmarklet/caracol.css', function(req, res){
+      var module = req.params.module;
+      fs.readFile('./dist/bookmarklet/caracol.css', function(error, data){
         if (error){
           console.log(error);
         } else {
@@ -129,7 +140,7 @@ module.exports = function(app, passport, auth) {
     app.get('/app/:url/:t/*', function(req, res){
       console.log('requesting app');
         async.eachSeries(
-        ['./public/bower_components/jquery/jquery.min.js', './client/script.js'],
+        ['./public/bower_components/jquery/jquery.min.js', './dist/bookmarklet/script.js'],
         function(filename, cb) {
           fs.readFile(filename, function(error, data) {
             if (!error) {
@@ -151,12 +162,10 @@ module.exports = function(app, passport, auth) {
       res.send(200, res.header);
     });
 
-
     var dbClient = require('../database/dbclient.js');
     var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
-    var parser = require('../controllers/parser.js');
+    var parser = require('../controllers/parser.js').parser;
     app.post('/uri', function(req, res){
-      console.log(req.body.uri);
       params = {
         url: decodeURIComponent(req.body.uri),
         token: token
@@ -170,7 +179,7 @@ module.exports = function(app, passport, auth) {
         },
         function(response, callback){
           console.log('about to send clipping id to client:', response);
-          dbClient.dbInsert(response, callback);
+          dbClient.dbInsert(response, req.body.user_id, callback);
         },
         function(clipping_id, callback){
           clipping_id = clipping_id.toString();
@@ -217,7 +226,7 @@ module.exports = function(app, passport, auth) {
     app.post('/vote/:clipping_id', function(req, res) {
       console.log(req.body);
       var params = {
-        clipping_id: clipping_id,
+        clipping_id: req.params.clipping_id,
         vote: req.body.vote,
         user_id: req.body.user_id
       };

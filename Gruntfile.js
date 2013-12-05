@@ -43,8 +43,13 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['*.js', 'views/*.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+        files: {
+          'dist/<%= pkg.name %>.js': ['*.js', 'views/*.js'],
+          'dist/bookmarklet/script.js': ['client/*.js'],
+          'dist/bookmarklet/bookmarkletApp.js': ['client/scripts/*.js', 'client/scripts/services/*.js', 'client/scripts/controllers/*.js','client/scripts/directives/*.js'],
+          'dist/bookmarklet/templates/home.html': ['client/partials/home.html'],
+          'dist/bookmarklet/caracol.css': ['public/stylesheets/caracol.css', 'public/stylesheets/bookmarklet.css']
+        }
       }
     },
     uglify: {

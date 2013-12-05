@@ -79,9 +79,10 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   })
   .save()
   .then(function(model) {
+    console.log('HAHHHAAA', model.attributes.id, user_id);
     console.log('finished saving the clipping');
-    insertUserClipping(user_id, model.id, callback);
-    algorithm.removeHTMLAndTokenize(model.id);
+    insertUserClipping(user_id, model.attributes.id, callback);
+    algorithm.removeHTMLAndTokenize(model.attributes.id);
   }, function(){
     console.log('Error saving the clipping');
     callback(error);
@@ -126,8 +127,8 @@ var insertUserClipping = function(user_id, clipping_id, callback){
   .then(function(model){
     console.log('success to the user clipping table', model.attributes);
     callback(null, model.attributes.clipping_id);
-  }, function(){
-    console.log('error adding to user_clippings');
+  }, function(error){
+    console.log('error adding to user_clippings', error);
   });
 };
 
