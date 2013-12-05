@@ -5,7 +5,7 @@ angular.module('caracolApp.services')
     timeOfLastFetch: null,
     maxPageVisited: 0,
     currentClippings: [],
-    oldestClippingId: 0,
+    lastClippingId: 0,
     batchSize: 10,
     getClippings: function(currentPage) {
       if (service.timeOfLastFetch) {
@@ -22,7 +22,7 @@ angular.module('caracolApp.services')
         console.log('need to fetch clippings from db for the first time');
         var requestSize = service.batchSize + 1;
       }
-      return FetchService.fetch('clippings', service.oldestClippingId, requestSize)
+      return FetchService.fetch('clippings', service.lastClippingId, requestSize)
         .then(function(data) {
           service.updateState(data);
         });
@@ -30,8 +30,8 @@ angular.module('caracolApp.services')
     updateState: function(clippings) {
       service.timeOfLastFetch = new Date().getTime();
       service.currentClippings = service.currentClippings.concat(clippings);
-      service.oldestClippingId = service.currentClippings[service.currentClippings.length - 1].id;
-      console.log('lastId after getting latest batch of clippings:', service.oldestClippingId);
+      service.lastClippingId = service.currentClippings[service.currentClippings.length - 1].id;
+      console.log('lastId after getting latest batch of clippings:', service.lastClippingId);
       service.maxPageVisited += 1;
     }
   };
