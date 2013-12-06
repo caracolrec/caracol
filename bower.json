@@ -32,7 +32,7 @@
     "'bookmarklets'"
   ],
   "license": "MIT",
-  "homepage": "caracol.io",
+  "homepage": "http://caracol.cloudapp.net",
   "private": true,
   "ignore": [
     "**/.*",

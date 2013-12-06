@@ -8,11 +8,42 @@
 * [The Stack](#the-stack)
 * [Challenges](#challenges)
 * [Team](#team)
+* [License](#license)
 
 ##<a name="description"></a>Description
+
+
 ##<a name="deployment"></a>Deployment
+[![Coverage Status](https://coveralls.io/repos/michaelmunson1/caracol/badge.png)](https://coveralls.io/r/michaelmunson1/caracol)
+
 ##<a name="the-stack"></a>The Stack
+
+Core architecture:
+* Angular.js
+* express.js / node.js
+* Python
+* PostgreSQL
+
+Front-end snazziness:
+* Twitter Bootstrap
+* Stylus
+* Jade
+
+Back-end awesomeness:
+* ZeroRPC
+* Bookshelf.js
+* Grunt
+* Bower
+
+Testing:
+* Mocha
+* Karma
+* Travis CI
+* Coveralls
+
 ##<a name="challenges"></a>Challenges
+
+
 ##<a name="team"></a>Team
 
 * Adam Witzel <email@email.com>
@@ -20,4 +51,5 @@
 * Michael Munson <email@email.com>
 * Ian Hinsdale <ian@ianhinsdale.com>
 
-[![Coverage Status](https://coveralls.io/repos/michaelmunson1/caracol/badge.png)](https://coveralls.io/r/michaelmunson1/caracol)
+##<a name="license"></a>License
+
