@@ -24,7 +24,7 @@ class RPC(object):
         content = cur.fetchone()[0]
         content_sans_html = BeautifulSoup(content, "lxml").get_text()
         cur.execute("UPDATE clippings SET content_sans_html = (%s) WHERE id = (%s)", (content_sans_html, clipping_id))
-        cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", [word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id)
+        cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
         cur.execute("SELECT content_sans_html_tokenized FROM clippings")
         tokenized = cur.fetchone()[0]
         # Save the changes to the database
