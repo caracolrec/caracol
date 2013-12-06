@@ -64,7 +64,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      files: ['*.js', 'routes/*.js'],
+      files: ['*.js', 'routes/*.js', 'client/**/**/*.js', 'public/scripts/**/*.js'],
       options: {
         curly: true,
         eqeqeq: true,
@@ -81,6 +81,11 @@ module.exports = function(grunt) {
         node: true,
         globals: {
           jQuery: true,
+          angular: true,
+          $: true,
+          services: true,
+          controllers: true,
+          directives: true
         }
       },
       gruntfile: {
