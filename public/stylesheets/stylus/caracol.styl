@@ -62,11 +62,15 @@
   padding: 4px
   height: 30px
   background-color: #ffffff
-  border-radius: 3px
+  border-radius: 4px
   border: 1px solid #d4d4d4
 
 .navbar .nav a.buttonContainer:hover
   background-color: #ffffff
+
+@media (min-width: 980px)
+  .navbar ul.nav.leftUL
+    margin-left: 50px 
 
 .navbar .nav > li.active > a.buttonContainer
   color: #ffffff
@@ -85,7 +89,8 @@
 .navbar .nav > li > a.recNavButton
   color: #ffac40
 
-.navButtonText
+.navButtonText,
+.userText
   padding: 5px 5px
 
 .brandImage
@@ -97,5 +102,25 @@
   background-image: url('../../images/caracol3.png');
   background-repeat: no-repeat;
   background-position: center;
+
+.bookmarkletImage
+  display: inline
+  height: 20px
+  padding: 5px
+
+.bookmarkletText
+  padding-right: 5px
+
+.username
+  padding: 5px
+
+.signOutText
+  padding: 5px
+
+.signIn
+  background-color: #00aced
+  color: #ffffff
+  padding: 5px 9px
+
 
 // 0H11Tw0w0w0w0
