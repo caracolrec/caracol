@@ -3,7 +3,6 @@ var expect = require('chai').expect;
 var http = require('http');
 var superagent = require('superagent');
 var path = require('path');
-var parser = require('../routes/parser');
 var token = process.env.APPSETTING_readability_key || require('../config/config.js').token;
 
 var host = 'localhost';

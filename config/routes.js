@@ -142,61 +142,59 @@ module.exports = function(app, passport, auth) {
     var dbClient = require('../database/dbclient.js');
     var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
     var parser = require('../controllers/parser.js').parser;
+    
+
     app.post('/uri', function(req, res){
       params = {
         url: decodeURIComponent(req.body.uri),
         token: token
       };
-
+      var user_id = req.body.user_id;
       res.header("Access-Control-Allow-Origin", "*");
       async.waterfall([
         function(callback){
           parser(params, callback);
-          console.log('here');
         },
         function(response, callback){
-          console.log('about to send clipping id to client:', response);
-          dbClient.dbInsert(response, req.body.user_id, callback);
+          response.url = params.url;
+          dbClient.dbInsert(response, user_id, callback);
         },
         function(clipping_id, callback){
           clipping_id = clipping_id.toString();
-          res.end(clipping_id);
+          console.log('clipping id before reply to client is:', clipping_id);
+          res.send(200, clipping_id);
           callback(null);
         }
       ]);
     });
 
-    // route for loading user's clippings
-    app.get('/fetchMyClippings', function(req, res) {
-      var oldestClippingId;
-      console.log('typeof oldestClippingId:', typeof req.query.oldestClippingId);
-      if (req.query.oldestClippingId !== 'null') {
-        oldestClippingId = req.query.oldestClippingId;
+    var handleFetching = function(clippings_or_recs, req, res) {
+      // improve this checking
+      if (!req.query.user_id || parseInt(req.query.lastId) < 0 || !req.query.batchSize) {
+        res.send(400, 'Poorly formed request')
+      // should also add handling for when user is not authorized --> respond with 401
+      } else {
+        async.waterfall([
+          function(callback) {
+            dbClient.fetch(clippings_or_recs, req.query.user_id, parseInt(req.query.lastId), req.query.batchSize, callback);
+          },
+          function(clippings, callback) {
+            console.log('about to send clippings back to client');
+            res.send(clippings);
+            callback(null);
+          }
+        ]);
       }
-      async.waterfall([
-        function(callback) {
-          dbClient.fetchClippings(oldestClippingId, callback);
-        },
-        function(clippings, callback) {
-          console.log('about to send clippings back to client');
-          res.send(clippings);
-          callback(null);
-        }
-      ]);
+    };
+
+    // route for loading user's clippings
+    app.get('/fetchmyclippings', function(req, res) {
+      handleFetching('clippings', req, res);
     });
 
     // route for loading recommendations for a user
-    app.get('/fetchRecommendations', function(req, res) {
-      async.waterfall([
-        function(callback) {
-          dbClient.fetchRecommendations(callback);
-        },
-        function(recs, callback) {
-          console.log('about to send recs back to client:', recs);
-          res.send(recs);
-          callback(null);
-        }
-      ]);
+    app.get('/fetchmyrecommendations', function(req, res) {
+      handleFetching('recs', req, res);
     });
 
     // route for storing a vote from the user's clippings view
