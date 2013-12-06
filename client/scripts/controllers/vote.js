@@ -1,5 +1,6 @@
 controllers.controller('VoteCtrl', function($scope, VoteService, storage){
   $scope.voted = false;
+  $scope.hideBookmarklet = false;
 
   $scope.log = function(vote){
     !!vote ? ($scope.like = true) : ($scope.dislike = true);

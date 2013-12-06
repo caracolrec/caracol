@@ -6,11 +6,12 @@
     <link href='http://fonts.googleapis.com/css?family=Signika+Negative:700' rel='stylesheet' type='text/css'>
     <link href="dist/bookmarklet/caracol.css" rel="stylesheet"></link>
   </head>
-  <body ng-app="app" class="main">
-    <div ng-controller="VoteCtrl">
+  <body ng-app="app" class="caracolContainer">
+    <div ng-controller="VoteCtrl" div="component">
+      <button class="topcoat-button hide" ng-click="hideBookmark = !hidebookmark">Hide</button>
       <div class="title">
-        <a href=​"#" class=​"component snail">​</a>​
-        <span class="component">Caracol</span>
+        <img class=​"snail" src="images/caracol3.png">​</span>​
+        <span>Caracol</span>
       </div>
       <button class="topcoat-button" ng-click="vote(1)" ng-show="!voted">Upvote</button>
       <button class="topcoat-button" ng-click="vote(0)" ng-show="!voted">Downvote</button>

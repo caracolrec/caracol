@@ -7,7 +7,7 @@ exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId, cal
   client.invoke("remove_html_and_tokenize_clipping_content", clippingId, function(error, res, more) {
     console.log(res);
     callback(error, res);
-  });  
+  });
 };
 
 // tokenizedClippings = [];
