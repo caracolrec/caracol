@@ -16,6 +16,8 @@ block nav
         .nav-collapse.collapse(collapse="isCollapsed")
           // .nav, .navbar-search, .navbar-form, etc 
           ul.nav.pull-right
+            li
+              a(href="javascript:function crcl(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body,l=d.location;try{if(!b)throw(0);z.setAttribute('src','//caracol.cloudapp.net/app/'+encodeURIComponent(l.href)+'/'+(new Date().getTime())+'/'+Math.random());b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}crcl();void(0)") Caracol
             li(ng-class='{active: active[0]}')
               a.buttonContainer.clipNavButton(href='#/clippings')
                 .navButtonText My Clippings
@@ -32,6 +34,7 @@ block content
   script(src='/bower_components/angular-bootstrap/ui-bootstrap.js')
   script(src='/bower_components/angular-cookies/angular-cookies.min.js')
   script(src='/bower_components/angularLocalStorage/src/angularLocalStorage.js')
+  script(src='//cdnjs.cloudflare.com/ajax/libs/holder/2.0/holder.js')
 
   script(src='/scripts/app.js')
   script(src='/scripts/controllers/init.js')
