@@ -1,6 +1,4 @@
-var express = require('express'); //remove
 var Bookshelf  = require('bookshelf');
-var pg = require('pg');  //maybe remove
 var credentials = require('./dbconfig.json');
 
 module.exports.caracolPG = Bookshelf.initialize({

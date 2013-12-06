@@ -10,8 +10,8 @@
  */
 exports.clipping = function(req, res, next, id) {
     Clipping.load(id, function(err, clipping) {
-        if (err) return next(err);
-        if (!clipping) return next(new Error('Failed to load clipping ' + id));
+        if (err) { return next(err); }
+        if (!clipping) { return next(new Error('Failed to load clipping ' + id)); }
         req.clipping = clipping;
         next();
     });
@@ -44,7 +44,7 @@ exports.update = function(req, res) {
 
     clipping = _.extend(clipping, req.body);
 
-    clipping.save(function(err) {
+    clipping.save(function() {
         res.jsonp(clipping);
     });
 };

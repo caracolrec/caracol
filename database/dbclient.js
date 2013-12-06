@@ -1,8 +1,5 @@
 //dbclient.js
 
-var express = require('express');
-var caracolPG = require('./dbsetup.js').caracolPG;
-var knex = caracolPG.knex; // require('./dbsetup.js').knex;
 var tables = require('./dbschemas.js');
 var algorithm = require('../controllers/algorithm.js');
 var _ = require('underscore');
@@ -13,6 +10,20 @@ var dateTransform = function(ISOdatetime) {
   ISOdatetime = ISOdatetime.slice(0,19);
   ISOdatetime = ISOdatetime + '+00';
   return ISOdatetime;
+};
+
+var insertUserClipping = function(user_id, clipping_id, callback){
+  new tables.User_Clipping({
+    user_id: user_id,
+    clipping_id: clipping_id
+  })
+  .save()
+  .then(function(model){
+    console.log('success to the user clipping table:', model.attributes);
+    callback(null, model.attributes.clipping_id);
+  }, function(error){
+    console.log('error adding to user_clippings', error);
+  });
 };
 
 exports.createUser = createUser = function(json, callback){
@@ -32,8 +43,8 @@ exports.createUser = createUser = function(json, callback){
     .then(function(model){
       console.log('whoa we saved a user', model.attributes);
       callback(null, model.attributes);
-    }, function(res){
-      console.log('not so fast little man', res);
+    }, function(error){
+      console.log('not so fast little man', error);
       callback(error);
     });
   });
@@ -46,7 +57,7 @@ exports.findUser = findUser = function(json, callback){
   .then(function(model){
     console.log('we found you!', model[0]);
     callback(null, model[0]);
-  }, function(results){
+  }, function(error){
     console.log('please signup!');
     callback(error);
   });
@@ -88,32 +99,18 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   });
 };
 
-var insertUserClipping = function(user_id, clipping_id, callback){
-  new tables.User_Clipping({
-    user_id: user_id,
-    clipping_id: clipping_id
-  })
-  .save()
-  .then(function(model){
-    console.log('success inserting into the user clipping table', model);
-    callback(null, clipping_id);
-  }, function(error){
-    console.log('error adding to user_clippings');
-    callback(error);
-  });
-};
-
 exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisId, batchSize, callback) {
   console.log('fetchClippingsOlderThanThisClippingId:',fetchOlderThanThisId);
   console.log('batchSize is:', batchSize);
+  var coll, compar;
   if (clippings_or_recs === 'clippings') {
-    var compar = function(model) {
+      compar = function(model) {
       return -1 * model.id; // sort so that most recent clippings displayed first
     };
-    var coll = new tables.User_Clippings({ comparator: compar });
+    coll = new tables.User_Clippings({ comparator: compar });
   } else if (clippings_or_recs === 'recs') {
-    var compar = 'rank';
-    var coll = new tables.Recommendations({ comparator: compar });
+    compar = 'rank';
+    coll = new tables.Recommendations({ comparator: compar });
   }
 
   var queryBuilder;

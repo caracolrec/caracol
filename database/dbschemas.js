@@ -4,16 +4,11 @@ var User,
     Clippings,
     JournalEntry,
     User_Clipping,
+    User_Clippings,
     Recommendation,
     Recommendations,
-    express = require('express'),
     caracolPG = require('./dbsetup.js').caracolPG,
-    crypto = require('crypto'),
-    Validator = require('validator').Validator,
-    bcrypt = require('bcrypt'),
-    when = require('when'),
-    nodefn = require('when/node/function');
-
+    crypto = require('crypto');
 
 
 // require validator
@@ -22,10 +17,6 @@ var User,
 // we begin by writing individual models - if overlap is substantial, refactor out a base.js
 
 // Also - write tests for basic functionality.  
-var validator = new Validator();
-var validatePasswordLength = function(password) {
-  
-};
 
 User = caracolPG.Model.extend({
   tableName: 'users',
@@ -60,9 +51,9 @@ User = caracolPG.Model.extend({
     .fetch()
     .then(function(model){
       console.log('its good', model);
-      // authCallback(null, model);
+      authCallback(null, model);
     }, function(err){
-      // authCallback(err, null);
+      authCallback(err, null);
     });
   },
 
@@ -75,7 +66,7 @@ User = caracolPG.Model.extend({
   },
   
   encryptPassword: function(password, salt){
-    if (!password) return '';
+    if (!password) { return ''; }
     salt = salt || this.makeSalt();
     var hashed_password = crypto.createHmac('sha1', salt).update(password).digest('hex');
     return {passwordSALT: salt, hashed_password: hashed_password};
@@ -89,7 +80,7 @@ User = caracolPG.Model.extend({
         //TODO and we communicate this to the user like how?
         throw 'error: that username does not exist';
       } else {
-        if (encryptPassword(userdata.password, user.passwordSALT) === user.hashed_password){
+        if (this.encryptPassword(userdata.password, user.passwordSALT) === user.hashed_password){
           console.log('party on wayne');
         } else {
           throw 'error: incorrect password';
@@ -97,7 +88,7 @@ User = caracolPG.Model.extend({
       }
     })
     .then(function(){
-      return encryptPassword(userdata.password);
+      return this.encryptPassword(userdata.password);
     }).then(function(hash){
       userdata.password = hash.hashed_password;
       userdata.passwordSALT = hash.passwordSALT;

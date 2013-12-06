@@ -3,11 +3,11 @@ angular.module('caracolApp.services')
   var service = {
     fetch: function(clippings_or_recs, lastId, batchSize) {
       console.log('lastId is:', lastId);
-      var d = $q.defer();
+      var route, d = $q.defer();
       if (clippings_or_recs === 'clippings') {
-        var route = '/fetchmyclippings';
+        route = '/fetchMyClippings';
       } else if (clippings_or_recs === 'recs') {
-        var route = '/fetchmyrecommendations';
+        route = '/fetchMyRecommendations';
       }
       $http.get(route, {
         params: {
@@ -16,11 +16,11 @@ angular.module('caracolApp.services')
           batchSize: batchSize
         }
       })
-      .success(function(data, status) {
+      .success(function(data) {
         console.log('success fetching', ':', data);
         d.resolve(service.massage(data));
       })
-      .error(function(reason, status) {
+      .error(function(reason) {
         console.log('error getting old:', reason);
         d.reject(reason);
       });
@@ -35,14 +35,13 @@ angular.module('caracolApp.services')
       return data;
     },
     elegantizeTimestamp: function(article) {
-      var numMilliseconds = new Date().getTime() - Date.parse(article.first_insert); 
+      var numMilliseconds = new Date().getTime() - Date.parse(article.first_insert);
       var numSeconds = numMilliseconds/1000;
       var numMinutes = numSeconds/60;
       var numHours = numMinutes/60;
-      var approx = '';
       if (numHours >= 24) {
-        var month = postgresTimestamp.slice(5,7);
-        var day = postgresTimestamp.slice(8,10);
+        var month = article.first_insert.slice(5,7);
+        var day = article.first_insert.slice(8,10);
         if (day[0] === '0') {
           day = day[1];
         }

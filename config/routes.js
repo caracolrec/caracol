@@ -11,8 +11,7 @@ module.exports = function(app, passport, auth) {
     //home rolled User routes
     //TODO: refactor to utilize MEAN routing & functions
     var async = require('async');
-    var crypto = require('crypto');
-    var _ = require('underscore');
+    var params;
 
     app.post('/signup', function(req, res){
       console.log(req.body);
@@ -58,6 +57,7 @@ module.exports = function(app, passport, auth) {
           });
         },
         function(error) {
+          console.log('error loading bookmarklet dependencies', error);
           res.end();
         }
       );
@@ -65,7 +65,6 @@ module.exports = function(app, passport, auth) {
 
     //loads css for bookmarklet
     app.get('/dist/bookmarklet/caracol.css', function(req, res){
-      var module = req.params.module;
       fs.readFile('./dist/bookmarklet/caracol.css', function(error, data){
         if (error){
           console.log(error);
@@ -127,6 +126,7 @@ module.exports = function(app, passport, auth) {
           });
         },
         function(error) {
+          console.log('error loading injection scripts', error);
           res.end();
         }
       );
