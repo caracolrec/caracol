@@ -15,13 +15,30 @@ block nav
         // Everything you want hidden at 940px or less, place within here 
         .nav-collapse.collapse(collapse="isCollapsed")
           // .nav, .navbar-search, .navbar-form, etc 
-          ul.nav.pull-right
+          ul.nav.pull-left.leftUL
             li(ng-class='{active: active[0]}')
               a.buttonContainer.clipNavButton(href='#/clippings')
                 .navButtonText My Clippings
             li(ng-class='{active: active[1]}')
               a.buttonContainer.recNavButton(href='#/recommendations')
                 .navButtonText Recommendations
+          ul.nav.pull-right
+            li
+              a.buttonContainer.bookmarkletButton(id="test",popover-placement="bottom",popover="To start clipping, drag me to your bookmarks bar!",href="javascript:function crcl(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body,l=d.location;try{if(!b)throw(0);z.setAttribute('src','//caracol.cloudapp.net/app/'+encodeURIComponent(l.href)+'/'+(new Date().getTime())+'/'+Math.random());b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}crcl();void(0)")
+                img.bookmarkletImage(src="images/caracol4.png")
+                span.bookmarkletText Bookmarklet
+            li.dropdown(ng-show="true")
+              a.buttonContainer.dropdown-toggle(href='')
+                .username username
+              ul.dropdown-menu
+                li
+                  a
+                    span.icon-exit
+                    span.signOutText Sign out
+            li(ng-show="true")
+              a.buttonContainer(href='')
+                .signIn Sign in / up
+
 
 block content
   .container(ng-view='')
@@ -30,6 +47,7 @@ block content
   script(src='/bower_components/angular/angular.js')
   script(src='/bower_components/angular-route/angular-route.min.js')
   script(src='/bower_components/angular-bootstrap/ui-bootstrap.js')
+  script(src='/bower_components/angular-bootstrap/ui-bootstrap-tpls.js')
   script(src='/bower_components/angular-cookies/angular-cookies.min.js')
   script(src='/bower_components/angularLocalStorage/src/angularLocalStorage.js')
 

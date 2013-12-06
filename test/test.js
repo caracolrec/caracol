@@ -2,14 +2,14 @@ var assert = require('assert');
 var expect = require('chai').expect;
 var http = require('http');
 var superagent = require('superagent');
-var path = require('path');
+
+var algorithm = require('../controllers/algorithm.js');
 var token = process.env.APPSETTING_readability_key || require('../config/config.js').token;
 
 var host = 'localhost';
 var port = 3000;
 
 describe('express server', function() {
-
   var user_id = 1;
   var lastId = 0;
   var batchSize = 10;
@@ -46,5 +46,16 @@ describe('express server', function() {
       done();
     });
   });
-
 });
+
+describe('node invocation of Python', function() {
+  var clipping_id = 34;
+  it('should successfully remove HTML from parsed clipping content field and tokenize', function(done) {
+    algorithm.removeHTMLAndTokenize(clipping_id, function(error, res) {
+      expect(res).to.eql('Cleaned the content of HTML and tokenized');
+      done();
+    });
+  });
+});
+
+
