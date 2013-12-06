@@ -41,6 +41,7 @@ if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
 
+
 //Bootstrap routes
 require('./config/routes')(app, passport, auth);
 
