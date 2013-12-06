@@ -10,11 +10,11 @@ angular.module('caracolApp.services')
           password: password
         }
       })
-      .success(function(data, status) {
+      .success(function(data) {
         console.log('thanks for signing up buddy');
         d.resolve(data);
       })
-      .error(function(error, status) {
+      .error(function(error) {
         console.log('login error', error);
         d.reject(error);
       });
@@ -29,11 +29,11 @@ angular.module('caracolApp.services')
           password: password
         }
       })
-      .success(function(data, status) {
+      .success(function(data) {
         console.log('thanks for logging in buddy');
         d.resolve(data);
       })
-      .error(function(error, status) {
+      .error(function(error) {
         console.log('login error', error);
         d.reject(error);
       });

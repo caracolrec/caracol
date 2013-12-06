@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('caracolApp.controllers')
-.controller('ClippingsCtrl', function($rootScope, $scope, storage, ClippingsService, VoteService, FetchService) {
+.controller('ClippingsCtrl', function($rootScope, $scope, storage, ClippingsService) {
   $rootScope.active = [true, false];
 
   var afterGottenClippings = function(clippings) {

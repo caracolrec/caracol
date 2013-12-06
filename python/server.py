@@ -10,7 +10,7 @@ import logging
 logging.basicConfig()
 
 # Open connection to the database
-credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../database/dbconfig.json"))))
+credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/dbconfig.json"))))
 
 class RPC(object):
 

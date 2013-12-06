@@ -4,17 +4,17 @@ angular.module('caracolApp.services')
     vote: function(clipping, vote) {
       var d = $q.defer();
       $http({method: 'POST', url: '/vote', data: {id: clipping.id, vote: vote}})
-      .success(function(data, status, headers, config) {
+      .success(function(data) {
         console.log('success sending vote', vote, 'on clipping', clipping.id);
-        d.resolve(vote);
+        d.resolve(data);
       })
-      .error(function(reason, status) {
+      .error(function(reason) {
         console.log('error sending vote', vote, 'on clipping', clipping.id);
         d.reject(reason);
       });
       return d.promise;
     }
-  }
+  };
 
   return service;
 }]);

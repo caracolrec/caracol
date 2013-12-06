@@ -8,6 +8,7 @@ angular.module('caracolApp.services')
     lastClippingId: 0,
     batchSize: 10,
     getClippings: function(currentPage) {
+      var requestSize;
       if (service.timeOfLastFetch) {
         if (currentPage <= service.maxPageVisited) {
           console.log('using already loaded clippings');
@@ -16,11 +17,11 @@ angular.module('caracolApp.services')
           return d.promise;
         } else {
           console.log('need to fetch clippings from db');
-          var requestSize = service.batchSize;
+          requestSize = service.batchSize;
         }
       } else {
         console.log('need to fetch clippings from db for the first time');
-        var requestSize = service.batchSize + 1;
+        requestSize = service.batchSize + 1;
       }
       return FetchService.fetch('clippings', service.lastClippingId, requestSize)
         .then(function(data) {
