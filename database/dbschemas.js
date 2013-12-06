@@ -7,7 +7,7 @@ var User,
     User_Clippings,
     Recommendation,
     Recommendations,
-    caracolPG = require('./dbsetup.js').caracolPG,
+    caracolPG = require('../config/dbsetup.js').caracolPG,
     crypto = require('crypto');
 
 
