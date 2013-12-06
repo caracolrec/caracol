@@ -23,7 +23,7 @@
 .navButtonText,.userText{padding:5px 5px}
 .brandImage{padding-top:5px;padding-bottom:5px;padding-left:25px;width:50px;height:31px;background-image:url("../../images/caracol3.png");background-repeat:no-repeat;background-position:center}
 .bookmarkletImage{display:inline;height:20px;padding:5px}
-.bookmarkletText{padding-right:5px}
+.bookmarkletText{line-height:20px;padding-top:5px;padding-bottom:5px;padding-right:5px}
 .username{padding:5px}
 .signOutText{padding:5px}
 .signIn{background-color:#00aced;color:#fff;padding:5px 9px}
