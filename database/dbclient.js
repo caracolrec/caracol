@@ -79,38 +79,10 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   .then(function(model) {
     console.log('HAHHHAAA', model.id, user_id);
     console.log('finished saving the clipping');
+    console.log('model.id is:', model.id);
     insertUserClipping(user_id, model.id, callback);
-    algorithm.removeHTMLAndTokenize(model.attributes.id);
-  }, function(){
-    console.log('Error saving the clipping');
-    callback(error);
-  });
-
-
-  'id',  'user_id', 'clipping_id',    //'created_at',
-  'vote', 'bookmarkStatus', 'lastBookmarkTime',
-  'lastVoteTime' 
-
-  //check: user_clipping already exists?
-  new tables.User_Clipping({
-    title: json.title,
-    content: json.content,
-    uri: json.url,
-    word_count: json.word_count,
-    first_insert: dateTransform(new Date().toISOString()),
-    total_pages: json.total_pages,
-    date_published: json.date_published,
-    dek: json.dek,
-    lead_image_url: json.lead_image_url,
-    next_page_id: json.next_page_id,
-    rendered_pages: json.rendered_pages
-  })
-  .save()
-  .then(function(model) {
-    console.log('finished saving the clipping');
-    callback(null, model.id);
     algorithm.removeHTMLAndTokenize(model.id);
-  }, function(){
+  }, function(error){
     console.log('Error saving the clipping');
     callback(error);
   });
@@ -123,10 +95,11 @@ var insertUserClipping = function(user_id, clipping_id, callback){
   })
   .save()
   .then(function(model){
-    console.log('success to the user clipping table:', model.attributes);
-    callback(null, model.attributes.clipping_id);
+    console.log('success inserting into the user clipping table', model);
+    callback(null, clipping_id);
   }, function(error){
-    console.log('error adding to user_clippings', error);
+    console.log('error adding to user_clippings');
+    callback(error);
   });
 };
 

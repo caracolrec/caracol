@@ -5,9 +5,9 @@ angular.module('caracolApp.services')
       console.log('lastId is:', lastId);
       var d = $q.defer();
       if (clippings_or_recs === 'clippings') {
-        var route = '/fetchMyClippings';
+        var route = '/fetchmyclippings';
       } else if (clippings_or_recs === 'recs') {
-        var route = '/fetchMyRecommendations';
+        var route = '/fetchmyrecommendations';
       }
       $http.get(route, {
         params: {
