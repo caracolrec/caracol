@@ -63,7 +63,13 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      files: ['*.js', 'routes/*.js'],
+      files: ['*.js',
+      'routes/*.js',
+      'client/**/**/*.js',
+      'public/scripts/**/*.js',
+      'config/*.js',
+      'controllers/*.js',
+      'database/*.js'],
       options: {
         curly: true,
         eqeqeq: true,
@@ -80,6 +86,12 @@ module.exports = function(grunt) {
         node: true,
         globals: {
           jQuery: true,
+          angular: true,
+          $: true,
+          services: true,
+          controllers: true,
+          directives: true,
+          passport: true
         }
       },
       gruntfile: {
@@ -168,6 +180,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
+
 
 //Bootstrap routes
 require('./config/routes')(app, passport, auth);

@@ -1,2 +1,3 @@
-.main{position:absolute;margin:auto auto;text-align:center;z-index:1;opacity:1;background:-moz-linear-gradient(top,#c5772d 0%,#c4854a 100%);background:-webkit-linear-gradient(top,#c5772d 0%,#c4854a 100%);background:-o-linear-gradient(top,#c5772d 0%,#c4854a 100%)}
-.main button{background-color:#529bbb;margin:7px 7px}
+.main{position:absolute;margin:auto auto;text-align:center;z-index:1;opacity:1;background:-moz-linear-gradient(top,#b5bdc8 0%,#828c95 0%,#28343b 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#b5bdc8),color-stop(0%,#828c95),color-stop(100%,#28343b));background:-webkit-linear-gradient(top,#b5bdc8 0%,#828c95 0%,#28343b 100%);background:-o-linear-gradient(top,#b5bdc8 0%,#828c95 0%,#28343b 100%);background:-ms-linear-gradient(top,#b5bdc8 0%,#828c95 0%,#28343b 100%);font-size:24px;font-family:'Signika Negative',sans-serif;color:#ff9000}
+.main button{background-color:#ff9000;margin:7px 7px}
+.component,.component .snail{padding-top:5px;padding-bottom:5px;padding-left:25px;width:50px;height:31px;background-image:url("../../../public/images/caracol3.png");background-repeat:no-repeat;background-position:center}

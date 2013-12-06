@@ -10,6 +10,9 @@ angular.module('caracolApp', [
 .config(function ($routeProvider) {
   $routeProvider
     .when('/', {
+      templateUrl: '/views/index.html',
+    })
+    .when('/login', {
       templateUrl: '/views/main.html',
       controller: 'MainCtrl'
     })

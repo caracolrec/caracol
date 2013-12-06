@@ -3,14 +3,15 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.js"></script>
     <script src="bookmarklet/dependencies" type="text/javascript"></script>
-    <script src="dist/bookmarklet/bookmarkletApp.js" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Signika+Negative:700' rel='stylesheet' type='text/css'>
     <link href="dist/bookmarklet/caracol.css" rel="stylesheet"></link>
   </head>
   <body ng-app="app" class="main">
     <div ng-controller="VoteCtrl">
-      <div>Welcome to Caracol</div>
-      <div>Your neighborhood long-form recommendation engine</div>
-      <div>:)</div>
+      <div class="title">
+        <a href=​"#" class=​"component snail">​</a>​
+        <span class="component">Caracol</span>
+      </div>
       <button class="topcoat-button" ng-click="vote(1)" ng-show="!voted">Upvote</button>
       <button class="topcoat-button" ng-click="vote(0)" ng-show="!voted">Downvote</button>
       <button class="topcoat-button" ng-click="revert('like')" ng-show="like && voted">Successfully Upvoted</button>
