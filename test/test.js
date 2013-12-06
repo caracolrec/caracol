@@ -9,7 +9,7 @@ var token = process.env.APPSETTING_readability_key || require('../config.js').to
 
 describe('GET', function(){
   describe('#parser()', function(){
-    it('should return a parsed article', function(){
+    it('should serve up a file', function(){
       
     });
   });

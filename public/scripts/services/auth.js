@@ -2,11 +2,12 @@ angular.module('caracolApp.services')
 .factory('AuthService', ['$q', '$http', function($q, $http) {
   var service = {
 
-    signup: function(username) {
+    signup: function(username, password) {
       var d = $q.defer();
       $http.post('/signup', {
         params: {
-          username: username
+          username: username,
+          password: password
         }
       })
       .success(function(data, status) {
@@ -20,11 +21,12 @@ angular.module('caracolApp.services')
       return d.promise;
     },
 
-    login: function(username) {
+    login: function(username, password) {
       var d = $q.defer();
       $http.get('/login', {
         params: {
-          username: username
+          username: username,
+          password: password
         }
       })
       .success(function(data, status) {

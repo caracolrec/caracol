@@ -4,7 +4,7 @@ angular.module('caracolApp.controllers')
   $scope.signedIn = false;
 
   $scope.login = function(){
-    AuthService.login($scope.user.signin)
+    AuthService.login($scope.user.loginUser, $scope.user.userPassword)
     .then(function(data){
       console.log('loggin in', data);
       storage.set('caracolID', data.user_id);
@@ -13,7 +13,7 @@ angular.module('caracolApp.controllers')
   };
 
   $scope.createNewUser = function(){
-    AuthService.signup($scope.user.signUp)
+    AuthService.signup($scope.user.username, $scope.user.password)
     .then(function(data){
       storage.set('caracolID', data.id);
       console.log('created username', data.id);

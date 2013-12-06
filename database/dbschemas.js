@@ -7,21 +7,33 @@ var User,
     Recommendation,
     Recommendations,
     express = require('express'),
-    caracolPG = require('./dbsetup.js').caracolPG;
+    caracolPG = require('./dbsetup.js').caracolPG,
+    crypto = require('crypto'),
+    Validator = require('validator').Validator,
+    bcrypt = require('bcrypt'),
+    when = require('when'),
+    nodefn = require('when/node/function');
+
+
 
 // require validator
 
 // see https://github.com/michaelmunson1/Ghost/blob/master/core/server/models/post.js    
 // we begin by writing individual models - if overlap is substantial, refactor out a base.js
 
-// Also - write tests for basic functionality.  <-----
+// Also - write tests for basic functionality.  
+var validator = new Validator();
+var validatePasswordLength = function(password) {
+  
+};
 
 User = caracolPG.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
   
   permittedAttributes: [
-    'id',  'username', 'isMember', 'joinedDate',  //'passwordSALT'
+  //TODO: add hashed_password to User tabel in database
+    'id',  'username', 'isMember', 'joinedDate',  'passwordSALT', 'hashed_password'
   ],
 
   //patterned after ghost's post.js - ll 33-38 - http://goo.gl/7KjRR0
@@ -58,6 +70,40 @@ User = caracolPG.Model.extend({
     //TO DO
   },
 
+  makeSalt: function(){
+    return Math.round((new Date().valueOf() * Math.random())) + '';
+  },
+  
+  encryptPassword: function(password, salt){
+    if (!password) return '';
+    salt = salt || this.makeSalt();
+    var hashed_password = crypto.createHmac('sha1', salt).update(password).digest('hex');
+    return {passwordSALT: salt, hashed_password: hashed_password};
+  },
+  
+  check: function(userdata){
+    //TODO auth with email
+    this.forge({username: userdata.username}).fetch()
+    .then(function(user){
+      if (!user){
+        //TODO and we communicate this to the user like how?
+        throw 'error: that username does not exist';
+      } else {
+        if (encryptPassword(userdata.password, user.passwordSALT) === user.hashed_password){
+          console.log('party on wayne');
+        } else {
+          throw 'error: incorrect password';
+        }
+      }
+    })
+    .then(function(){
+      return encryptPassword(userdata.password);
+    }).then(function(hash){
+      userdata.password = hash.hashed_password;
+      userdata.passwordSALT = hash.passwordSALT;
+    });
+  },
+
   // account: function(){
 
   // },
@@ -77,7 +123,9 @@ User = caracolPG.Model.extend({
 
 });
 
+var a = new User();
 
+console.log(a.encryptPassword('target'));
 
 
 Clipping = caracolPG.Model.extend({

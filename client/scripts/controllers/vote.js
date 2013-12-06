@@ -1,4 +1,3 @@
-var controllers = angular.module('app.controllers', []);
 controllers.controller('VoteCtrl', function($scope, VoteService, storage){
   $scope.voted = false;
 

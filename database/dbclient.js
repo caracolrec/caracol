@@ -16,14 +16,26 @@ var dateTransform = function(ISOdatetime) {
 };
 
 exports.createUser = createUser = function(json, callback){
-  new tables.User({username: json.username})
-  .save()
+  //TODO do not allow duplicate names to be inserted
+  var a = new tables.User();
+  _.extend(json, a.encryptPassword(json.password));
+  new tables.User()
+  .query()
+  .where({username: json.username.toLocaleLowerCase})
   .then(function(model){
-    console.log('whoa we saved a user', model.attributes);
-    callback(null, model.attributes);
+    //TODO throw a real error here
+    console.log(model);
+    return;
   }, function(){
-    console.log('not so fast little man');
-    callback(error);
+    new tables.User({username: json.username.toLocaleLowerCase(), passwordSALT: json.passwordSALT, hashed_password: json.hashed_password})
+    .save()
+    .then(function(model){
+      console.log('whoa we saved a user', model.attributes);
+      callback(null, model.attributes);
+    }, function(res){
+      console.log('not so fast little man', res);
+      callback(error);
+    });
   });
 };
 
@@ -65,9 +77,10 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   })
   .save()
   .then(function(model) {
+    console.log('HAHHHAAA', model.id, user_id);
     console.log('finished saving the clipping');
     insertUserClipping(user_id, model.id, callback);
-    algorithm.removeHTMLAndTokenize(model.id);
+    algorithm.removeHTMLAndTokenize(model.attributes.id);
   }, function(){
     console.log('Error saving the clipping');
     callback(error);
@@ -110,10 +123,10 @@ var insertUserClipping = function(user_id, clipping_id, callback){
   })
   .save()
   .then(function(model){
-    console.log('success to the user clipping table', model.attributes);
+    console.log('success to the user clipping table:', model.attributes);
     callback(null, model.attributes.clipping_id);
-  }, function(){
-    console.log('error adding to user_clippings');
+  }, function(error){
+    console.log('error adding to user_clippings', error);
   });
 };
 
