@@ -41,7 +41,7 @@ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 
 # Load nvm and install latest production node
 source $HOME/.nvm/nvm.sh
-# If the shell script quits with an error after trying to execute line 18,
-# just reenter the line yourself, and then the following line:
+# If the shell script quits with an error after trying to execute previous line,
+# reenter the line yourself, and then the following line:
 nvm install v0.10.22
 nvm use v0.10.22
