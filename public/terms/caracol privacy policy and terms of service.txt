@@ -1,0 +1,7 @@
+caracol Privacy Policy and Terms of Service
+
+"caracol" shall refer herein to the website http://caracol.cloudapp.net, the bookmarklet provided on that website, and the underlying source code.
+
+Privacy. This website (http://caracol.cloudapp.net) and the bookmarklet provided herein are in a developmental stage. As a result, no representation is made as to the privacy or security of users' data; the user assumes all risk and responsibility in exchanging information with caracol.
+
+Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any of the providers or authors of caracol be liable to you or any third party for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of your use of caracol.
