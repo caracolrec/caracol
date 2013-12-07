@@ -1,4 +1,8 @@
 (function() {
+  // if $('.caracolBookmarklet') {
+  //   //change hide value to false
+  //   alert('its here');
+  // }
   if (window.location.hostname !== 'caracol.cloudapp.net'){
     $('body').prepend('<div class="caracolBookmarklet"' +
       'style="position:fixed;height:0px;width: 100%;' +
