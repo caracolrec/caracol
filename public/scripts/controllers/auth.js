@@ -1,5 +1,6 @@
 angular.module('caracolApp.controllers')
-.controller('LoginCtrl', function($scope, $location, AuthService, storage) {
+.controller('LoginCtrl', function($rootScope, $scope, $location, AuthService, storage) {
+  $rootScope.active = [false, false];
   $scope.user = {};
   $scope.signedIn = false;
 
