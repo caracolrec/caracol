@@ -6,6 +6,7 @@ node_modules/
 .DS_Store
 config.js
 dbconfig.json
+python.json
 npm-debug.log
 dbCredentials.txt
 serverLogFile.log
