@@ -12,6 +12,9 @@ logging.basicConfig()
 # Open connection to the database
 credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/dbconfig.json"))))
 
+# Import config for Python server
+pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/python.json"))))
+
 class RPC(object):
 
 
@@ -113,5 +116,5 @@ print corpus
 
 
 s = zerorpc.Server(RPC())
-s.bind("tcp://0.0.0.0:4242")
+s.bind("tcp://" + pyserver.host + ":" + str(pyserver.port))
 s.run()
