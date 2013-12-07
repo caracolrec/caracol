@@ -11,10 +11,11 @@ angular.module('caracolApp', [
   $routeProvider
     .when('/', {
       templateUrl: '/views/index.html',
+      controller: 'MainCtrl'
     })
     .when('/login', {
-      templateUrl: '/views/main.html',
-      controller: 'MainCtrl'
+      templateUrl: '/views/login.html',
+      controller: 'LoginCtrl'
     })
     .when('/clippings', {
      templateUrl: '/views/clippings.html',
@@ -27,4 +28,13 @@ angular.module('caracolApp', [
     .otherwise({
       redirectTo: '/'
     });
+})
+.run(function($rootScope, $location, AuthService) {
+  $rootScope.$on("$routeChangeStart", function(evt, next, current) {
+      if (!AuthService.isAuthenticated() &&
+          next.controller !== "LoginCtrl"
+        ) {
+          $location.path('/login');
+      }
+  });
 });

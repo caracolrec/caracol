@@ -26,4 +26,5 @@
 .bookmarkletText{line-height:20px;padding-top:5px;padding-bottom:5px;padding-right:5px}
 .username{padding:5px}
 .signOutText{padding:5px}
-.signIn{background-color:#00aced;color:#fff;padding:5px 9px}
+.signInButton{background-color:#00aced;color:#fff;padding:5px 9px}
+.signIn,.signUp{display:inline}
