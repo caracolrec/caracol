@@ -14,6 +14,7 @@ credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file
 
 # Import config for Python server
 pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/python.json"))))
+print pyserver
 
 class RPC(object):
 
@@ -116,5 +117,5 @@ print corpus
 
 
 s = zerorpc.Server(RPC())
-s.bind("tcp://" + pyserver.host + ":" + pyserver.port)
+s.bind("tcp://" + pyserver["host"] + ":" + pyserver["port"])
 s.run()
