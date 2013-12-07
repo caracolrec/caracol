@@ -5,7 +5,7 @@ angular.module('caracolApp.controllers')
   $scope.signedIn = false;
 
   $scope.login = function(){
-    AuthService.login($scope.user.loginUser, $scope.user.userPassword)
+    AuthService.login($scope.user.loginUser, $scope.user.loginPassword)
     .then(function(data){
       AuthService.setAuthenticated(data.user_id);
       console.log('loggin in', data);
@@ -21,7 +21,8 @@ angular.module('caracolApp.controllers')
   }
 
   $scope.signup = function() {
-    AuthService.signup($scope.user.loginUser, $scope.user.userPassword)
+    console.log('$scope.user before signup attempt:', $scope.user);
+    AuthService.signup($scope.user.signUpUsername, $scope.user.signUpPassword)
     .then(function(data){
       AuthService.setAuthenticated(data.user_id);
       console.log('signed up:', data);

@@ -14,20 +14,24 @@ module.exports = function(app, passport, auth) {
     var params;
 
     app.post('/signup', function(req, res){
-      console.log(req.body);
+      console.log('signup request looks like:', req.body);
       async.waterfall([
         function(callback) {
-          dbClient.createUser(req.body, callback);
+          dbClient.createUser(req.body.params, callback);
         },
         function(userInfo, callback) {
           console.log('sending up new user_id', userInfo);
           res.send(userInfo);
           callback(null);
         }
-      ]);
+      ], function(error) {
+        if (error) {
+          res.send(409, error);
+        }
+      });
     });
 
-    app.get('/login', function(req, res){
+    app.post('/login', function(req, res){
       console.log(req.query.username);
       async.waterfall([
         function(callback) {
