@@ -68,8 +68,8 @@ html,body{height:100%}
 .footer{background-color:#f8f8f8}
 .footerNavLeft{float:left}
 .footerNavRight{float:right}
-.footerEntity,.copyright{font-size:12px;display:inline-block;padding:5px 0 5px 20px}
-.copyright{padding:5px 20px 5px 0}
+.footerEntity,.copyright{font-size:12px;display:inline-block;padding:5px 0 5px 15px}
+.copyright{padding:5px 15px 5px 0}
 .submitButton{background-color:#f8f8f8;border:1px solid #d0d0d0}
 .blurb{font-size:20px;font-weight:200}
 .landingSignIn.btn-primary{background-color:#00aced;background-image:none}

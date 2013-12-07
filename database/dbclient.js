@@ -27,24 +27,23 @@ var insertUserClipping = function(user_id, clipping_id, callback){
 };
 
 exports.createUser = createUser = function(json, callback){
-  //TODO do not allow duplicate names to be inserted
-  var a = new tables.User();
-  _.extend(json, a.encryptPassword(json.password));
-  new tables.User()
-  .query()
-  .where({username: json.username.toLocaleLowerCase})
+  console.log('json looks like:', json);
+  var newUser = new tables.User({username: json.username.toLocaleLowerCase()});
+  _.extend(json, newUser.encryptPassword(json.password));
+  newUser
+  .fetch({require: true})
   .then(function(model){
-    //TODO throw a real error here
-    console.log(model);
-    return;
-  }, function(){
-    new tables.User({username: json.username.toLocaleLowerCase(), passwordSALT: json.passwordSALT, hashed_password: json.hashed_password})
+    console.log('results of username lookup:', model);
+    callback('username already exists');
+  }, function(err){
+    console.log('no user by that username found, so lets create one');
+    newUser
     .save()
     .then(function(model){
-      console.log('whoa we saved a user', model.attributes);
+      console.log('user successfully saved:', model.attributes);
       callback(null, model.attributes);
     }, function(error){
-      console.log('not so fast little man', error);
+      console.log('error creating new user:', error);
       callback(error);
     });
   });
