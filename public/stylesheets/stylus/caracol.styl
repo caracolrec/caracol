@@ -1,6 +1,16 @@
+html, body
+  height: 100%
+
 @media (min-width: 980px)
   body
-    padding-top: 50px
+    padding-top: 60px;
+
+@media (max-width: 767px)
+  .footer
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
 
 @media(max-width 979px)
   .carousel .item
@@ -231,12 +241,16 @@
   background-repeat: no-repeat;
   background-position: center;
 
-.bookmarkletImage
-  display: inline
+.bookmarkletButton
+  height: 30px
+
+.bookmarkletImageContainer
+  display: inline-block
   height: 20px
-  padding: 5px
+  padding: 5px 5px
 
 .bookmarkletText
+  display: inline-block
   line-height: 20px
   padding-top: 5px
   padding-bottom: 5px
@@ -255,6 +269,36 @@
 
 .signIn, .signUp
   display: inline
+
+.wrapper
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -30px;
+
+.push, .footer
+  height: 30px
+
+.footer
+  background-color: #f8f8f8
+
+.footerNavLeft
+  float: left
+
+.footerNavRight
+  float: right
+
+.footerEntity, .copyright
+  font-size: 12px
+  display: inline-block
+  padding: 5px 0 5px 40px
+
+.copyright
+  padding: 5px 40px 5px 0
+
+.submitButton
+  background-color: #f8f8f8
+  border: 1px solid #d0d0d0
 
 
 // 0H11Tw0w0w0w0

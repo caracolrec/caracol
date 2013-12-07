@@ -55,7 +55,22 @@ angular.module('caracolApp.services')
         d.reject(error);
       });
       return d.promise;
-    }
+    },
+
+    logout: function(user) { // user_id, or username?
+      var d = $q.defer();
+      $http.post('/logout', {
+        params: {
+          username: user
+        }
+      })
+      .success(function(data) {
+        d.resolve(data);
+      }).error(function(data) {
+        d.reject(data);
+      })
+      return d.promise;
+    } 
   };
   return service;
 }]);

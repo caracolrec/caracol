@@ -15,6 +15,10 @@ angular.module('caracolApp.controllers')
     });
   };
 
+  $scope.logout = function() {
+    
+  }
+
   $scope.signup = function() {
     AuthService.signup($scope.user.loginUser, $scope.user.userPassword)
     .then(function(data){
@@ -24,7 +28,7 @@ angular.module('caracolApp.controllers')
       console.log('error signing up:', err);
       $scope.user.error = err;
     })
-  }
+  };
 
   $scope.createNewUser = function(){
     AuthService.signup($scope.user.username, $scope.user.password)
