@@ -6,7 +6,7 @@ button{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:2em;pad
 .title{padding-top:5%;padding-bottom:1%}
 .hide{position:absolute;top:3%;right:3%}
 .caracolContainer button:first-child{padding:1.5% 3%;margin:0;font-size:.5em;background-color:#28343b;opacity:1}
-.component .snail{padding-top:3%;padding-bottom:2%;padding-left:10%;width:35%;height:25%;background-repeat:no-repeat;background-position:center;opacity:1}
+.component .snail{height:auto;width:auto;padding-top:3%;padding-bottom:2%;padding-left:10%;width:35%;height:25%;background-image:url("../../../public/images/caracol3.png");background-repeat:no-repeat;background-position:center;opacity:1}
 .caracolContainer button:first-child:hover{background-color:#ffeed8;color:#f15a24}
 @media screen and (min-width: 200px){body{position:relative;width:200px;background:transparent;float:right;margin-right:3%}
 .caracolContainer{background-size:100% 200px}
