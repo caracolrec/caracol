@@ -119,7 +119,7 @@ module.exports = function(grunt) {
         tasks: ['stylus']
       },
       concat: {
-        files: ['client/**/**/*.js', 'dist/bookmarklet/caracol.css', 'client/partials/home.html'],
+        files: ['client/**/**/*.js', 'dist/bookmarklet/caracol.css', 'public/stylesheets/bookmarklet.css', 'client/partials/home.html'],
         tasks: ['concat']
       }
       //tests not integrated with watch

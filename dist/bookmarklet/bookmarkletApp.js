@@ -83,6 +83,10 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootS
     !!vote ? ($scope.like = true) : ($scope.dislike = true);
   };
 
+  $scope.hide = function(){
+    $rootScope.hide = true;
+  };
+
   $scope.vote = function(vote){
     //grabs uri and vote status
     var clipping_id;
@@ -99,15 +103,25 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootS
     VoteService.vote(user_id, vote, clipping_id);
     $scope.log(vote);
     $scope.voted = true;
+    console.log('wut');
+    setTimeout(function(){
+      console.log('tuw');
+      $rootScope.hide = true;
+      return $rootScope.hide;
+    }, 1000);
   };
+  
+  $scope.slowHide = function(){
+    setTimeout(function(){
+      $scope.hide();
+    }, 500);
+  };
+
   $scope.revert = function(preference){
     $scope.voted = false;
     $scope[preference] = false;
   };
 
-  $scope.hide = function(){
-    $rootScope.hide = true;
-  };
 });
 
 var directives = angular.module('app.directives', []);
