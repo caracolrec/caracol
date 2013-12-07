@@ -28,20 +28,20 @@ angular.module('caracolApp.services')
     },
     massage: function(data) {
       for (var i = 0; i < data.length; i++) {
-        data[i].content_sans_html = data[i].content_sans_html || '';
+        data[i].content_sans_html = data[i].clipping.content_sans_html || '';
         data[i].displayedExcerpt = data[i].content_sans_html.slice(0,250) + ' ...';
         data[i].elegantDate = service.elegantizeTimestamp(data[i]);
       }
       return data;
     },
     elegantizeTimestamp: function(article) {
-      var numMilliseconds = new Date().getTime() - Date.parse(article.first_insert);
+      var numMilliseconds = new Date().getTime() - Date.parse(article.clipping.first_insert);
       var numSeconds = numMilliseconds/1000;
       var numMinutes = numSeconds/60;
       var numHours = numMinutes/60;
       if (numHours >= 24) {
-        var month = article.first_insert.slice(5,7);
-        var day = article.first_insert.slice(8,10);
+        var month = article.clipping.first_insert.slice(5,7);
+        var day = article.clipping.first_insert.slice(8,10);
         if (day[0] === '0') {
           day = day[1];
         }

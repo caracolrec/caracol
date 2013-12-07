@@ -24,8 +24,10 @@ angular.module('caracolApp.controllers')
     console.log('$scope.user before signup attempt:', $scope.user);
     AuthService.signup($scope.user.signUpUsername, $scope.user.signUpPassword)
     .then(function(data){
-      AuthService.setAuthenticated(data.user_id);
+      AuthService.setAuthenticated(data.id);
       console.log('signed up:', data);
+      $location.path('#/clippings');
+      console.log('current user is:', AuthService.currentUser);
     }, function(err) {
       console.log('error signing up:', err);
       $scope.user.error = err;
