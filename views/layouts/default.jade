@@ -1,0 +1,30 @@
+!!! 5
+html(lang='en', xmlns='http://www.w3.org/1999/xhtml', xmlns:fb='https://www.facebook.com/2008/fbml', itemscope='itemscope', itemtype='http://schema.org/Product')
+  include ../includes/head
+  body(ng-app='caracolApp')
+    .navbar.navbar-fixed-top#top
+    .navbar-inner
+      .navContainer
+        // .btn-navbar is used as the toggle for collapsed navbar content 
+        a.btn.btn-navbar(ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed")
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        // Be sure to leave the brand out there if you want it shown 
+        a.brandImage.pull-left(href='#')
+        a.brand.pull-left(href='#') caracol
+        // Everything you want hidden at 940px or less, place within here 
+        .nav-collapse.collapse(collapse="isCollapsed")
+          // .nav, .navbar-search, .navbar-form, etc 
+          ul.nav.pull-right
+            li(ng-class='{active: active[0]}')
+              a.buttonContainer.clipNavButton(href='#/clippings')
+                .navButtonText My Clippings
+            li(ng-class='{active: active[1]}')
+              a.buttonContainer.recNavButton(href='#/recommendations')
+                .navButtonText Recommendations
+    section.content
+      section.container
+        block content
+          container.(ng-view='')
+    include ../includes/foot
