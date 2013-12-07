@@ -33,6 +33,8 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootS
     }, 1000);
   };
   
+  // $('.caracolBookmarklet').remove();
+
   $scope.slowHide = function(){
     setTimeout(function(){
       $scope.hide();

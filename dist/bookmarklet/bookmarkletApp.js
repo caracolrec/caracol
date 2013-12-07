@@ -14,6 +14,7 @@ app.run(function($q, $http, $rootScope, UploadService,storage){
 
   UploadService.sendToURI(uri, user_id)
   .then(function(data){
+    console.log('clipping_id', data);
     
     //this grabs the bookmarklets parent url
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
@@ -111,6 +112,8 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootS
     }, 1000);
   };
   
+  // $('.caracolBookmarklet').remove();
+
   $scope.slowHide = function(){
     setTimeout(function(){
       $scope.hide();
