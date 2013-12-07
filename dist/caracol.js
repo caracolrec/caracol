@@ -47,7 +47,11 @@ module.exports = function(grunt) {
           'dist/bookmarklet/script.js': ['client/*.js'],
           'dist/bookmarklet/bookmarkletApp.js': ['client/scripts/*.js', 'client/scripts/services/*.js', 'client/scripts/controllers/*.js','client/scripts/directives/*.js'],
           'dist/bookmarklet/templates/home.html': ['client/partials/home.html'],
-          'dist/bookmarklet/caracol.css': ['public/stylesheets/lib/topcoat-desktop-dark.css','public/stylesheets/bookmarklet.css']
+          'dist/bookmarklet/caracol.css': ['public/stylesheets/lib/topcoat-desktop-dark.css', 'public/stylesheets/lib/style.css','public/stylesheets/bookmarklet.css'],
+          'dist/bookmarklet/fonts/caracol.eot': ['public/stylesheets/lib/fonts/caracol.eot'],
+          'dist/bookmarklet/fonts/caracol.svg': ['public/stylesheets/lib/fonts/caracol.svg'],
+          'dist/bookmarklet/fonts/caracol.ttf': ['public/stylesheets/lib/fonts/caracol.ttf'],
+          'dist/bookmarklet/fonts/caracol.woff': ['public/stylesheets/lib/fonts/caracol.woff']
         }
       }
     },
@@ -58,7 +62,8 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>'],
-          'dist/bookmarklet.js': ['client/bookmarklet.js']
+          'dist/bookmarklet.js': ['client/bookmarklet.js'],
+
         }
       }
     },
@@ -110,8 +115,12 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       stylus: {
-        files: 'public/stylesheets/stylus/*.styl',
+        files: ['public/stylesheets/stylus/bookmarklet/*.styl'], 
         tasks: ['stylus']
+      },
+      concat: {
+        files: ['client/**/**/*.js', 'dist/bookmarklet/caracol.css', 'client/partials/home.html'],
+        tasks: ['concat']
       }
       //tests not integrated with watch
       // lib_test: {

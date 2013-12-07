@@ -1,6 +1,5 @@
-controllers.controller('VoteCtrl', function($scope, VoteService, storage){
+controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootScope){
   $scope.voted = false;
-  $scope.hideBookmarklet = false;
 
   $scope.log = function(vote){
     !!vote ? ($scope.like = true) : ($scope.dislike = true);
@@ -26,5 +25,9 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage){
   $scope.revert = function(preference){
     $scope.voted = false;
     $scope[preference] = false;
+  };
+
+  $scope.hide = function(){
+    $rootScope.hide = true;
   };
 });

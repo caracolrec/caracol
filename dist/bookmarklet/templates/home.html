@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.js"></script>
     <script src="bookmarklet/dependencies" type="text/javascript"></script>
-    <link href='http://fonts.googleapis.com/css?family=Signika+Negative:700' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Signika+Negative:700" rel="stylesheet" type="text/css">
     <link href="dist/bookmarklet/caracol.css" rel="stylesheet"></link>
+
   </head>
-  <body ng-app="app" class="caracolContainer">
+  <body ng-app="app" class="caracolContainer" ng-hide="hide">
     <div ng-controller="VoteCtrl" div="component">
-      <button class="topcoat-button hide" ng-click="hideBookmark = !hidebookmark">Hide</button>
+      <span class="icon-remove-sign hide" ng-click="hide()"></span>
       <div class="title">
         <img class=​"snail" src="images/caracol3.png">​</span>​
         <span>Caracol</span>

@@ -1,9 +1,10 @@
-.caracolContainer{position:relative;height:115px;width:100%;text-align:center;margin:0 0;z-index:1;opacity:1;background:#28343b;font-size:24px;font-family:'Signika Negative',sans-serif;color:#ff9000}
+@media screen and (max-width: 10000px){.caracolContainer{position:relative;height:100%;width:100%;text-align:center;margin:0 0;z-index:1;opacity:1;background:#28343b;font-size:1.5em;font-family:'Signika Negative',sans-serif;color:#f15a24}
 button{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}
-.caracolContainer button{background-color:#ff9000;color:#ffeed8;text-shadow:none;margin:7px 7px}
-.caracolContainer button:hover{background-color:#ffeed8;color:#ff9000;text-shadow:none}
-.caracolMain{height:115px;width:100%;margin:0 0}
-.title{padding-top:10px;padding-bottom:5px}
-.hide{position:absolute;top:5px;left:5px}
+.caracolContainer button{background-color:#f15a24;color:#ffeed8;text-shadow:none;margin:3% 3%}
+.caracolContainer button:hover{background-color:#ffeed8;color:#f15a24;text-shadow:none}
+.caracolMain{height:100%;width:100%;margin:0 0}
+.title{padding-top:5%;padding-bottom:3%}
+.hide{position:absolute;top:3%;right:3%}
 .component{height:115px}
-.component .snail{padding-top:5px;padding-bottom:5px;padding-left:25px;width:50px;height:31px;background-repeat:no-repeat;background-position:center}
+.component .snail{padding-top:3%;padding-bottom:3%;padding-left:10%;width:35%;height:25%;background-repeat:no-repeat;background-position:center}
+}

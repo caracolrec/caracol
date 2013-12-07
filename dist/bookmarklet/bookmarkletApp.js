@@ -10,6 +10,7 @@ app.run(function($q, $http, $rootScope, UploadService,storage){
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
   var uri = encodeURIComponent(url);
   var user_id = storage.get('caracolID');
+  $rootScope.hide = false;
 
   UploadService.sendToURI(uri, user_id)
   .then(function(data){
@@ -75,9 +76,8 @@ services.factory('VoteService', function($q, $http) {
 
 var controllers = angular.module('app.controllers', []);
 
-controllers.controller('VoteCtrl', function($scope, VoteService, storage){
+controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootScope){
   $scope.voted = false;
-  $scope.hideBookmarklet = false;
 
   $scope.log = function(vote){
     !!vote ? ($scope.like = true) : ($scope.dislike = true);
@@ -103,6 +103,10 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage){
   $scope.revert = function(preference){
     $scope.voted = false;
     $scope[preference] = false;
+  };
+
+  $scope.hide = function(){
+    $rootScope.hide = true;
   };
 });
 
