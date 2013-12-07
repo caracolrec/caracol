@@ -1,4 +1,4 @@
-![logo](https://raw.github.com/michaelmunson1/caracol/master/public/images/caracol3.png)&nbsp;[caracol](http://caracol.cloudapp.net/) - Tailored recommendation for communities
+![logo](https://raw.github.com/michaelmunson1/caracol/master/public/images/caracol3.png)&nbsp;[caracol](http://caracol.cloudapp.net/) - a recommendation engine for longform articles
 =================================================================================
 
 ## Table of Contents
@@ -93,10 +93,42 @@ Testing:
 
 ##<a name="team"></a>Team
 
-* Adam Witzel <email@email.com>
+* Adam Witzel
+    * Personal site: <http://adamwitzel.azurewebsites.net>
+    * Email: <adam.witzel@gmail.com>
+    * Github: <https://github.com/adwitz>
 * Rick Cerf <email@email.com>
-* Michael Munson <email@email.com>
-* Ian Hinsdale <ian@ianhinsdale.com>
+    * Personal site: <http://www.rcerf.com>
+    * Email: <rickcerf@gmail.com>
+    * Github: <https://github.com/rcerf>
+* Michael Munson
+    * Email: <michaelmunson1@gmail.com>
+    * Github: <https://github.com/michaelmunson1>
+* Ian Hinsdale
+    * Personal site: <http://www.ianhinsdale.com>
+    * Email: <ian@ianhinsdale.com>
+    * Github: <https://github.com/ihinsdale>
 
 ##<a name="license"></a>License
+The MIT License (MIT)
+
+Copyright (c) 2013 Adam Witzel, Rick Cerf, Michael Munson, Ian Hinsdale
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
