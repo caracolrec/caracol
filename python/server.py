@@ -116,5 +116,5 @@ print corpus
 
 
 s = zerorpc.Server(RPC())
-s.bind("tcp://" + pyserver.host + ":" + str(pyserver.port))
+s.bind("tcp://" + pyserver.host + ":" + pyserver.port)
 s.run()
