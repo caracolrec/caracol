@@ -10,9 +10,11 @@ app.run(function($q, $http, $rootScope, UploadService,storage){
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
   var uri = encodeURIComponent(url);
   var user_id = storage.get('caracolID');
+  $rootScope.hide = false;
 
   UploadService.sendToURI(uri, user_id)
   .then(function(data){
+    console.log('clipping_id', data);
     
     //this grabs the bookmarklets parent url
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;

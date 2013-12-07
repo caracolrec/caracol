@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.js"></script>
     <script src="bookmarklet/dependencies" type="text/javascript"></script>
-    <link href='http://fonts.googleapis.com/css?family=Signika+Negative:700' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Signika+Negative:700" rel="stylesheet" type="text/css">
     <link href="dist/bookmarklet/caracol.css" rel="stylesheet"></link>
+
   </head>
-  <body ng-app="app" class="main">
-    <div ng-controller="VoteCtrl">
-      <div class="title">
-        <a href=​"#" class=​"component snail">​</a>​
-        <span class="component">Caracol</span>
+  <body ng-app="app" ng-hide="hide">
+    <div class="caracolContainer">
+      <div ng-controller="VoteCtrl" div="component">
+        <button class="topcoat-button--quiet hide" ng-click="hide()">X</button>
+        <div class="title">
+          <img class=​"snail" src="images/caracol3.png">​</span>​
+        </div>
+        <button class="topcoat-button" ng-click="vote(1); slowHide()" ng-show="!voted">Upvote</button>
+        <button class="topcoat-button" ng-click="vote(0); slowHide()" ng-show="!voted">Downvote</button>
+        <button class="topcoat-button" ng-click="revert('like')" ng-show="like && voted">Successfully Upvoted</button>
+        <button class="topcoat-button" ng-click="revert('dislike')" ng-show="dislike && voted">Successfully Downvoted</button>
       </div>
-      <button class="topcoat-button" ng-click="vote(1)" ng-show="!voted">Upvote</button>
-      <button class="topcoat-button" ng-click="vote(0)" ng-show="!voted">Downvote</button>
-      <button class="topcoat-button" ng-click="revert('like')" ng-show="like && voted">Successfully Upvoted</button>
-      <button class="topcoat-button" ng-click="revert('dislike')" ng-show="dislike && voted">Successfully Downvoted</button>
     </div>
   </body>
 </html>
