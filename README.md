@@ -93,10 +93,21 @@ Testing:
 
 ##<a name="team"></a>Team
 
-* Adam Witzel <email@email.com>
+* Adam Witzel
+    * Personal site: <http://adamwitzel.azurewebsites.net>
+    * Email: <adam.witzel@gmail.com>
+    * Github: <https://github.com/adwitz>
 * Rick Cerf <email@email.com>
-* Michael Munson <email@email.com>
-* Ian Hinsdale <ian@ianhinsdale.com>
+    * Personal site: <http://www.rcerf.com>
+    * Email: <rickcerf@gmail.com>
+    * Github: <https://github.com/rcerf>
+* Michael Munson
+    * Email: <michaelmunson1@gmail.com>
+    * Github: <https://github.com/michaelmunson1>
+* Ian Hinsdale
+    * Personal site: <http://www.ianhinsdale.com>
+    * Email: <ian@ianhinsdale.com>
+    * Github: <https://github.com/ihinsdale>
 
 ##<a name="license"></a>License
 The MIT License (MIT)
