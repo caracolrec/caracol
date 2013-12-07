@@ -21,6 +21,7 @@ module.exports = function(app, passport, auth) {
         },
         function(userInfo, callback) {
           console.log('sending up new user_id', userInfo);
+          req.session.auth = true;
           res.send(userInfo);
           callback(null);
         }
@@ -42,6 +43,11 @@ module.exports = function(app, passport, auth) {
           callback(null);
         }
       ]);
+    });
+
+    app.post('/logout', function(req, res) {
+      req.session = null;
+      res.send('logged out');
     });
 
     //loads all dependencies and app for bookmarklet
