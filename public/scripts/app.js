@@ -32,7 +32,7 @@ angular.module('caracolApp', [
 .run(function($rootScope, $location, AuthService) {
   $rootScope.$on("$routeChangeStart", function(evt, next, current) {
       if (!AuthService.isAuthenticated() &&
-          next.controller !== "LoginCtrl"
+          next.controller !== "LoginCtrl" && next.controller !== "MainCtrl"
         ) {
           $location.path('/login');
       }
