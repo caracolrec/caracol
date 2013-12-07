@@ -22,6 +22,7 @@ module.exports = function(app, passport, auth) {
         function(userInfo, callback) {
           console.log('sending up new user_id', userInfo);
           req.session.auth = true;
+          req.session.id = userInfo.id;
           res.send(userInfo);
           callback(null);
         }
