@@ -3,9 +3,7 @@ services.factory('VoteService', function($q, $http) {
     vote: function(vote, uri){
       var d = $q.defer();
       $http.post('/vote/'+uri, {
-        vote: vote,
-        user_id: user_id,
-        uri: uri
+        vote: vote
       }, {
         withCredentials: true
       }).success(function(data){

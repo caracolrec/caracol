@@ -219,7 +219,6 @@ module.exports = function(app, passport, auth) {
         //clipping_id: req.params.clipping_id,
         vote: req.body.vote,
         //TODO grab user_id from session
-        user_id: req.body.user_id
       };
       res.end(dbClient.dbVote(params));
     });
