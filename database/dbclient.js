@@ -43,9 +43,7 @@ exports.findUser = findUser = function(json, callback){
 
 exports.dbInsert = dbInsert = function(json, user_id, callback){
   //TODO prevent duplicate clippings by
-  //periodically scanning for duplictes in database
-
-  //check: clipping already exists?
+  //periodically scanning for duplictes in database  <--- or, rather do an index-lookup (on uri or title field) prior to insertion
 
   //if so, capture that clipping id
   //if not, return the new clipping id
@@ -78,7 +76,7 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   'vote', 'bookmarkStatus', 'lastBookmarkTime',
   'lastVoteTime' 
 
-  //check: user_clipping already exists?
+  //check: user_clipping already exists?   
   new tables.User_Clipping({
     title: json.title,
     content: json.content,
