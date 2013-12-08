@@ -19,15 +19,15 @@ module.exports = function(app, passport, auth) {
         function(callback) {
           dbClient.createUser(req.body.params, callback);
         }
-      ], function(error, user_id) {
-        console.log('data', user_id);
+      ], function(error, user) {
+        console.log('data', user);
         if (error) {
           res.send(409, error);
         } else {
-          console.log('sending up new user_id', user_id);
+          console.log('sending up new user_id', user.id);
           req.session.auth = true;
-          req.session.id = user_id;
-          res.send(200, user_id.toString());
+          req.session.id = user.id;
+          res.send(200, user.id.toString());
         }
       });
     });
@@ -38,13 +38,13 @@ module.exports = function(app, passport, auth) {
         function(callback) {
           dbClient.findUser(req.body.params, callback);
         }
-      ], function(error, user_id){
+      ], function(error, user){
         if (error) {
           res.send(500, error);
         } else {
-          req.session.id = user_id;
+          req.session.id = user.id;
           req.session.auth = true;
-          res.send(200, user_id.toString())
+          res.send(200, user.id.toString())
         }
       });
     });
@@ -182,13 +182,13 @@ module.exports = function(app, passport, auth) {
 
     var handleFetching = function(clippings_or_recs, req, res) {
       // improve this checking
-      if (!req.query.user_id || parseInt(req.query.lastId) < 0 || !req.query.batchSize) {
+      if (parseInt(req.query.lastId) < 0 || !req.query.batchSize) {
         res.send(400, 'Poorly formed request')
       // should also add handling for when user is not authorized --> respond with 401
       } else {
         async.waterfall([
           function(callback) {
-            dbClient.fetch(clippings_or_recs, req.query.user_id, parseInt(req.query.lastId), req.query.batchSize, callback);
+            dbClient.fetch(clippings_or_recs, req.session.id, parseInt(req.query.lastId), req.query.batchSize, callback);
           },
           function(clippings, callback) {
             console.log('about to send clippings back to client');

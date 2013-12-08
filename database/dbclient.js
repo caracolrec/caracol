@@ -63,7 +63,10 @@ exports.createUser = createUser = function(json, callback){
     .save()
     .then(function(model){
       console.log('user successfully saved:', model.id);
-      callback(null, model.id);
+      callback(null, {
+        id: model.id,
+        username: model.attributes.username
+      });
     }, function(error){
       console.log('error creating new user:', error);
       callback(error);
@@ -80,7 +83,10 @@ exports.findUser = findUser = function(json, callback){
     console.log('found user');
     var creds = encryptPassword(json.password, model.attributes.password_salt);
     if (model.attributes.hashed_password === creds.hashed_password) {
-      callback(null, model.id);
+      callback(null, {
+        id: model.id,
+        username: model.attributes.username
+      });
     } else {
       callback('incorrect password');
     }

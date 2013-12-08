@@ -22,8 +22,8 @@ angular.module('caracolApp.services')
       return !!service.currentUser;
     },
 
-    setAuthenticated: function(identifier) {
-      service.currentUser = identifier;
+    setAuthenticated: function(data) {
+      service.currentUser = data;
     },
 
     signup: function(username, password) {
