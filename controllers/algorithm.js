@@ -1,15 +1,26 @@
 var zerorpc = require("zerorpc");
-var pyserver =  require("../config/python.json");
 
 var client = new zerorpc.Client();
-client.connect("tcp://" + pyserver.host + ":" + pyserver.port);
+client.connect("tcp://127.0.0.1:4242");
 
-exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId, callback) {
-  client.invoke("remove_html_and_tokenize_clipping_content", clippingId, function(error, res, more) {
-    console.log(res);
-    callback(error, res);
-  });
+exports.processNewArticle = processNewArticle = function(clippingId, userId) {
+//exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId) {
+  return client.invoke("process_new_article", clippingId, function(error, res, more) {
+      console.log(res);
+  });  
 };
+
+
+
+// ASK IAN: why callback passed in as 3rd argument to above?
+
+
+// exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId) {
+//   client.invoke("remove_html_and_tokenize_clipping_content", clippingId, function(error, res, more) {
+//       console.log(res);
+//   });  
+// };
+
 
 // tokenizedClippings = [];
 // first_tokenized = 107 ;

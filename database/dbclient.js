@@ -122,7 +122,8 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
     console.log('finished saving the clipping');
     console.log('model.id is:', model.id);
     insertUserClipping(user_id, model.id, callback);
-    algorithm.removeHTMLAndTokenize(model.id, function(){});
+    //algorithm.removeHTMLAndTokenize(model.id, function(){});
+    return algorithm.processNewArticle(model.id, user_id, function(){});
   }, function(error){
     console.log('Error saving the clipping');
     callback(error);

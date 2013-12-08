@@ -20,6 +20,52 @@ credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file
 pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/python.json"))))
 print pyserver
 
+
+
+def filter(clipping):
+    print "\n\n\n\nbefore:\n\n"
+    print clipping
+    print ":\n\n"
+    #2 deep?
+
+    stopwords = "a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your"
+    stopwords = stopwords.split(",")
+    filtered = [trim(token.lower()) for token in clipping if "\'" not in token and token not in string.punctuation]
+    filtered = [trim(token) for token in filtered if len(token) > 0]
+    filtered = [trim(token) for token in filtered if token not in stopwords]
+
+    #concat = ''.join(filtered)
+
+    tokens_once = frozenset(word for word in filtered if filtered.count(word) == 1)
+    
+
+    #  Run this filter only at the end of corpus processing   <-------<------<-------<-------
+
+
+
+    # print "\n\n T1: \n\n"
+    # print tokens_once
+
+    filtered = [word for word in filtered if word not in tokens_once]
+
+    
+    print "\n\n\n\n\n\nafter:\n\n"
+    print filtered
+    print ":\n\n"
+
+    return filtered
+
+def trim(s):
+    if s.endswith(".\""): s = s[:-2]
+    if s.endswith("\"") or s.endswith("."): s = s[:-1]
+    if s.startswith("\"") or s.startswith("."): s = s[1:]
+    unicodeStart = string.find(s,'\xe2')
+    if unicodeStart != -1: 
+      unicodeEnd = unicodeStart + 3
+      s = s[:unicodeStart] + s[unicodeEnd:]
+    return s
+
+
 class RPC(object):
 
     def process_new_article(self, clipping_id, user_id):
@@ -31,27 +77,39 @@ class RPC(object):
         cur.execute("SELECT content FROM clippings WHERE id = (%s)", ([clipping_id]))
         content = cur.fetchone()[0]
         content_sans_html = BeautifulSoup(content, "lxml").get_text()
+        print "Cleaned the content of HTML and tokenized"
+        
+        #insert content_sans_html and content_sans_html_tokenized
         cur.execute("UPDATE clippings SET content_sans_html = (%s) WHERE id = (%s)", (content_sans_html, clipping_id))
         cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
         cur.execute("SELECT content_sans_html_tokenized FROM clippings")
         tokenized = cur.fetchone()[0]
+
+
+        filtered = filter(clipping)
+        print "Filtered article"
+
+        recommendations = fold_in_new_user_clipping(self, clipping_id, user_id)     # pass in cur?
+
         # Save the changes to the database
         conn.commit()
         # Close database connection
         cur.close()
         conn.close()
 
-        return "Cleaned the content of HTML and tokenized"
+        return recommendations
 
     def fold_in_new_user_clipping(self, clipping_id, user_id):
 
-        conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
-        cur = conn.cursor()
+        # conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
+        # cur = conn.cursor()
 
-        conn.commit()
-        # Close database connection
-        cur.close()
-        conn.close()
+
+
+        # conn.commit()
+        # # Close database connection
+        # cur.close()
+        # conn.close()
 
         return recommendations
 
@@ -85,49 +143,7 @@ def fetchTokenizedClippings(tokenized_ids):
 
     return clippings
 
-def filter(clipping):
-    print "\n\n\n\nbefore:\n\n"
-    print clipping
-    print ":\n\n"
-    #2 deep?
 
-    stopwords = "a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your"
-    stopwords = stopwords.split(",")
-    filtered = [trim(token.lower()) for token in clipping if "\'" not in token and token not in string.punctuation]
-    filtered = [trim(token) for token in filtered if len(token) > 0]
-    filtered = [trim(token) for token in filtered if token not in stopwords]
-
-    #concat = ''.join(filtered)
-
-    tokens_once = frozenset(word for word in filtered if filtered.count(word) == 1)
-    
-
-    #  DOOOOOOOOOOOOOOOOO
-    #  Run this filter only at the end of corpus processing   <---------
-
-
-
-    # print "\n\n T1: \n\n"
-    # print tokens_once
-
-    filtered = [word for word in filtered if word not in tokens_once]
-
-    
-    print "\n\n\n\n\n\nafter:\n\n"
-    print filtered
-    print ":\n\n"
-
-    return filtered
-
-def trim(s):
-    if s.endswith(".\""): s = s[:-2]
-    if s.endswith("\"") or s.endswith("."): s = s[:-1]
-    if s.startswith("\"") or s.startswith("."): s = s[1:]
-    unicodeStart = string.find(s,'\xe2')
-    if unicodeStart != -1: 
-      unicodeEnd = unicodeStart + 3
-      s = s[:unicodeStart] + s[unicodeEnd:]
-    return s
 
 clippings = fetchTokenizedClippings([2,3, 290])
 
