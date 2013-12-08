@@ -20,7 +20,7 @@ module.exports = function(app, passport, auth) {
           dbClient.createUser(req.body.params, callback);
         },
         function(userInfo, callback) {
-          console.log('sending up new user_id', userInfo);
+          console.log('sending up new user_id', userInfo.id);
           req.session.auth = true;
           req.session.id = userInfo.id;
           res.send(userInfo);
@@ -40,10 +40,15 @@ module.exports = function(app, passport, auth) {
           dbClient.findUser({username: req.query.username}, callback);
         },
         function(user_id, callback) {
-          res.send({user_id: user_id.id});
+          req.session.id = user_id;
+          req.session.auth = true;
           callback(null);
         }
-      ]);
+      ], function(error){
+        if (error) {
+          res.send(500, error);
+        }
+      });
     });
 
     app.post('/logout', function(req, res) {
