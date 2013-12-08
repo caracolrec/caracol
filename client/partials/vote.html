@@ -1,0 +1,4 @@
+<button class="topcoat-button" ng-click="vote(1)" ng-show="!voted">Upvote</button>
+<button class="topcoat-button" ng-click="vote(0)" ng-show="!voted">Downvote</button>
+<button class="topcoat-button" ng-click="revert('like')" ng-show="like && voted">Successfully Upvoted</button>
+<button class="topcoat-button" ng-click="revert('dislike')" ng-show="dislike && voted">Successfully Downvoted</button>
