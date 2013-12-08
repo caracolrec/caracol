@@ -1,4 +1,4 @@
-controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootScope){
+controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
   $scope.voted = false;
 
   $scope.log = function(vote){
@@ -11,10 +11,8 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootS
 
   $scope.vote = function(vote){
     //grabs uri and vote status
-    var clipping_id;
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
-    var user_id = storage.get('caracolID');
-    var clippings = storage.get('clippings' + user_id);
+    var uri = encodeURIComponent(url);
     for (var i=0; i<clippings.length; i++){
       if (clippings[i].url === url){
         clipping_id = clippings[i].clipping_id;
@@ -22,7 +20,7 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootS
       }
     }
 
-    VoteService.vote(user_id, vote, clipping_id);
+    VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
     console.log('wut');

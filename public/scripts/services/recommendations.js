@@ -1,5 +1,5 @@
 angular.module('caracolApp.services')
-.factory('RecsService', ['$q', '$http', 'FetchService', function($q, $http, FetchService) {
+.factory('RecsService', ['$q', 'FetchService', function($q, FetchService) {
   var service = {
     // store oauth token in here
     timeOfLastFetch: null,

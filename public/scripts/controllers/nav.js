@@ -6,6 +6,11 @@ angular.module('caracolApp.controllers')
   $scope.loggedIn = AuthService.isAuthenticated() || false;
 
   $scope.logout = function(){
-    AuthService.logout(AuthService.currentUser);
-  }
+    AuthService.logout()
+    .then(function(data){
+      console.log('successful logout', data);
+    }, function(err){
+      console.log('failed logout', err);
+    });
+  };
 });

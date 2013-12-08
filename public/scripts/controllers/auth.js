@@ -1,5 +1,5 @@
 angular.module('caracolApp.controllers')
-.controller('LoginCtrl', function($rootScope, $scope, $location, AuthService, storage) {
+.controller('LoginCtrl', function($rootScope, $scope, $location, AuthService) {
   $rootScope.active = [false, false];
   $scope.user = {};
   $scope.signedIn = false;
@@ -9,7 +9,6 @@ angular.module('caracolApp.controllers')
     .then(function(data){
       AuthService.setAuthenticated(data.user_id);
       console.log('loggin in', data);
-      storage.set('caracolID', data.user_id);
     }, function(err) {
       console.log('error logging in:', err);
       $scope.user.error = err;
@@ -17,8 +16,13 @@ angular.module('caracolApp.controllers')
   };
 
   $scope.logout = function() {
-    
-  }
+    AuthService.logout()
+    .then(function(data){
+      console.log('sucessfully logged out');
+    }, function(data){
+      console.log('failed to logout');
+    });
+  };
 
   $scope.signup = function() {
     console.log('$scope.user before signup attempt:', $scope.user);
@@ -31,14 +35,15 @@ angular.module('caracolApp.controllers')
     }, function(err) {
       console.log('error signing up:', err);
       $scope.user.error = err;
-    })
+    });
   };
 
   $scope.createNewUser = function(){
     AuthService.signup($scope.user.username, $scope.user.password)
     .then(function(data){
-      storage.set('caracolID', data.id);
       console.log('created username', data.id);
+    }, function(err){
+      console.log('error creating user', error);
     });
     $scope.signedIn = true;
   };

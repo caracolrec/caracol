@@ -1,15 +1,17 @@
 services.factory('VoteService', function($q, $http) {
   var service = {
-    vote: function(user_id, vote, clipping_id){
+    vote: function(vote, uri){
       var d = $q.defer();
-      $http.post('/vote/'+clipping_id, {
+      $http.post('/vote/'+uri, {
         vote: vote,
         user_id: user_id,
-        clipping_id: clipping_id
+        uri: uri
+      }, {
+        withCredentials: true
       }).success(function(data){
         d.resolve(data);
       }).error(function(data){
-        console.log('posting error', data);
+        console.log('vote posting error', data);
         d.reject(data);
       });
       return d.promise;
