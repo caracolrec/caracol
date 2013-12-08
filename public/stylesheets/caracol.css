@@ -1,4 +1,38 @@
-@media (min-width: 980px){body{padding-top:50px}
+html,body{height:100%}
+.carousel{margin-bottom:60px}
+.carousel .container{position:relative;z-index:9}
+.carousel-control{height:80px;margin-top:0;font-size:120px;text-shadow:0 1px 1px rgba(0,0,0,0.4);background-color:transparent;border:0;z-index:10}
+.carousel .item{height:500px}
+.carousel img{position:absolute;top:0;left:0;min-width:100%;height:500px}
+.carousel-caption{background-color:transparent;position:static;max-width:550px;padding:0 20px;margin-top:200px}
+.carousel-caption h1,.carousel-caption .lead{margin:0;line-height:1.25;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,0.4)}
+.carousel-caption .btn{margin-top:10px}
+.marketing .span4{text-align:center}
+.marketing h2{font-weight:normal}
+.marketing .span4 p{margin-left:10px;margin-right:10px}
+.featurette-divider{margin:80px 0}
+.featurette{padding-top:120px;overflow:hidden}
+.featurette-image{margin-top:-120px}
+.featurette-image.pull-left{margin-right:40px}
+.featurette-image.pull-right{margin-left:40px}
+.featurette-heading{font-size:50px;font-weight:300;line-height:1;letter-spacing:-1px}
+@media (min-width: 980px){body{padding-top:60px}
+}@media (max-width 979px){.container.navbar-wrapper{margin-bottom:0;width:auto}
+.navbar-inner{border-radius:0;margin:-20px 0}
+.carousel .item{height:500px}
+.carousel img{width:auto;height:500px}
+.featurette{height:auto;padding:0}
+.featurette-image.pull-left,.featurette-image.pull-right{display:block;float:none;max-width:40%;margin:0 auto 20px}
+}@media (max-width: 767px){.footer{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
+.carousel{margin-left:-20px;margin-right:-20px}
+.carousel .container,.carousel .item{height:300px}
+.carousel img{height:300px}
+.carousel-caption{width:65%;padding:0 70px;margin-top:100px}
+.carousel-caption h1{font-size:30px}
+.carousel-caption .lead,.carousel-caption .btn{font-size:18px}
+.marketing .span4 + .span4{margin-top:40px}
+.featurette-heading{font-size:30px}
+.featurette .lead{font-size:18px;line-height:1.5}
 }.rec,.clipping{padding-bottom:20px}
 .recRank,.clippingMeta{font-weight:bold;color:#fff;font-size:12px}
 .recRank{background-color:#ffac40}
@@ -12,12 +46,30 @@
 .navbar-fixed-top .navbar-inner,.navbar-static-top .navbar-inner{-webkit-box-shadow:none !important;box-shadow:none !important}
 .navbar-inner{border:none;background-image:none;background-color:#ffeed8}
 .buttonContainer:hover{border:1px solid #ff9000}
-.buttonContainer{margin:5px;padding:4px;height:30px;background-color:#fff;border-radius:3px;border:1px solid #d4d4d4}
+.buttonContainer{margin:5px;padding:4px;height:30px;background-color:#fff;border-radius:4px;border:1px solid #d4d4d4}
 .navbar .nav a.buttonContainer:hover{background-color:#fff}
-.navbar .nav > li.active > a.buttonContainer{color:#fff}
+@media (min-width: 980px){.navbar ul.nav.leftUL{margin-left:50px}
+}.navbar .nav > li.active > a.buttonContainer{color:#fff}
 .navbar .nav > li.active > a.clipNavButton,.navbar .nav > li.active > a.clipNavButton:hover{background-color:#61d8a2}
 .navbar .nav > li.active > a.recNavButton,.navbar .nav > li.active > a.recNavButton:hover{background-color:#ffac40}
 .navbar .nav > li > a.clipNavButton{color:#61d8a2}
 .navbar .nav > li > a.recNavButton{color:#ffac40}
-.navButtonText{padding:5px 5px}
+.navButtonText,.userText{padding:5px 5px}
 .brandImage{padding-top:5px;padding-bottom:5px;padding-left:25px;width:50px;height:31px;background-image:url("../../images/caracol3.png");background-repeat:no-repeat;background-position:center}
+.bookmarkletButton{height:30px}
+.bookmarkletImageContainer{display:inline-block;height:20px;padding:5px 5px}
+.bookmarkletText{display:inline-block;line-height:20px;padding-top:5px;padding-bottom:5px;padding-right:5px}
+.username{padding:5px}
+.signOutText{padding:5px}
+.signInButton{background-color:#00aced;color:#fff;padding:5px 9px}
+.signIn,.signUp{display:inline}
+.wrapper{min-height:100%;height:auto !important;height:100%;margin:0 auto -30px}
+.push,.footer{height:30px}
+.footer{background-color:#f8f8f8}
+.footerNavLeft{float:left}
+.footerNavRight{float:right}
+.footerEntity,.copyright{font-size:12px;display:inline-block;padding:5px 0 5px 15px}
+.copyright{padding:5px 15px 5px 0}
+.submitButton{background-color:#f8f8f8;border:1px solid #d0d0d0}
+.blurb{font-size:20px;font-weight:200}
+.landingSignIn.btn-primary{background-color:#00aced;background-image:none}

@@ -1,21 +1,33 @@
 'use strict';
 
 angular.module('caracolApp.controllers')
-.controller('ClippingsCtrl', function($rootScope, $scope, storage, ClippingsService, VoteService) {
+.controller('ClippingsCtrl', function($rootScope, $scope, ClippingsService) {
   $rootScope.active = [true, false];
-  $scope.loadClippings = function() {
-    console.log('loadClippings firing');
-    if (ClippingsService.timeOfLastFetch) {
-      console.log('using already loaded clippings');
-      $scope.clippings = ClippingsService.currentClippings;
+
+  var afterGottenClippings = function(clippings) {
+    var batchSize = ClippingsService.batchSize;
+    $scope.clippings = clippings.slice(($scope.page - 1) * batchSize, $scope.page * batchSize);
+    window.scrollTo(0);
+    if ($scope.page === 1) {
+      $scope.prevDisabled = true;
     } else {
-      console.log('need to fetch clippings from db');
-      // ClippingsService.getClippings(storage.get('clippings'+storage.get('caracolID'))[0])
-      ClippingsService.getClippings()
-      .then(function(clippings) {
-        $scope.clippings = clippings;
-      });
+      $scope.prevDisabled = false;
+    }
+    if ($scope.page * batchSize >= clippings.length) {
+      $scope.nextDisabled = true;
+    } else {
+      $scope.nextDisabled = false;
     }
   };
+
+  $scope.loadClippings = function(page) {
+    page = page || 1;
+    $scope.page = page;
+    ClippingsService.getClippings(page)
+    .then(function() {
+      afterGottenClippings(ClippingsService.currentClippings);
+    });
+  };
+
   $scope.loadClippings();
 });

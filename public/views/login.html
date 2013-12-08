@@ -1,0 +1,22 @@
+<div class="row" ng-controller="LoginCtrl" ng-show="!signedIn">
+  <div class="signIn span6">
+    <h1>Already a user?</h1>
+    <h2>Sign in</h2>
+    <form>
+      <div><input type="text" name="loginUser" ng-model="user.loginUser" placeholder="Username"></div>
+      <div><input type="password" name="loginPassword" ng-model="user.loginPassword" placeholder="Password"></div>
+      <div><button type="submit" value="Submit" ng-click="login()" class="submitButton">Submit</button></div>
+    </form>
+  </div>
+
+  <div class="signUp span6">
+    <h1>Not yet a user?</h1>
+    <h2>Sign up!</h2>
+    <form>
+      <div><input type="text" name="signUpUser" ng-model="user.signUpUsername" placeholder="Pick a username"></div>
+      <div><input type="password" name="signUp" ng-model="user.signUpPassword" placeholder="Password"></div>
+      <div><input type="password" name="sign" ng-model="user.signUpPassword2" placeholder="Password again"></div>
+      <div><button type="submit"ng-click="signup()" class="submitButton">Submit</button></div>
+    </form>
+  </div>
+</div>

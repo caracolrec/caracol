@@ -1,46 +1,77 @@
 extends layout
 
-block nav
-  .navbar.navbar-fixed-top
-    .navbar-inner
-      .navContainer
-        // .btn-navbar is used as the toggle for collapsed navbar content 
-        a.btn.btn-navbar(ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed")
-          span.icon-bar
-          span.icon-bar
-          span.icon-bar
-        // Be sure to leave the brand out there if you want it shown 
-        a.brandImage.pull-left(href='#')
-        a.brand.pull-left(href='#') caracol
-        // Everything you want hidden at 940px or less, place within here 
-        .nav-collapse.collapse(collapse="isCollapsed")
-          // .nav, .navbar-search, .navbar-form, etc 
-          ul.nav.pull-right
-            li(ng-class='{active: active[0]}')
-              a.buttonContainer.clipNavButton(href='#/clippings')
-                .navButtonText My Clippings
-            li(ng-class='{active: active[1]}')
-              a.buttonContainer.recNavButton(href='#/recommendations')
-                .navButtonText Recommendations
+block wrapper
+  .wrapper
+    .navbar.navbar-fixed-top#top
+      .navbar-inner
+        .navContainer
+          // .btn-navbar is used as the toggle for collapsed navbar content 
+          a.btn.btn-navbar(ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed")
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          // Be sure to leave the brand out there if you want it shown 
+          a.brandImage.pull-left(href='#')
+          a.brand.pull-left(href='#') caracol
+          // Everything you want hidden at 940px or less, place within here 
+          .nav-collapse.collapse(collapse="isCollapsed")
+            // .nav, .navbar-search, .navbar-form, etc 
+            ul.nav.pull-left.leftUL
+              li(ng-class='{active: active[0]}')
+                a.buttonContainer.clipNavButton(href='#/clippings')
+                  .navButtonText My Clippings
+              li(ng-class='{active: active[1]}')
+                a.buttonContainer.recNavButton(href='#/recommendations')
+                  .navButtonText Recommendations
+            ul.nav.pull-right
+              li
+                a.buttonContainer(popover-placement="bottom",popover="To start clipping, drag me to your bookmarks bar!",href="javascript:function crcl(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body,l=d.location;try{if(!b)throw(0);z.setAttribute('src','//caracol.cloudapp.net/app/'+encodeURIComponent(l.href)+'/'+(new Date().getTime())+'/'+Math.random());b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}}crcl();void(0)")
+                  .bookmarkletButton
+                    .bookmarkletImageContainer
+                      img.bookmarkletImage(src="images/caracol4.png")
+                    .bookmarkletText Bookmarklet
+              li.dropdown(ng-if="loggedIn")
+                a.buttonContainer.dropdown-toggle(href='')
+                  .username username
+                ul.dropdown-menu
+                  li
+                    a(ng-click="logout()")
+                      span.icon-exit
+                      span.signOutText Sign out
+              li(ng-if="!loggedIn")
+                a.buttonContainer(href='#/login')
+                  .signInButton Sign in / up
 
-block content
-  .container(ng-view='')
+    .container(ng-view='')
+    .push
 
-  script(src='/bower_components/jquery/jquery.js')
-  script(src='/bower_components/angular/angular.js')
-  script(src='/bower_components/angular-route/angular-route.min.js')
-  script(src='/bower_components/angular-bootstrap/ui-bootstrap.js')
-  script(src='/bower_components/angular-cookies/angular-cookies.min.js')
-  script(src='/bower_components/angularLocalStorage/src/angularLocalStorage.js')
+    // script(src='/bower_components/jquery/jquery.js')
+    script(src='/bower_components/angular/angular.js')
+    script(src='/bower_components/angular-route/angular-route.min.js')
+    script(src='/bower_components/angular-bootstrap/ui-bootstrap.js')
+    script(src='/bower_components/angular-bootstrap/ui-bootstrap-tpls.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/holder/2.0/holder.js')
 
-  script(src='/scripts/app.js')
-  script(src='/scripts/controllers/init.js')
-  script(src='/scripts/controllers/main.js')
-  script(src='/scripts/controllers/clippings.js')
-  script(src='/scripts/controllers/recommendations.js')
-  script(src='/scripts/controllers/auth.js')
-  script(src='/scripts/services/init.js')
-  script(src='/scripts/services/clippings.js')
-  script(src='/scripts/services/vote.js')
-  script(src='/scripts/services/recommendations.js')
-  script(src='/scripts/services/auth.js')
+    script(src='/scripts/app.js')
+    script(src='/scripts/controllers/init.js')
+    script(src='/scripts/controllers/nav.js')
+    script(src='/scripts/controllers/main.js')
+    script(src='/scripts/controllers/clippings.js')
+    script(src='/scripts/controllers/recommendations.js')
+    script(src='/scripts/controllers/auth.js')
+    script(src='/scripts/services/init.js')
+    script(src='/scripts/services/fetch.js')
+    script(src='/scripts/services/clippings.js')
+    script(src='/scripts/services/recommendations.js')
+    script(src='/scripts/services/auth.js')
+
+block footer
+  .footer
+    .footerNavLeft
+      .footerEntity
+        a(href='https://github.com/michaelmunson1/caracol') about caracol
+      .footerEntity
+        a(href='/terms/caracol privacy policy and terms of service.txt') privacy policy / terms of service
+    .footerNavRight
+      .copyright &copy; 2013
+

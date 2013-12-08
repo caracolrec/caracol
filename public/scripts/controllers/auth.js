@@ -1,22 +1,53 @@
 angular.module('caracolApp.controllers')
-.controller('AuthCtrl', function($scope, AuthService, storage) {
+.controller('LoginCtrl', function($rootScope, $scope, $location, AuthService) {
+  $rootScope.active = [false, false];
   $scope.user = {};
   $scope.signedIn = false;
 
   $scope.login = function(){
-    AuthService.login($scope.user.signin)
+    AuthService.login($scope.user.loginUser, $scope.user.loginPassword)
     .then(function(data){
+      AuthService.setAuthenticated(data.user_id);
       console.log('loggin in', data);
-      storage.set('caracolID', data.user_id);
+    }, function(err) {
+      console.log('error logging in:', err);
+      $scope.user.error = err;
     });
-    $scope.signedIn = true;
+  };
+
+  $scope.logout = function() {
+    AuthService.logout()
+    .then(function(data){
+      console.log('sucessfully logged out');
+    }, function(data){
+      console.log('failed to logout');
+    });
+  };
+
+  $scope.signup = function() {
+    if ($scope.user.signUpPassword === $scope.user.signUpPassword2) {
+      console.log('$scope.user before signup attempt:', $scope.user);
+      AuthService.signup($scope.user.signUpUsername, $scope.user.signUpPassword)
+      .then(function(data){
+        AuthService.setAuthenticated(data.id);
+        console.log('signed up:', data);
+        $location.path('#/clippings');
+        console.log('current user is:', AuthService.currentUser);
+      }, function(err) {
+        console.log('error signing up:', err);
+        $scope.user.error = err;
+      });
+    } else {
+      alert("The provided passwords don't match.");
+    }
   };
 
   $scope.createNewUser = function(){
-    AuthService.signup($scope.user.signUp)
+    AuthService.signup($scope.user.username, $scope.user.password)
     .then(function(data){
-      storage.set('caracolID', data.id);
       console.log('created username', data.id);
+    }, function(err){
+      console.log('error creating user', error);
     });
     $scope.signedIn = true;
   };

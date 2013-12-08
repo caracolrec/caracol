@@ -43,8 +43,17 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['*.js', 'views/*.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+        files: {
+          'dist/<%= pkg.name %>.js': ['*.js', 'views/*.js'],
+          'dist/bookmarklet/script.js': ['client/*.js'],
+          'dist/bookmarklet/bookmarkletApp.js': ['client/scripts/*.js', 'client/scripts/services/*.js', 'client/scripts/controllers/*.js','client/scripts/directives/*.js'],
+          'dist/bookmarklet/templates/home.html': ['client/partials/home.html'],
+          'dist/bookmarklet/caracol.css': ['public/stylesheets/lib/topcoat-desktop-dark.css', 'public/stylesheets/lib/style.css','public/stylesheets/bookmarklet.css'],
+          'dist/bookmarklet/fonts/caracol.eot': ['public/stylesheets/lib/fonts/caracol.eot'],
+          'dist/bookmarklet/fonts/caracol.svg': ['public/stylesheets/lib/fonts/caracol.svg'],
+          'dist/bookmarklet/fonts/caracol.ttf': ['public/stylesheets/lib/fonts/caracol.ttf'],
+          'dist/bookmarklet/fonts/caracol.woff': ['public/stylesheets/lib/fonts/caracol.woff']
+        }
       }
     },
     uglify: {
@@ -54,12 +63,19 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>'],
-          'dist/bookmarklet.js': ['client/bookmarklet.js']
+          'dist/bookmarklet.js': ['client/bookmarklet.js'],
+
         }
       }
     },
     jshint: {
-      files: ['*.js', 'routes/*.js'],
+      files: ['*.js',
+      'routes/*.js',
+      'client/**/**/*.js',
+      'public/scripts/**/*.js',
+      'config/*.js',
+      'controllers/*.js',
+      'database/*.js'],
       options: {
         curly: true,
         eqeqeq: true,
@@ -76,6 +92,12 @@ module.exports = function(grunt) {
         node: true,
         globals: {
           jQuery: true,
+          angular: true,
+          $: true,
+          services: true,
+          controllers: true,
+          directives: true,
+          passport: true
         }
       },
       gruntfile: {
@@ -94,8 +116,12 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       stylus: {
-        files: 'public/stylesheets/stylus/*.styl',
+        files: ['public/stylesheets/stylus/bookmarklet/*.styl'], 
         tasks: ['stylus']
+      },
+      concat: {
+        files: ['client/**/**/*.js', 'dist/bookmarklet/caracol.css', 'public/stylesheets/bookmarklet.css', 'client/partials/home.html'],
+        tasks: ['concat']
       }
       //tests not integrated with watch
       // lib_test: {

@@ -1,12 +1,14 @@
 var zerorpc = require("zerorpc");
+var pyserver =  require("../config/python.json");
 
 var client = new zerorpc.Client();
-client.connect("tcp://127.0.0.1:4242");
+client.connect("tcp://" + pyserver.host + ":" + pyserver.port);
 
-exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId) {
+exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId, callback) {
   client.invoke("remove_html_and_tokenize_clipping_content", clippingId, function(error, res, more) {
-      console.log(res);
-  });  
+    console.log(res);
+    callback(error, res);
+  });
 };
 
 // tokenizedClippings = [];

@@ -4,27 +4,15 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
-var parser = require('./routes/parser').parser;
+// var routes = require('./routes');
+// var parser = require('./routes/parser').parser;
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
 var passport = require('passport');
-
+var auth = require('./config/middlewares/authorization');
 // create logFile for storing server log
 var logFile = fs.createWriteStream('./serverLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
-var _ = require('underscore');
-//var request = require('superagent');
-var token = process.env.APPSETTING_readability_key || require(__dirname + '/config/config.js').token;
-var params;
-var caracolPG = require('./database/dbsetup.js').caracolPG;
-var dbClient = require('./database/dbclient.js');
-var algorithm = require('./controllers/algorithm.js');
-var async = require('async');
-
-//elsewhere:
-var User = require('./database/dbschemas.js').User;
 
 var app = express();
 
@@ -52,182 +40,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
-//TODO refactor into 
-app.get('/', routes.index);
 
-app.post('/signup', function(req, res){
-  console.log(req.body);
-  async.waterfall([
-    function(callback) {
-      dbClient.createUser(req.body, callback);
-    },
-    function(userInfo, callback) {
-      console.log('sending up new user_id', userInfo);
-      res.send(userInfo);
-      callback(null);
-    }
-  ]);
-});
 
-app.get('/login', function(req, res){
-  console.log(req.query.username);
-  async.waterfall([
-    function(callback) {
-      dbClient.findUser({username: req.query.username}, callback);
-    },
-    function(user_id, callback) {
-      res.send({user_id: user_id.id});
-      callback(null);
-    }
-  ]);
-});
-
-app.get('/script', function(req, res){
-  fs.readFile('./client/partials/home.html', function(error, data){
-    if (error) {
-      console.log(error);
-    } else {
-      res.end(data);
-    }
-  });
-});
-
-app.get('/client/:module', function(req, res){
-  var module = req.params.module;
-  fs.readFile('./client/' + module, function(error, data){
-    if (error){
-      console.log(error);
-    } else {
-      res.end(data);
-    }
-  });
-});
-
-//following three are temp for demo
-
-app.get('/public/bower_components/angular-cookies/angular-cookies.min.js', function(req, res){
-  fs.readFile('./public/bower_components/angular-cookies/angular-cookies.min.js', function(error, data){
-    if (error){
-      console.log(error);
-    } else {
-      res.end(data);
-    }
-  });
-});
-
-app.get('/public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(req, res){
-  fs.readFile('./public/bower_components/angularLocalStorage/src/angularLocalStorage.js', function(error, data){
-    if (error){
-      console.log(error);
-    } else {
-      res.end(data);
-    }
-  });
-});
-
-app.get('/public/bower_components/underscore/underscore-min.js', function(req, res){
-  fs.readFile('./public/bower_components/underscore/underscore-min.js', function(error, data){
-    if (error){
-      console.log(error);
-    } else {
-      res.end(data);
-    }
-  });
-});
-
-//end demo temp routes
-
-app.get('/app/:url/:t/*', function(req, res){
-  console.log('requesting app');
-    async.eachSeries(
-    ['./public/bower_components/jquery/jquery.min.js', './client/script.js'],
-    function(filename, cb) {
-      fs.readFile(filename, function(error, data) {
-        if (!error) {
-          res.write(data);
-        }
-        cb(error);
-      });
-    },
-    function(error) {
-      res.end();
-    }
-  );
-});
-
-app.options('/*', function(req, res){
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.send(200, res.header);
-});
-
-app.post('/uri', function(req, res){
-  params = {
-    url: decodeURIComponent(req.body.uri),
-    token: token
-  };
-  var user_id = req.body.user_id;
-  res.header("Access-Control-Allow-Origin", "*");
-  async.waterfall([
-    function(callback){
-      parser(params, callback);
-    },
-    function(response, callback){
-      response.url = params.url;
-      dbClient.dbInsert(response, user_id, callback);
-    },
-    function(clipping_id, callback){
-      clipping_id = clipping_id.toString();
-      console.log('clipping id', clipping_id);
-      res.end(clipping_id);
-      callback(null);
-    }
-  ]);
-});
-
-// route for loading user's clippings
-app.get('/fetchMyClippings', function(req, res) {
-  var oldestClippingId;
-  console.log('typeof oldestClippingId:', typeof req.query.oldestClippingId);
-  if (req.query.oldestClippingId !== 'null') {
-    oldestClippingId = req.query.oldestClippingId;
-  }
-  async.waterfall([
-    function(callback) {
-      dbClient.fetchClippings(oldestClippingId, callback);
-    },
-    function(clippings, callback) {
-      console.log('about to send clippings back to client');
-      res.send(clippings);
-      callback(null);
-    }
-  ]);
-});
-
-// route for loading recommendations for a user
-app.get('/fetchRecommendations', function(req, res) {
-  async.waterfall([
-    function(callback) {
-      dbClient.fetchRecommendations(callback);
-    },
-    function(recs, callback) {
-      console.log('about to send recs back to client:', recs);
-      res.send(recs);
-      callback(null);
-    }
-  ]);
-});
-
-//TODO failing server side
-// route for storing a vote from the user's clippings view
-app.post('/vote/:clipping_id', function(req, res) {
-  params = {
-    clipping_id: req.params.clipping_id,
-    vote: req.body.vote,
-    user_id: req.body.user_id
-  };
-  res.end(dbClient.dbVote(params));
-});
+//Bootstrap routes
+require('./config/routes')(app, passport, auth);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

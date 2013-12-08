@@ -14,7 +14,11 @@ import logging
 #logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 # Open connection to the database
-credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../database/dbconfig.json"))))
+credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/dbconfig.json"))))
+
+# Import config for Python server
+pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/python.json"))))
+print pyserver
 
 class RPC(object):
 
@@ -28,7 +32,7 @@ class RPC(object):
         content = cur.fetchone()[0]
         content_sans_html = BeautifulSoup(content, "lxml").get_text()
         cur.execute("UPDATE clippings SET content_sans_html = (%s) WHERE id = (%s)", (content_sans_html, clipping_id))
-        cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", [word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id)
+        cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
         cur.execute("SELECT content_sans_html_tokenized FROM clippings")
         tokenized = cur.fetchone()[0]
         # Save the changes to the database
@@ -215,5 +219,5 @@ print "\n\n"
 
 
 s = zerorpc.Server(RPC())
-s.bind("tcp://0.0.0.0:4242")
+s.bind("tcp://0.0.0.0:" + pyserver["port"])
 s.run()

@@ -4,24 +4,27 @@ var User,
     Clippings,
     JournalEntry,
     User_Clipping,
+    User_Clippings,
     Recommendation,
     Recommendations,
-    express = require('express'),
-    caracolPG = require('./dbsetup.js').caracolPG;
+    caracolPG = require('../config/dbsetup.js').caracolPG,
+    crypto = require('crypto');
+
 
 // require validator
 
 // see https://github.com/michaelmunson1/Ghost/blob/master/core/server/models/post.js    
 // we begin by writing individual models - if overlap is substantial, refactor out a base.js
 
-// Also - write tests for basic functionality.  <-----
+// Also - write tests for basic functionality.  
 
 User = caracolPG.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
   
   permittedAttributes: [
-    'id',  'username', 'isMember', 'joinedDate',  //'passwordSALT'
+  //TODO: add hashed_password to User tabel in database
+    'id',  'username', 'isMember', 'joinedDate',  'password_salt', 'hashed_password'
   ],
 
   //patterned after ghost's post.js - ll 33-38 - http://goo.gl/7KjRR0
@@ -48,14 +51,37 @@ User = caracolPG.Model.extend({
     .fetch()
     .then(function(model){
       console.log('its good', model);
-      // authCallback(null, model);
+      authCallback(null, model);
     }, function(err){
-      // authCallback(err, null);
+      authCallback(err, null);
     });
   },
 
   creating: function(){
     //TO DO
+  },
+  
+  check: function(userdata){
+    //TODO auth with email
+    this.forge({username: userdata.username}).fetch()
+    .then(function(user){
+      if (!user){
+        //TODO and we communicate this to the user like how?
+        throw 'error: that username does not exist';
+      } else {
+        if (this.encryptPassword(userdata.password, user.passwordSALT) === user.hashed_password){
+          console.log('party on wayne');
+        } else {
+          throw 'error: incorrect password';
+        }
+      }
+    })
+    .then(function(){
+      return this.encryptPassword(userdata.password);
+    }).then(function(hash){
+      userdata.password = hash.hashed_password;
+      userdata.password_salt = hash.password_salt;
+    });
   },
 
   // account: function(){
@@ -76,9 +102,6 @@ User = caracolPG.Model.extend({
   // }
 
 });
-
-
-
 
 Clipping = caracolPG.Model.extend({
   
@@ -192,6 +215,9 @@ User_Clipping = caracolPG.Model.extend({
     //need to do this for various fields? do this in validate:
     //this.set('title', this.sanitize('title').trim());
   },
+  clipping: function() {
+    return this.belongsTo(Clipping);
+  }
 
 });
 
@@ -240,6 +266,10 @@ Recommendations = caracolPG.Collection.extend({
   model: Recommendation
 });
 
+User_Clippings = caracolPG.Collection.extend({
+  model: User_Clipping
+});
+
 module.exports = {
   User: User,
   Users: Users,
@@ -247,7 +277,8 @@ module.exports = {
   Clippings: Clippings,
   User_Clipping: User_Clipping,
   Recommendation: Recommendation,
-  Recommendations: Recommendations
+  Recommendations: Recommendations,
+  User_Clippings: User_Clippings
 };
 
 // module.exports.Forum = caracolPG.Model.extend({

@@ -1,7 +1,11 @@
 <div class="clipping row" ng-repeat="clipping in clippings">
   <div class="clippingMeta span1">&nbsp;{{clipping.elegantDate}}</div>
   <div class="clippingStuff span11">
-    <div class="clippingTitle"><a href="{{clipping.uri}}" target="{{clipping.uri}}">{{clipping.title}}</a></div>
+    <div class="clippingTitle"><a href="{{clipping.uri}}" target="_blank">{{clipping.id}} {{clipping.clipping.title}}</a></div>
     <div class="clippingContent">{{clipping.displayedExcerpt}}</div>
   </div>
 </div>
+<ul class="pager">
+  <li ng-class="{disabled: prevDisabled}" ng-click="prevDisabled || loadClippings(page-1)" ng-disabled="{{prevDisabled}}"><a href="">Previous</a></li>
+  <li ng-class="{disabled: nextDisabled}" ng-click="nextDisabled || loadClippings(page+1)" ng-disabled="{{nextDisabled}}"><a href="">Next</a></li>
+</ul>
