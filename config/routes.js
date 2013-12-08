@@ -18,35 +18,33 @@ module.exports = function(app, passport, auth) {
       async.waterfall([
         function(callback) {
           dbClient.createUser(req.body.params, callback);
-        },
-        function(userInfo, callback) {
-          console.log('sending up new user_id', userInfo.id);
-          req.session.auth = true;
-          req.session.id = userInfo.id;
-          res.send(userInfo);
-          callback(null);
         }
-      ], function(error) {
+      ], function(error, user_id) {
+        console.log('data', user_id);
         if (error) {
           res.send(409, error);
+        } else {
+          console.log('sending up new user_id', user_id);
+          req.session.auth = true;
+          req.session.id = user_id;
+          res.send(200, user_id.toString());
         }
       });
     });
 
     app.post('/login', function(req, res){
-      console.log(req.query.username);
+      console.log('login request looks like:', req.body);
       async.waterfall([
         function(callback) {
-          dbClient.findUser({username: req.query.username}, callback);
-        },
-        function(user_id, callback) {
-          req.session.id = user_id;
-          req.session.auth = true;
-          callback(null);
+          dbClient.findUser(req.body.params, callback);
         }
-      ], function(error){
+      ], function(error, user_id){
         if (error) {
           res.send(500, error);
+        } else {
+          req.session.id = user_id;
+          req.session.auth = true;
+          res.send(200, user_id.toString())
         }
       });
     });

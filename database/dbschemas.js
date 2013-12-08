@@ -24,7 +24,7 @@ User = caracolPG.Model.extend({
   
   permittedAttributes: [
   //TODO: add hashed_password to User tabel in database
-    'id',  'username', 'isMember', 'joinedDate',  'passwordSALT', 'hashed_password'
+    'id',  'username', 'isMember', 'joinedDate',  'password_salt', 'hashed_password'
   ],
 
   //patterned after ghost's post.js - ll 33-38 - http://goo.gl/7KjRR0
@@ -60,17 +60,6 @@ User = caracolPG.Model.extend({
   creating: function(){
     //TO DO
   },
-
-  makeSalt: function(){
-    return Math.round((new Date().valueOf() * Math.random())) + '';
-  },
-  
-  encryptPassword: function(password, salt){
-    if (!password) { return ''; }
-    salt = salt || this.makeSalt();
-    var hashed_password = crypto.createHmac('sha1', salt).update(password).digest('hex');
-    return {passwordSALT: salt, hashed_password: hashed_password};
-  },
   
   check: function(userdata){
     //TODO auth with email
@@ -91,7 +80,7 @@ User = caracolPG.Model.extend({
       return this.encryptPassword(userdata.password);
     }).then(function(hash){
       userdata.password = hash.hashed_password;
-      userdata.passwordSALT = hash.passwordSALT;
+      userdata.password_salt = hash.password_salt;
     });
   },
 
@@ -113,11 +102,6 @@ User = caracolPG.Model.extend({
   // }
 
 });
-
-var a = new User();
-
-console.log(a.encryptPassword('target'));
-
 
 Clipping = caracolPG.Model.extend({
   

@@ -25,17 +25,21 @@ angular.module('caracolApp.controllers')
   };
 
   $scope.signup = function() {
-    console.log('$scope.user before signup attempt:', $scope.user);
-    AuthService.signup($scope.user.signUpUsername, $scope.user.signUpPassword)
-    .then(function(data){
-      AuthService.setAuthenticated(data.id);
-      console.log('signed up:', data);
-      $location.path('#/clippings');
-      console.log('current user is:', AuthService.currentUser);
-    }, function(err) {
-      console.log('error signing up:', err);
-      $scope.user.error = err;
-    });
+    if ($scope.user.signUpPassword === $scope.user.signUpPassword2) {
+      console.log('$scope.user before signup attempt:', $scope.user);
+      AuthService.signup($scope.user.signUpUsername, $scope.user.signUpPassword)
+      .then(function(data){
+        AuthService.setAuthenticated(data.id);
+        console.log('signed up:', data);
+        $location.path('#/clippings');
+        console.log('current user is:', AuthService.currentUser);
+      }, function(err) {
+        console.log('error signing up:', err);
+        $scope.user.error = err;
+      });
+    } else {
+      alert("The provided passwords don't match.");
+    }
   };
 
   $scope.createNewUser = function(){
