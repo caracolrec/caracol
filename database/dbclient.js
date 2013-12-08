@@ -62,7 +62,6 @@ exports.createUser = createUser = function(json, callback){
     })
     .save()
     .then(function(model){
-      console.log('model after saving:', model);
       console.log('user successfully saved:', model.id);
       callback(null, model.id);
     }, function(error){
@@ -79,8 +78,8 @@ exports.findUser = findUser = function(json, callback){
   .fetch({require: true})
   .then(function(model) {
     console.log('found user');
-    var creds = encryptPassword(json.password, model.passwordSALT);
-    if (model.hashed_password === creds.hashed_password) {
+    var creds = encryptPassword(json.password, model.attributes.password_salt);
+    if (model.attributes.hashed_password === creds.hashed_password) {
       callback(null, model.id);
     } else {
       callback('incorrect password');
