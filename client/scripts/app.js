@@ -1,6 +1,6 @@
 //angular app
 
-var app = angular.module('app', ['angularLocalStorage',
+var app = angular.module('app', ['ngCookies',
                                  'app.controllers',
                                  'app.services',
                                  'app.directives'
