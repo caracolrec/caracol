@@ -59,9 +59,7 @@ module.exports = function(app, passport, auth) {
     //loads all dependencies and app for bookmarklet
     app.get('/bookmarklet/dependencies', function(req, res){
       async.eachSeries(
-        ['./public/bower_components/angular-cookies/angular-cookies.min.js',
-         './public/bower_components/angularLocalStorage/src/angularLocalStorage.js',
-         './public/bower_components/underscore/underscore-min.js',
+        ['./public/bower_components/underscore/underscore-min.js',
          './dist/bookmarklet/bookmarkletApp.js'],
         function(filename, cb) {
           console.log('well these are good');
@@ -214,12 +212,13 @@ module.exports = function(app, passport, auth) {
     });
 
     // route for storing a vote from the user's clippings view
-    app.post('/vote/:clipping_id', function(req, res) {
-      console.log(req.body);
+    app.post('/vote/:uri', function(req, res) {
+      //req.params.uri
       var params = {
-        clipping_id: req.params.clipping_id,
+        //TODO grab clipping_id from session with uri
+        //clipping_id: req.params.clipping_id,
         vote: req.body.vote,
-        user_id: req.body.user_id
+        //TODO grab user_id from session
       };
       res.end(dbClient.dbVote(params));
     });

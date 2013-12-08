@@ -1,35 +1,19 @@
 //angular app
 
-var app = angular.module('app', ['angularLocalStorage',
-                                 'app.controllers',
+var app = angular.module('app', ['app.controllers',
                                  'app.services',
                                  'app.directives'
                                  ]);
 
-app.run(function($q, $http, $rootScope, UploadService,storage){
+app.run(function($rootScope, UploadService){
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
   var uri = encodeURIComponent(url);
-  var user_id = storage.get('caracolID');
   $rootScope.hide = false;
-
-  UploadService.sendToURI(uri, user_id)
+  UploadService.sendURI(uri)
   .then(function(data){
-    console.log('clipping_id', data);
-    
-    //this grabs the bookmarklets parent url
-    var url = (window.location !== window.parent.location) ? document.referrer: document.location;
-    
-    //sets up local storage clippings id
-    //TODO: change to object {'clippings': {user_id.toString(): {url: url, clipping_id: Number(data)}}}
-    if (!storage.get('clippings'+user_id)){
-      storage.set('clippings'+user_id, [{url: url, clipping_id: Number(data)}]);
-    } else {
-      var clippingsArr = storage.get('clippings'+user_id);
-      
-      clippingsArr.push({url: url, clipping_id: Number(data)});
-      storage.set('clippings'+user_id, clippingsArr);
-    }
-    console.log('clipping ids from storage', storage.get('clippings'+user_id));
+    console.log('saved clipping to db, id:', data);
+  }, function(data){
+    console.log('failed to save clipping to db', data);
   });
 });
 
@@ -37,12 +21,12 @@ var services = angular.module('app.services', []);
 
 services.factory('UploadService', function($q, $http){
   var service = {
-    sendToURI: function(uri, user_id){
-      console.log(uri);
+    sendURI: function(uri){
       var d = $q.defer();
       $http.post('/uri', {
-        uri: uri,
-        user_id: user_id
+        uri: uri
+      }, {
+        withCredentials: true
       }).success(function(data){
         d.resolve(data);
       }).error(function(data){
@@ -57,16 +41,16 @@ services.factory('UploadService', function($q, $http){
 
 services.factory('VoteService', function($q, $http) {
   var service = {
-    vote: function(user_id, vote, clipping_id){
+    vote: function(vote, uri){
       var d = $q.defer();
-      $http.post('/vote/'+clipping_id, {
-        vote: vote,
-        user_id: user_id,
-        clipping_id: clipping_id
+      $http.post('/vote/'+uri, {
+        vote: vote
+      }, {
+        withCredentials: true
       }).success(function(data){
         d.resolve(data);
       }).error(function(data){
-        console.log('posting error', data);
+        console.log('vote posting error', data);
         d.reject(data);
       });
       return d.promise;
@@ -77,7 +61,7 @@ services.factory('VoteService', function($q, $http) {
 
 var controllers = angular.module('app.controllers', []);
 
-controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootScope){
+controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
   $scope.voted = false;
 
   $scope.log = function(vote){
@@ -90,36 +74,13 @@ controllers.controller('VoteCtrl', function($scope, VoteService, storage, $rootS
 
   $scope.vote = function(vote){
     //grabs uri and vote status
-    var clipping_id;
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
-    var user_id = storage.get('caracolID');
-    var clippings = storage.get('clippings' + user_id);
-    for (var i=0; i<clippings.length; i++){
-      if (clippings[i].url === url){
-        clipping_id = clippings[i].clipping_id;
-        console.log(clipping_id);
-      }
-    }
-
-    VoteService.vote(user_id, vote, clipping_id);
+    var uri = encodeURIComponent(url);
+    VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
-    console.log('wut');
-    setTimeout(function(){
-      console.log('tuw');
-      $rootScope.hide = true;
-      return $rootScope.hide;
-    }, 1000);
   };
   
-  // $('.caracolBookmarklet').remove();
-
-  $scope.slowHide = function(){
-    setTimeout(function(){
-      $scope.hide();
-    }, 500);
-  };
-
   $scope.revert = function(preference){
     $scope.voted = false;
     $scope[preference] = false;

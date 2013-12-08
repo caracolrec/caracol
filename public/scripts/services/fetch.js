@@ -4,17 +4,20 @@ angular.module('caracolApp.services')
     fetch: function(clippings_or_recs, lastId, batchSize) {
       console.log('lastId is:', lastId);
       var route, d = $q.defer();
+
       if (clippings_or_recs === 'clippings') {
         route = '/fetchMyClippings';
       } else if (clippings_or_recs === 'recs') {
         route = '/fetchMyRecommendations';
       }
+
       $http.get(route, {
         params: {
-          user_id: 1, // change this later
           lastId: lastId,
           batchSize: batchSize
         }
+      }, {
+        withCredentials: true
       })
       .success(function(data) {
         console.log('success fetching', ':', data);
@@ -26,6 +29,7 @@ angular.module('caracolApp.services')
       });
       return d.promise;
     },
+
     massage: function(data) {
       for (var i = 0; i < data.length; i++) {
         data[i].content_sans_html = data[i].clipping.content_sans_html || '';
@@ -34,6 +38,7 @@ angular.module('caracolApp.services')
       }
       return data;
     },
+
     elegantizeTimestamp: function(article) {
       var numMilliseconds = new Date().getTime() - Date.parse(article.clipping.first_insert);
       var numSeconds = numMilliseconds/1000;
