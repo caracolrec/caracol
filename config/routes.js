@@ -127,7 +127,7 @@ module.exports = function(app, passport, auth) {
     });
 
     //
-    app.get('/app/:url/:t/*', function(req, res){
+    app.get('/app/:url/:t/*', auth.hasAuthorization, function(req, res){
       console.log('requesting app');
         async.eachSeries(
         ['./public/bower_components/jquery/jquery.min.js', './dist/bookmarklet/script.js'],
@@ -158,12 +158,12 @@ module.exports = function(app, passport, auth) {
     var parser = require('../controllers/parser.js').parser;
     
 
-    app.post('/uri', function(req, res){
+    app.post('/uri', auth.hasAuthorization, function(req, res){
       params = {
         url: decodeURIComponent(req.body.uri),
         token: token
       };
-      var user_id = req.body.user_id;
+      var user_id = req.session.id;
       res.header("Access-Control-Allow-Origin", "*");
       async.waterfall([
         function(callback){
@@ -202,17 +202,17 @@ module.exports = function(app, passport, auth) {
     };
 
     // route for loading user's clippings
-    app.get('/fetchmyclippings', function(req, res) {
+    app.get('/fetchmyclippings', auth.hasAuthorization, function(req, res) {
       handleFetching('clippings', req, res);
     });
 
     // route for loading recommendations for a user
-    app.get('/fetchmyrecommendations', function(req, res) {
+    app.get('/fetchmyrecommendations', auth.hasAuthorization, function(req, res) {
       handleFetching('recs', req, res);
     });
 
     // route for storing a vote from the user's clippings view
-    app.post('/vote/:uri', function(req, res) {
+    app.post('/vote/:uri', auth.hasAuthorization, function(req, res) {
       //req.params.uri
       var params = {
         //TODO grab clipping_id from session with uri
