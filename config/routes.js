@@ -27,7 +27,10 @@ module.exports = function(app, passport, auth) {
           console.log('sending up new user_id', user.id);
           req.session.auth = true;
           req.session.id = user.id;
-          res.send(200, user.id.toString());
+          res.send(200, {
+            id: user.id,
+            username: user.username
+          });
         }
       });
     });
@@ -44,7 +47,10 @@ module.exports = function(app, passport, auth) {
         } else {
           req.session.id = user.id;
           req.session.auth = true;
-          res.send(200, user.id.toString())
+          res.send(200, {
+            id: user.id,
+            username: user.username
+          });
         }
       });
     });
