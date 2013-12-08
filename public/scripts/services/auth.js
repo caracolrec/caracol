@@ -37,7 +37,7 @@ angular.module('caracolApp.services')
         withCredentials: true
       })
       .success(function(data) {
-        console.log('thanks for signing up buddy');
+        console.log('thanks for signing up buddy:', data);
         d.resolve(data);
       })
       .error(function(error) {
