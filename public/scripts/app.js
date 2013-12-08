@@ -34,6 +34,7 @@ angular.module('caracolApp', [
           next.controller !== "LoginCtrl" && next.controller !== "MainCtrl"
         ) {
           $location.path('/login');
+          $rootScope.intendedDestination = next.originalPath || '/recommendations';
       }
   });
 });

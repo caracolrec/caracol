@@ -59,7 +59,8 @@ html,body{height:100%}
 .bookmarkletButton{height:30px}
 .bookmarkletImageContainer{display:inline-block;height:20px;padding:5px 5px}
 .bookmarkletText{display:inline-block;line-height:20px;padding-top:5px;padding-bottom:5px;padding-right:5px}
-.username{padding:5px}
+.usernameContainer{border:1px solid #00aced}
+.username{padding:5px;color:#00aced}
 .signOutText{padding:5px}
 .signInButton{background-color:#00aced;color:#fff;padding:5px 9px}
 .signIn,.signUp{display:inline}

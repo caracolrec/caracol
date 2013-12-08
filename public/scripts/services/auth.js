@@ -57,9 +57,9 @@ angular.module('caracolApp.services')
       }, {
         withCredentials: true
       })
-      .success(function(user_id) {
-        console.log('thanks for logging in,', user_id);
-        d.resolve(user_id);
+      .success(function(data) {
+        console.log('thanks for logging in,', data);
+        d.resolve(data);
       })
       .error(function(error) {
         console.log('login error:', error);

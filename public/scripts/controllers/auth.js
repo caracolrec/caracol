@@ -8,8 +8,10 @@ angular.module('caracolApp.controllers')
     AuthService.login($scope.user.loginUser, $scope.user.loginPassword)
     .then(function(user){
       AuthService.setAuthenticated(user);
-      $scope.$emit('logged_in', user.username)
-      console.log('loggin in', user);
+      $scope.$emit('logged_in', user.username);
+      console.log('current user is:', AuthService.currentUser);
+      console.log('$rootScope.intendedDestination', $rootScope.intendedDestination);
+      $location.path($rootScope.intendedDestination);
     }, function(err) {
       console.log('error logging in:', err);
       $scope.user.error = err;
@@ -23,9 +25,10 @@ angular.module('caracolApp.controllers')
       .then(function(user){
         AuthService.setAuthenticated(user);
         console.log('signed up:', user);
-        $location.path('#/clippings');
-        $scope.$emit('logged_in', data.username)
+        $scope.$emit('logged_in', user.username)
         console.log('current user is:', AuthService.currentUser);
+        console.log('$rootScope.intendedDestination', $rootScope.intendedDestination);
+        $location.path($rootScope.intendedDestination);
       }, function(err) {
         console.log('error signing up:', err);
         $scope.user.error = err;

@@ -31,8 +31,8 @@ block wrapper
                       img.bookmarkletImage(src="images/caracol4.png")
                     .bookmarkletText Bookmarklet
               li.dropdown(ng-if="loggedIn")
-                a.buttonContainer.dropdown-toggle(href='')
-                  .username username
+                a.buttonContainer.usernameContainer.dropdown-toggle(href='')
+                  .username {{username}}
                 ul.dropdown-menu
                   li
                     a(ng-click="logout()")
