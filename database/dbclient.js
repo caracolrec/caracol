@@ -121,52 +121,6 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
     console.log('Error saving the clipping');
     callback(error);
   });
-<<<<<<< HEAD
-
-
-  'id',  'user_id', 'clipping_id',    //'created_at',
-  'vote', 'bookmarkStatus', 'lastBookmarkTime',
-  'lastVoteTime' 
-
-  //check: user_clipping already exists?   
-  new tables.User_Clipping({
-    title: json.title,
-    content: json.content,
-    uri: json.url,
-    word_count: json.word_count,
-    first_insert: dateTransform(new Date().toISOString()),
-    total_pages: json.total_pages,
-    date_published: json.date_published,
-    dek: json.dek,
-    lead_image_url: json.lead_image_url,
-    next_page_id: json.next_page_id,
-    rendered_pages: json.rendered_pages
-  })
-  .save()
-  .then(function(model) {
-    console.log('finished saving the clipping');
-    callback(null, model.id);
-    algorithm.removeHTMLAndTokenize(model.id);
-  }, function(){
-    console.log('Error saving the clipping');
-    callback(error);
-  });
-};
-
-var insertUserClipping = function(user_id, clipping_id, callback){
-  new tables.User_Clipping({
-    user_id: user_id,
-    clipping_id: clipping_id
-  })
-  .save()
-  .then(function(model){
-    console.log('success to the user clipping table', model.attributes);
-    callback(null, model.attributes.clipping_id);
-  }, function(){
-    console.log('error adding to user_clippings');
-  });
-=======
->>>>>>> 6f5be9147685e909c1a03f4808fca29da8544602
 };
 
 exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisId, batchSize, callback) {
