@@ -7,24 +7,7 @@ var app = angular.module('app', ['ngRoute',
                                  'app.directives'
                                  ]);
 
-app.config(function ($routeProvider) {
-  $routeProvider
-    .when('/', {
-      templateUrl: '/partials/vote.html',
-      controller: 'VoteCtrl'
-    })
-    .when('/vote', {
-      templateUrl: '/partials/vote.html',
-      controller: 'LoginCtrl'
-    })
-    .when('/recs', {
-      templateUrl: '/partials/recommendation.html',
-      controller: 'RecCtrl'
-    })
-    .otherwise({
-      redirectTo: '/partials/login.html'
-    });
-}).run(function($rootScope, $location, UploadService){
+app.run(function($rootScope, $location, UploadService){
   //check for session
   //if session do this
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
@@ -32,16 +15,33 @@ app.config(function ($routeProvider) {
   $rootScope.hidden = false;
   UploadService.sendURI(uri)
   .then(function(data){
+      $location.path('/vote');
     console.log('saved clipping to db, id:', data);
   }, function(error){
+      $location.path('/login');
     console.log('failed to save clipping to db', error);
   });
 
   $rootScope.hide = function(){
     $rootScope.hidden = !$rootScope.hidden;
   };
-  //else
-  //change route to login
+}).config(function ($routeProvider) {
+  $routeProvider
+    .when('/vote', {
+      templateUrl: '/partials/vote.html',
+      controller: 'VoteCtrl'
+    })
+    .when('/recs', {
+      templateUrl: '/partials/recommendation.html',
+      controller: 'RecCtrl'
+    })
+    .when('/login', {
+      templateUrl: '/partials/login.html',
+      controller: 'LoginCtrl'
+    })
+    .otherwise({
+      redirectTo: '/'
+    });
 });
 
 var services = angular.module('app.services', []);
@@ -237,7 +237,9 @@ services.factory('RecService', function($q, $http, FetchService) {
 
 services.factory('UploadService', function($q, $http){
   var service = {
+    uri: null,
     sendURI: function(uri){
+      service.uri = uri;
       var d = $q.defer();
       $http.post('/uri', {
         uri: uri
@@ -277,7 +279,7 @@ services.factory('VoteService', function($q, $http) {
 
 var controllers = angular.module('app.controllers', []);
 
-controllers.controller('LoginCtrl', function($scope, LoginService, $location, $rootScope){
+controllers.controller('LoginCtrl', function($scope, $location, $rootScope, UploadService, LoginService){
   $scope.user = {};
   $scope.signedIn = false;
 
@@ -285,9 +287,14 @@ controllers.controller('LoginCtrl', function($scope, LoginService, $location, $r
     LoginService.login($scope.user.loginUser, $scope.user.loginPassword)
     .then(function(user){
       LoginService.setAuthenticated(user);
+      UploadService.sendURI(UploadService.uri).then(function(data){
+        console.log('Sent uri after login', data);
+        $location.path('/vote');
+      }, function(err){
+        console.log('Failed to send uri after login', err);
+      });
       $scope.$emit('logged_in', user.username);
       console.log('current user is:', LoginService.currentUser);
-      $location.path('/vote');
     }, function(err) {
       console.log('error logging in:', err);
       //TODO add error message on bookmarklet
@@ -316,18 +323,25 @@ controllers.controller('RecCtrl', function($scope, LoginService, RecService, $ro
 
 controllers.controller('VoteCtrl', function($scope, VoteService, $location, $rootScope){
   $scope.voted = false;
-
+  console.log('b');
   $scope.log = function(vote){
     !!vote ? ($scope.like = true) : ($scope.dislike = true);
   };
 
   $scope.vote = function(vote){
     //grabs uri and vote status
+    console.log('a');
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
     var uri = encodeURIComponent(url);
     VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
+    setTimeout(function(){
+      $rootScope.$apply(function(){
+        $rootScope.hide();
+      });
+    }, 750);
+
     // $location.path('/recs');
   };
   

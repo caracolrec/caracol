@@ -1,17 +1,24 @@
 controllers.controller('VoteCtrl', function($scope, VoteService, $location, $rootScope){
   $scope.voted = false;
-
+  console.log('b');
   $scope.log = function(vote){
     !!vote ? ($scope.like = true) : ($scope.dislike = true);
   };
 
   $scope.vote = function(vote){
     //grabs uri and vote status
+    console.log('a');
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;
     var uri = encodeURIComponent(url);
     VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
+    setTimeout(function(){
+      $rootScope.$apply(function(){
+        $rootScope.hide();
+      });
+    }, 750);
+
     // $location.path('/recs');
   };
   
