@@ -352,6 +352,7 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $location, $roo
     VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
+    
     setTimeout(function(){
       $rootScope.$apply(function(){
         $rootScope.hide();
