@@ -222,14 +222,6 @@ services.factory('RecService', function($q, $http, FetchService) {
         .then(function(data) {
           service.updateState(data);
         });
-    },
-
-    updateState: function(recs) {
-      service.timeOfLastFetch = new Date().getTime();
-      service.currentRecs = service.currentRecs.concat(recs);
-      service.lastRecId = service.currentRecs[service.currentRecs.length - 1].id;
-      console.log('lastId after getting latest batch of recs:', service.lastRecId);
-      service.maxPageVisited += 1;
     }
   };
   return service;

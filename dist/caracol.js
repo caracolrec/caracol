@@ -47,6 +47,9 @@ module.exports = function(grunt) {
           'dist/bookmarklet/script.js': ['client/*.js'],
           'dist/bookmarklet/bookmarkletApp.js': ['client/scripts/*.js', 'client/scripts/services/*.js', 'client/scripts/controllers/*.js','client/scripts/directives/*.js'],
           'dist/bookmarklet/templates/home.html': ['client/partials/home.html'],
+          'dist/bookmarklet/partials/recommendation.html': ['client/partials/recommendation.html'],
+          'dist/bookmarklet/partials/vote.html': ['client/partials/vote.html'],
+          'dist/bookmarklet/partials/login.html': ['client/partials/login.html'],
           'dist/bookmarklet/caracol.css': ['public/stylesheets/lib/topcoat-desktop-dark.css', 'public/stylesheets/lib/style.css','public/stylesheets/bookmarklet.css']
         }
       }
@@ -58,6 +61,8 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>'],
+          'dist/bookmarklet/bookmarkletApp.min.js': ['dist/bookmarklet/bookmarkletApp.js'],
+          'dist/bookmarklet/caracol.min.css': ['dist/bookmarklet/caracol.css'],
         }
       }
     },

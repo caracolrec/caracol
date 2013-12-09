@@ -45,8 +45,7 @@
     "underscore": "~1.5.2",
     "jquery": "~2.0.3",
     "angular": "~1.2.2",
-    "bootstrap": "2.3.2",
-    "angular-cookies": "~1.2.4"
+    "bootstrap": "2.3.2"
   },
   "devDependencies": {
     "bootstrap": "2.3.2",
