@@ -62,6 +62,8 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>'],
+          'dist/bookmarklet/bookmarkletApp.min.js': ['dist/bookmarklet/bookmarkletApp.js'],
+          'dist/bookmarklet/caracol.min.css': ['dist/bookmarklet/caracol.css'],
         }
       }
     },
