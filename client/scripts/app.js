@@ -1,4 +1,5 @@
 //angular app
+'use strict'
 
 var app = angular.module('app', ['ngRoute',
                                  'app.controllers',
