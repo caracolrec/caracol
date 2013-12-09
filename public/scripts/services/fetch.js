@@ -15,12 +15,11 @@ angular.module('caracolApp.services')
         params: {
           lastId: lastId,
           batchSize: batchSize
-        }
-      }, {
+        },
         withCredentials: true
       })
       .success(function(data) {
-        console.log('success fetching', ':', data);
+        console.log('success fetching:', data);
         d.resolve(service.massage(data));
       })
       .error(function(reason) {
