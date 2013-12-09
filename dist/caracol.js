@@ -146,11 +146,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['mochacov:test']);
 };
 
-var config = {
-  token: '3a94d79c91f97112e52dbf3ca5759f53dc3d1ea4'
-};
-module.exports = config;
-
 var express = require('express');
 // var routes = require('./routes');
 // var parser = require('./routes/parser').parser;
