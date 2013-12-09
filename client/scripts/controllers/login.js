@@ -1,4 +1,4 @@
-controllers.controller('LoginCtrl', function($scope, LoginService, $rootScope){
+controllers.controller('LoginCtrl', function($scope, LoginService, $location, $rootScope){
   $scope.user = {};
   $scope.signedIn = false;
 

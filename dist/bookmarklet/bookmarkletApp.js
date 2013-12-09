@@ -190,5 +190,3 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
 });
 
 var directives = angular.module('app.directives', []);
-
-

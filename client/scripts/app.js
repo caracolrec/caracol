@@ -16,6 +16,10 @@ app.config(function ($routeProvider) {
       templateUrl: '/partials/vote.html',
       controller: 'LoginCtrl'
     })
+    .when('/rec', {
+      templateUrl: '/partials/recommendation.html',
+      controller: 'RecCtrl'
+    })
     .otherwise({
       redirectTo: '/partials/login.html'
     });
