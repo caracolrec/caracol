@@ -31,7 +31,7 @@ app.config(function ($routeProvider) {
   $rootScope.hidden = false;
   UploadService.sendURI(uri)
   .then(function(data){
-      $location.path('/vote');
+  $location.path('/vote');
     console.log('saved clipping to db, id:', data);
   }, function(error){
       $location.path('/login');
