@@ -293,6 +293,7 @@ controllers.controller('LoginCtrl', function($scope, LoginService, $location, $r
       $location.path('/vote');
     }, function(err) {
       console.log('error logging in:', err);
+      //TODO add error message on bookmarklet
       $scope.user.error = err;
     });
   };
