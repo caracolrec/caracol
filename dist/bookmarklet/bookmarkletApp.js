@@ -6,8 +6,24 @@ var app = angular.module('app', ['ngRoute',
                                  'app.services',
                                  'app.directives'
                                  ]);
-
-app.run(function($rootScope, $location, UploadService){
+app.config(function ($routeProvider) {
+  $routeProvider
+    .when('/', {
+      templateUrl: '/partials/vote.html',
+      controller: 'VoteCtrl'
+    })
+    .when('/vote', {
+      templateUrl: '/partials/vote.html',
+      controller: 'LoginCtrl'
+    })
+    .when('/recs', {
+      templateUrl: '/partials/recommendation.html',
+      controller: 'RecCtrl'
+    })
+    .otherwise({
+      redirectTo: '/partials/login.html'
+    });
+}).run(function($rootScope, $location, UploadService){
   //check for session
   //if session do this
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
@@ -341,7 +357,6 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $location, $roo
         $rootScope.hide();
       });
     }, 750);
-
     // $location.path('/recs');
   };
   
