@@ -1,5 +1,4 @@
 controllers.controller('RecCtrl', function($scope, LoginService, RecService, $rootScope){
-  $rootScope.active = [false, true];
 
   var afterGottenRecs = function(recs) {
     $scope.recs = recs;
