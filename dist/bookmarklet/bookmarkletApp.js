@@ -10,14 +10,14 @@ var app = angular.module('app', ['ngRoute',
 app.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '/partials/login.html',
-      controller: 'LoginCtrl'
+      templateUrl: '/partials/vote.html',
+      controller: 'VoteCtrl'
     })
     .when('/vote', {
       templateUrl: '/partials/vote.html',
       controller: 'LoginCtrl'
     })
-    .when('/rec', {
+    .when('/recs', {
       templateUrl: '/partials/recommendation.html',
       controller: 'RecCtrl'
     })
@@ -32,7 +32,6 @@ app.config(function ($routeProvider) {
   $rootScope.hidden = false;
   UploadService.sendURI(uri)
   .then(function(data){
-    $location.path('/vote');
     console.log('saved clipping to db, id:', data);
   }, function(error){
     console.log('failed to save clipping to db', error);
@@ -298,7 +297,6 @@ controllers.controller('LoginCtrl', function($scope, LoginService, $location, $r
 });
 
 controllers.controller('RecCtrl', function($scope, LoginService, RecService, $rootScope){
-  $rootScope.active = [false, true];
 
   var afterGottenRecs = function(recs) {
     $scope.recs = recs;
@@ -316,7 +314,7 @@ controllers.controller('RecCtrl', function($scope, LoginService, RecService, $ro
 
 });
 
-controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
+controllers.controller('VoteCtrl', function($scope, VoteService, $location, $rootScope){
   $scope.voted = false;
 
   $scope.log = function(vote){
@@ -330,6 +328,7 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
     VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
+    // $location.path('/recs');
   };
   
   $scope.revert = function(preference){

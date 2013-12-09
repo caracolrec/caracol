@@ -1,4 +1,4 @@
-controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
+controllers.controller('VoteCtrl', function($scope, VoteService, $location, $rootScope){
   $scope.voted = false;
 
   $scope.log = function(vote){
@@ -12,6 +12,7 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
     VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
+    // $location.path('/recs');
   };
   
   $scope.revert = function(preference){

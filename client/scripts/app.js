@@ -10,14 +10,14 @@ var app = angular.module('app', ['ngRoute',
 app.config(function ($routeProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '/partials/login.html',
-      controller: 'LoginCtrl'
+      templateUrl: '/partials/vote.html',
+      controller: 'VoteCtrl'
     })
     .when('/vote', {
       templateUrl: '/partials/vote.html',
       controller: 'LoginCtrl'
     })
-    .when('/rec', {
+    .when('/recs', {
       templateUrl: '/partials/recommendation.html',
       controller: 'RecCtrl'
     })
@@ -32,7 +32,6 @@ app.config(function ($routeProvider) {
   $rootScope.hidden = false;
   UploadService.sendURI(uri)
   .then(function(data){
-    $location.path('/vote');
     console.log('saved clipping to db, id:', data);
   }, function(error){
     console.log('failed to save clipping to db', error);
