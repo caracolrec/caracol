@@ -113,6 +113,16 @@ module.exports = function(app, passport, auth) {
       });
     });
 
+    app.get('/partials/recommendation.html', function(req, res){
+      fs.readFile('./dist/bookmarklet/partials/recommendation.html', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
+      });
+    });
+
 
   /* -------------start of prefab MEAN routes-------------*/
     //Setting up the users api
@@ -210,7 +220,7 @@ module.exports = function(app, passport, auth) {
     var handleFetching = function(clippings_or_recs, req, res) {
       // improve this checking
       if (parseInt(req.query.lastId) < 0 || !req.query.batchSize) {
-        res.send(400, 'Poorly formed request')
+        res.send(400, 'Poorly formed request');
       // should also add handling for when user is not authorized --> respond with 401
       } else {
         async.waterfall([

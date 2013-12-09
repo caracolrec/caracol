@@ -5,10 +5,6 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
     !!vote ? ($scope.like = true) : ($scope.dislike = true);
   };
 
-  $scope.hide = function(){
-    $rootScope.hide = true;
-  };
-
   $scope.vote = function(vote){
     //grabs uri and vote status
     var url = (window.location !== window.parent.location) ? document.referrer: document.location;

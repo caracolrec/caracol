@@ -28,7 +28,7 @@ app.config(function ($routeProvider) {
   //if session do this
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
   var uri = encodeURIComponent(url);
-  $rootScope.hide = false;
+  $rootScope.hidden = false;
   UploadService.sendURI(uri)
   .then(function(data){
     $location.path('/vote');
@@ -36,6 +36,10 @@ app.config(function ($routeProvider) {
   }, function(error){
     console.log('failed to save clipping to db', error);
   });
+
+  $rootScope.hide = function(){
+    $rootScope.hidden = !$rootScope.hidden;
+  };
   //else
   //change route to login
 });
