@@ -17,13 +17,16 @@ html,body{height:100%}
 .featurette-image.pull-right{margin-left:40px}
 .featurette-heading{font-size:50px;font-weight:300;line-height:1;letter-spacing:-1px}
 @media (min-width: 980px){body{padding-top:60px}
-}@media (max-width 979px){.container.navbar-wrapper{margin-bottom:0;width:auto}
+.hrBanner{top:41px;right:0}
+}@media (max-width 979px){.hrBanner{top:51px;right:0}
+.container.navbar-wrapper{margin-bottom:0;width:auto}
 .navbar-inner{border-radius:0;margin:-20px 0}
 .carousel .item{height:500px}
 .carousel img{width:auto;height:500px}
 .featurette{height:auto;padding:0}
 .featurette-image.pull-left,.featurette-image.pull-right{display:block;float:none;max-width:40%;margin:0 auto 20px}
-}@media (max-width: 767px){.footer{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
+}@media (max-width: 767px){.hrBanner{display:none}
+.footer{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
 .carousel{margin-left:-20px;margin-right:-20px}
 .carousel .container,.carousel .item{height:300px}
 .carousel img{height:300px}
