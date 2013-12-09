@@ -8,15 +8,12 @@ services.factory('RecService', function($q, $http, FetchService) {
     batchSize: 1,
 
     getRecs: function() {
-      var requestSize;
-      console.log('need to fetch recs from db for the first time');
-      requestSize = service.batchSize + 1;
-      return FetchService.fetch('recs', service.lastRecId, requestSize)
+      return FetchService.fetch('recs', 0, 3)
         .then(function(data) {
           service.updateState(data);
         });
     },
-    
+
     updateState: function(recs) {
       service.timeOfLastFetch = new Date().getTime();
       service.currentRecs = service.currentRecs.concat(recs);

@@ -1,4 +1,5 @@
 //angular app
+'use strict'
 
 var app = angular.module('app', ['ngRoute',
                                  'app.controllers',
@@ -218,15 +219,12 @@ services.factory('RecService', function($q, $http, FetchService) {
     batchSize: 1,
 
     getRecs: function() {
-      var requestSize;
-      console.log('need to fetch recs from db for the first time');
-      requestSize = service.batchSize + 1;
-      return FetchService.fetch('recs', service.lastRecId, requestSize)
+      return FetchService.fetch('recs', 0, 3)
         .then(function(data) {
           service.updateState(data);
         });
     },
-    
+
     updateState: function(recs) {
       service.timeOfLastFetch = new Date().getTime();
       service.currentRecs = service.currentRecs.concat(recs);
@@ -303,24 +301,15 @@ controllers.controller('RecCtrl', function($scope, LoginService, RecService, $ro
   $rootScope.active = [false, true];
 
   var afterGottenRecs = function(recs) {
-    var batchSize = RecService.batchSize;
-    $scope.recs = recs.slice(($scope.page - 1) * batchSize, $scope.page * batchSize);
-    window.scrollTo(0);
-    if ($scope.page === 1) {
-      $scope.prevDisabled = true;
-    } else {
-      $scope.prevDisabled = false;
-    }
-    if ($scope.page * batchSize >= recs.length) {
-      $scope.nextDisabled = true;
-    } else {
-      $scope.nextDisabled = false;
-    }
+    $scope.recs = recs;
   };
 
   $scope.loadRecs = function() {
     RecService.getRecs()
-    .then(function() {});
+    .then(function(data) {
+      $scope.recs = data;
+      console.log('grabbed recs', data);
+    });
   };
 
   $scope.loadRecs();

@@ -118,7 +118,6 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   })
   .save()
   .then(function(model) {
-    console.log('HAHHHAAA', model.id, user_id);
     console.log('finished saving the clipping');
     console.log('model.id is:', model.id);
     insertUserClipping(user_id, model.id, callback);
