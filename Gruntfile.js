@@ -44,7 +44,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/<%= pkg.name %>.js': ['*.js', 'views/*.js'],
+          'dist/<%= pkg.name %>.js': ['server.js', 'Gruntfile.js', 'views/*.js'],
           'dist/bookmarklet/script.js': ['client/*.js'],
           'dist/bookmarklet/bookmarkletApp.js': ['client/scripts/*.js', 'client/scripts/services/*.js', 'client/scripts/controllers/*.js','client/scripts/directives/*.js'],
           'dist/bookmarklet/templates/home.html': ['client/partials/home.html'],
