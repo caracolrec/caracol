@@ -64,6 +64,7 @@ module.exports = function(app, passport, auth) {
     app.get('/bookmarklet/dependencies', function(req, res){
       async.eachSeries(
         ['./public/bower_components/underscore/underscore-min.js',
+         './public/bower_components/angular-route/angular-route.min.js',
          './dist/bookmarklet/bookmarkletApp.js'],
         function(filename, cb) {
           console.log('well these are good');
@@ -91,6 +92,27 @@ module.exports = function(app, passport, auth) {
         }
       });
     });
+
+    app.get('/partials/login.html', function(req, res){
+      fs.readFile('./dist/bookmarklet/partials/login.html', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
+      });
+    });
+
+    app.get('/partials/vote.html', function(req, res){
+      fs.readFile('./dist/bookmarklet/partials/vote.html', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
+      });
+    });
+
 
   /* -------------start of prefab MEAN routes-------------*/
     //Setting up the users api
@@ -130,8 +152,7 @@ module.exports = function(app, passport, auth) {
       });
     });
 
-    //
-    app.get('/app/:url/:t/*', auth.hasAuthorization, function(req, res){
+    app.get('/app/:url/:t/*', function(req, res){
       console.log('requesting app');
         async.eachSeries(
         ['./public/bower_components/jquery/jquery.min.js', './dist/bookmarklet/script.js'],
