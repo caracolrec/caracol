@@ -146,17 +146,17 @@ exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisI
   if (fetchOlderThanThisId === 0) {
     queryBuilder = function(qb) {
       qb
+      .where('user_id', '=', user_id)
       .orderBy('id', 'desc')
       .limit(batchSize);
-      // once user_id is working, add .where('user_id', '=', '*').andWhere
     };
   } else {
     queryBuilder = function(qb) {
       qb
       .where('id', '<', fetchOlderThanThisId)
+      .andWhere('user_id', '=', user_id)
       .orderBy('id', 'desc')
       .limit(batchSize);
-      // once user_id is working, add .where('user_id', '=', '*').andWhere
     };
   }
   coll.query(queryBuilder)
