@@ -64,12 +64,12 @@ module.exports = function(grunt) {
     },
     jshint: {
       files: ['*.js',
-      'routes/*.js',
-      'client/**/**/*.js',
-      'public/scripts/**/*.js',
-      'config/*.js',
-      'controllers/*.js',
-      'database/*.js'],
+              'routes/*.js',
+              'client/**/**/*.js',
+              'public/scripts/**/*.js',
+              'config/*.js',
+              'controllers/*.js',
+              'database/*.js'],
       options: {
         curly: true,
         eqeqeq: true,
