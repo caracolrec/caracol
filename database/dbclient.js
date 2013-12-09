@@ -145,7 +145,7 @@ exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisI
     queryBuilder = function(qb) {
       qb
       .where('user_id', '=', user_id)
-      .orderBy('id', 'desc')
+      .orderBy(orderBy[0], orderBy[1])
       .limit(batchSize);
     };
   } else {
@@ -153,7 +153,7 @@ exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisI
       qb
       .where('id', '<', fetchOlderThanThisId)
       .andWhere('user_id', '=', user_id)
-      .orderBy('id', 'desc')
+      .orderBy(orderBy[0], orderBy[1])
       .limit(batchSize);
     };
   }
