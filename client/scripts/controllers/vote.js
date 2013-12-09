@@ -18,7 +18,6 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $location, $roo
         $rootScope.hide();
       });
     }, 750);
-
     // $location.path('/recs');
   };
   
