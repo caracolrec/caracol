@@ -65,6 +65,7 @@ module.exports = function(app, passport, auth) {
       async.eachSeries(
         ['./public/bower_components/underscore/underscore-min.js',
          './public/bower_components/angular-route/angular-route.min.js',
+         './public/bower_components/angular-cookies/angular-cookies.min.js',
          './dist/bookmarklet/bookmarkletApp.js'],
         function(filename, cb) {
           console.log('well these are good');
