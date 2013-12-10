@@ -31,7 +31,9 @@ angular.module('caracolApp.services')
     updateState: function(clippings) {
       service.timeOfLastFetch = new Date().getTime();
       service.currentClippings = service.currentClippings.concat(clippings);
-      service.lastClippingId = service.currentClippings[service.currentClippings.length - 1].id;
+      if (service.currentClippings.length) {
+        service.lastClippingId = service.currentClippings[service.currentClippings.length - 1].id;
+      }
       console.log('lastId after getting latest batch of clippings:', service.lastClippingId);
       service.maxPageVisited += 1;
     }

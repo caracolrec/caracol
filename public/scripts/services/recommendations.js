@@ -31,7 +31,9 @@ angular.module('caracolApp.services')
     updateState: function(recs) {
       service.timeOfLastFetch = new Date().getTime();
       service.currentRecs = service.currentRecs.concat(recs);
-      service.lastRecId = service.currentRecs[service.currentRecs.length - 1].id;
+      if (service.currentRecs.length) {
+        service.lastRecId = service.currentRecs[service.currentRecs.length - 1].id;
+      }
       console.log('lastId after getting latest batch of recs:', service.lastRecId);
       service.maxPageVisited += 1;
     }
