@@ -11,7 +11,8 @@ angular.module('caracolApp.controllers')
       $scope.$emit('logged_in', user.username);
       console.log('current user is:', AuthService.currentUser);
       console.log('$rootScope.intendedDestination', $rootScope.intendedDestination);
-      $location.path($rootScope.intendedDestination);
+      $location.path('/clippings');
+      // $location.path($rootScope.intendedDestination);
     }, function(err) {
       console.log('error logging in:', err);
       $scope.user.error = err;
