@@ -45,7 +45,7 @@ block wrapper
     .container(ng-view='')
     .push
 
-    // script(src='/bower_components/jquery/jquery.js')
+    script(src='/bower_components/jquery/jquery.js')
     script(src='/bower_components/angular/angular.js')
     script(src='/bower_components/angular-route/angular-route.min.js')
     script(src='/bower_components/angular-bootstrap/ui-bootstrap.js')
@@ -64,6 +64,7 @@ block wrapper
     script(src='/scripts/services/clippings.js')
     script(src='/scripts/services/recommendations.js')
     script(src='/scripts/services/auth.js')
+    script(src='/scripts/hrBanner.js')
 
 block footer
   .footer
@@ -73,5 +74,5 @@ block footer
       .footerEntity
         a(href='/terms/caracol privacy policy and terms of service.txt') privacy policy / terms of service
     .footerNavRight
-      .copyright &copy; 2013
+      .copyright   &copy; 2013
 

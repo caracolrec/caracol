@@ -73,6 +73,7 @@ Core architecture:
 
 Front-end snazz:
 * Twitter Bootstrap
+* Topcoat
 * Stylus
 * Jade
 
@@ -84,7 +85,6 @@ Back-end utilities:
 
 Testing:
 * Mocha
-* Karma
 * Travis CI
 * Coveralls
 
@@ -94,7 +94,7 @@ Testing:
 ##<a name="team"></a>Team
 
 * Adam Witzel
-    * Personal site: <http://adamwitzel.azurewebsites.net>
+    * Personal site: <http://adamwitzel.com>
     * Email: <adam.witzel@gmail.com>
     * Github: <https://github.com/adwitz>
 * Rick Cerf <email@email.com>

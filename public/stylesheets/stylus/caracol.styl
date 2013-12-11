@@ -62,13 +62,18 @@ html, body
   overflow: hidden
 
 .featurette-image
-  margin-top: -120px
+  margin-top: 50px
 
 .featurette-image.pull-left
   margin-right: 40px
+  margin-top: 50px
+  margin-bottom: 50px
 
 .featurette-image.pull-right 
   margin-left: 40px
+  margin-top: 10px
+  width: 50%
+
 
 .featurette-heading
   font-size: 50px
@@ -80,7 +85,15 @@ html, body
   body
     padding-top: 60px;
 
+  .hrBanner
+    top: 41px
+    right: 0
+
 @media(max-width 979px)
+  .hrBanner
+    top: 51px
+    right: 0
+
   .container.navbar-wrapper
     margin-bottom: 0
     width: auto
@@ -108,6 +121,9 @@ html, body
     margin: 0 auto 20px
 
 @media (max-width: 767px)
+  .hrBanner
+    display: none
+
   .footer
     margin-left: -20px;
     margin-right: -20px;
@@ -124,7 +140,12 @@ html, body
     height: 300px
       
   .carousel img
-    height: 300px;
+    height: 300px
+
+  .carousel-inner
+    height: 100%
+    width: 80%
+    margin: 0 auto
 
   .carousel-caption
     width: 65%
@@ -147,7 +168,7 @@ html, body
   .featurette .lead
     font-size: 18px
     line-height: 1.5
-  
+
 .rec, .clipping
   padding-bottom: 20px
 
@@ -216,7 +237,12 @@ html, body
 
 @media (min-width: 980px)
   .navbar ul.nav.leftUL
-    margin-left: 50px 
+    margin-left: 50px
+
+  .carousel-inner
+    width: 940px
+    height: 500px
+    margin: 0 auto
 
 .navbar .nav > li.active > a.buttonContainer
   color: #ffffff
@@ -319,5 +345,6 @@ html, body
 .landingSignIn.btn-primary
   background-color: #00aced
   background-image: none
+
 
 // 0H11Tw0w0w0w0

@@ -27,6 +27,7 @@ module.exports = function(app, passport, auth) {
           console.log('sending up new user_id', user.id);
           req.session.auth = true;
           req.session.id = user.id;
+          req.session.user_id = user.id;
           res.send(200, {
             id: user.id,
             username: user.username
@@ -46,6 +47,7 @@ module.exports = function(app, passport, auth) {
           res.send(500, error);
         } else {
           req.session.id = user.id;
+          req.session.user_id = user.id;
           req.session.auth = true;
           res.send(200, {
             id: user.id,
@@ -198,7 +200,7 @@ module.exports = function(app, passport, auth) {
         url: decodeURIComponent(req.body.uri),
         token: token
       };
-      var user_id = req.session.id;
+      var user_id = req.session.user_id;
       res.header("Access-Control-Allow-Origin", "*");
       async.waterfall([
         function(callback){
@@ -225,7 +227,7 @@ module.exports = function(app, passport, auth) {
       } else {
         async.waterfall([
           function(callback) {
-            dbClient.fetch(clippings_or_recs, req.session.id, parseInt(req.query.lastId), req.query.batchSize, callback);
+            dbClient.fetch(clippings_or_recs, req.session.user_id, parseInt(req.query.lastId), req.query.batchSize, callback);
           },
           function(clippings, callback) {
             console.log('about to send clippings back to client');

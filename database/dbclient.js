@@ -131,32 +131,30 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
 exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisId, batchSize, callback) {
   console.log('fetchClippingsOlderThanThisClippingId:',fetchOlderThanThisId);
   console.log('batchSize is:', batchSize);
-  var coll, compar;
+  var coll, orderBy;
   if (clippings_or_recs === 'clippings') {
-      compar = function(model) {
-      return -1 * model.id; // sort so that most recent clippings displayed first
-    };
-    coll = new tables.User_Clippings({ comparator: compar });
+    orderBy = ['id', 'desc'];
+    coll = new tables.User_Clippings();
   } else if (clippings_or_recs === 'recs') {
-    compar = 'rank';
-    coll = new tables.Recommendations({ comparator: compar });
+    orderBy = ['rank', 'asc'];
+    coll = new tables.Recommendations();
   }
 
   var queryBuilder;
   if (fetchOlderThanThisId === 0) {
     queryBuilder = function(qb) {
       qb
-      .orderBy('id', 'desc')
+      .where('user_id', '=', user_id)
+      .orderBy(orderBy[0], orderBy[1])
       .limit(batchSize);
-      // once user_id is working, add .where('user_id', '=', '*').andWhere
     };
   } else {
     queryBuilder = function(qb) {
       qb
       .where('id', '<', fetchOlderThanThisId)
-      .orderBy('id', 'desc')
+      .andWhere('user_id', '=', user_id)
+      .orderBy(orderBy[0], orderBy[1])
       .limit(batchSize);
-      // once user_id is working, add .where('user_id', '=', '*').andWhere
     };
   }
   coll.query(queryBuilder)
@@ -168,7 +166,6 @@ exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisI
     console.log('there was an error fetching', clippings_or_recs, 'from the db:', error);
     callback(error);
   });
-  // once user_id is working, add .query(function(qb){qb.where('user_id', '=', user_id)})
 };
 
 exports.dbVote = dbVote = function(json){
