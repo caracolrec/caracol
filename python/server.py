@@ -100,6 +100,24 @@ pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__)
 
 
 
+
+MmCorpus_File = './tmp/initCorp.mm'
+DictFile      = './tmp/init.dict'
+SimsFile      = './tmp/similarities.index'
+#LsiFile       = 
+#Tokens_once   = 
+
+# in v2 - explore smart ways to put these in db
+UserDictionaries = './tmp/UserDicts/'   #for now, place individual user dictionary files in this directory
+UserDictDir      = './tmp/UserDicts/'
+UserLSImodels    = 
+UserSimIndices   = 
+
+
+tokens_once_file = {}
+
+
+
 def filter(clipping):
 
     stopwords = "a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your"
@@ -158,6 +176,8 @@ def filter(clipping):
 
     return filtered
 
+
+
 def trim(s):
     if s.endswith(".\""): s = s[:-2]
     if s.endswith("\"") or s.endswith("."): s = s[:-1]
@@ -193,13 +213,15 @@ class RPC(object):
 
         filtered = filter(tokenized)
 
-
         # IN FILE, DEFINE MAPPING BETWEEN CLIPPING_ID_IN_CORPUS and CLIPPING_ID_IN_DB
         # remember to 0-index CL_ID_IN_CORPUS
 
         # THEN DO TESTS
 
         # recommendations = add_clipping_to_user_corpus(self, cur, filtered, clipping_id, clipping_index_in_this_batch, user_id)
+
+        #cur still accesible inside f_i_n_u_c?
+        #fold_in_new_user_clipping(self, cur, filtered, clipping_id, user_id):
 
         conn.commit()
         # Close database connection
@@ -256,6 +278,16 @@ def read_and_split_summary_line_of_user_corpus(f):
     f.seek(lenFirstLine, 0)
     summary_split = f.readline().split()
     return summary_split
+
+
+#WRITE:
+# FLOW FOR RECEIVING NEW BMARK, PARSING & FILTERING w.r.t. TO ENTIRE CORPUS 
+# LOAD USER CORPUS
+# FETCH RECOMMENDATION FOR THIS ARTICLE
+# FETCH RECOMMENDATION FOR ALL ARTICLES
+# (COMPUTE & ) STORE RECOMMENDATION FOR THIS ARTICLE
+# (RECOMPUTE & ) STORE RECOMMENDATIONS FOR ALL ARTICLES
+#
 
 
 def get_number_of_files_in_user_corpus(f):
@@ -336,16 +368,16 @@ def add_user_clippings(self, cursor, clippings, clipping_ids_in_db, user_id):
         cl_id = clipping_ids_in_db[counter]
 
 
-
         this_user_word_counts_list = add_clipping_to_user_corpus(None, cursor, clipping, cl_id, counter+1, UserIdDummy)
         counter = counter + 1
     return this_user_word_counts_list
 
+corpora.MmCorpus.serialize(MmCorpus_File, corpus) # store to disk, for later use
 
 # Perhaps use the clipping_id_in_db as the clipping id we store for the corpus as well?
 
-def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipping_index_in_this_batch , user_id):
 
+def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipping_index_in_this_batch , user_id):
 
     bow_vec = all_users_dict.doc2bow(filtered) #, allow_update=True)  # updates dictionary - don't want this until LATER ITERATION
                                                                    # note indices for doc2bow is initially off-by-one from the dictionary indexing
@@ -367,7 +399,6 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
     # only write to MmCorpusFile if we haven't seen the file before?
     try:
         with open(ThisUserMmCorpusFile, 'r+') as f:
-
             print '\n\nSuccessully opened "ThisUserMmCorpusFile" for user # ' + user_id + '\n\n'
             print 'Adding additional words to corpus: '
 
