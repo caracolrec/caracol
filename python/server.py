@@ -117,7 +117,6 @@ UserSimIndices   =
 tokens_once_file = {}
 
 
-
 def filter(clipping):
 
     stopwords = "a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your"
@@ -129,7 +128,9 @@ def filter(clipping):
     tokens_once = set(word for word in filtered if filtered.count(word) == 1)
 
     # These tokens occur once in clipping - we want to know if they occur once in the corpus of all users
+
     # If they're in the all_users_dict(ionary), we've already encountered at least 2 instances, so remove them from tokens_once 
+
     # If they're not in a_u_dictionary, check them against the global tokens_once_dict (t_o_d)
     #    if in t_o_d, remove from global tokens_once_dict, remove from this tokens_once set, and add to a_u_dictionary
     #       else, add to t_o_d, leave them in tokens_once to be removed in the next line
@@ -282,12 +283,12 @@ def read_and_split_summary_line_of_user_corpus(f):
 
 #WRITE:
 # FLOW FOR RECEIVING NEW BMARK, PARSING & FILTERING w.r.t. TO ENTIRE CORPUS 
+
 # LOAD USER CORPUS
 # FETCH RECOMMENDATION FOR THIS ARTICLE
 # FETCH RECOMMENDATION FOR ALL ARTICLES
 # (COMPUTE & ) STORE RECOMMENDATION FOR THIS ARTICLE
 # (RECOMPUTE & ) STORE RECOMMENDATIONS FOR ALL ARTICLES
-#
 
 
 def get_number_of_files_in_user_corpus(f):
@@ -366,16 +367,12 @@ def add_user_clippings(self, cursor, clippings, clipping_ids_in_db, user_id):
     counter = 0  # note - documents in corpus are indexed 1-up, but when computing similarities, they are displayed as 0-up
     for clipping in clippings:
         cl_id = clipping_ids_in_db[counter]
-
-
         this_user_word_counts_list = add_clipping_to_user_corpus(None, cursor, clipping, cl_id, counter+1, UserIdDummy)
         counter = counter + 1
     return this_user_word_counts_list
 
-corpora.MmCorpus.serialize(MmCorpus_File, corpus) # store to disk, for later use
 
 # Perhaps use the clipping_id_in_db as the clipping id we store for the corpus as well?
-
 
 def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipping_index_in_this_batch , user_id):
 
@@ -403,7 +400,6 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
             print 'Adding additional words to corpus: '
 
             nFilesInCorpus = get_number_of_files_in_user_corpus(f)
-
             clipping_id_in_corpus = clipping_index_in_this_batch + nFilesInCorpus
             writeToUserMmCorpusFile(f, filtered, new_bow_vec, clipping_id_in_corpus)
 
@@ -452,7 +448,6 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
 def corpus_to_index(corpus):
     tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
     corpus_tfidf = tfidf[corpus]      # wrap our corpus w/ the model - will be computed later
-
     lsi = models.LsiModel(corpus_tfidf, id2word=all_users_dict, num_topics=3)
     corpus_lsi = lsi[corpus_tfidf]
 
