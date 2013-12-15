@@ -90,6 +90,7 @@ Testing:
 
 ##<a name="challenges"></a>Challenges
 
+In using Python for the machine learning side of caracol, we face the question of how to communicate between our node server and Python. If Python were running on the same machine as our node server, we could invoke the Python functionality as a child process of node. But that probably wouldn't be a scalable solution, because latent semantic analysis in Python can use up a lot of CPU and memory resources, which could limit the ability of the node server to respond to requests quickly. So we've implemented a solution that allows the machine learning to be done on a remote machine, which communicates with our node server. That solution is essentially TCP sockets, but rather than work with sockets directly and have to deal with messy problems like what to do if a connection is dropped, we're using the ZeroMQ messaging framework. More specifically, we're using ZeroRPC, a library for Python and node.js built on top of ZeroMQ which enables remote procedure calls. Setup was simple and it has worked beautifully. More on our experience using ZeroRPC [here](http://ianhinsdale.com/code/2013/12/08/communicating-between-nodejs-and-python/). 
 
 ##<a name="team"></a>Team
 
@@ -105,8 +106,8 @@ Testing:
     * Email: <michaelmunson1@gmail.com>
     * Github: <https://github.com/michaelmunson1>
 * Ian Hinsdale
-    * Personal site: <http://www.ianhinsdale.com>
-    * Email: <ian@ianhinsdale.com>
+    * Personal site: <http://ianhinsdale.com>
+    * Email: <ihinsdale@gmail.com>
     * Github: <https://github.com/ihinsdale>
 
 ##<a name="license"></a>License
