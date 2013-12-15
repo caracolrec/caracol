@@ -24,7 +24,6 @@ UserCorporaIdToDbIdMapDir = './tmp/IdMappings/'
 UserDictionariesDir       = './tmp/UserDictionaries/'
 UserSimIndicesDir         = './tmp/UserSimIndices/'
 
-
 TokensOnceFile = './tmp/tokens_once.dict'
 # TODO - read file into dictionary
 
@@ -69,7 +68,6 @@ with open(AllUsersDictionaryFile) as d:
 
 ###  Test load_from_text in the python console    <-------
 
-
 # print '\n\n printing dictionary:'
 # print all_users_dict.token2id
 # print '\n\n'
@@ -99,8 +97,6 @@ pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__)
 #print pyserver
 
 
-
-
 MmCorpus_File = './tmp/initCorp.mm'
 DictFile      = './tmp/init.dict'
 SimsFile      = './tmp/similarities.index'
@@ -118,7 +114,6 @@ tokens_once_file = {}
 
 
 def filter(clipping):
-
     stopwords = "a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your"
     stopwords = stopwords.split(",")
     filtered = [trim(token.lower()) for token in clipping if "\'" not in token and token not in string.punctuation]
@@ -285,10 +280,11 @@ def read_and_split_summary_line_of_user_corpus(f):
 # FLOW FOR RECEIVING NEW BMARK, PARSING & FILTERING w.r.t. TO ENTIRE CORPUS 
 
 # LOAD USER CORPUS
-# FETCH RECOMMENDATION FOR THIS ARTICLE
+# FETCH RECOMMENDATION FOR THIS ARTICLE                  <---  DEFERRED TO LATER VERSION
 # FETCH RECOMMENDATION FOR ALL ARTICLES
-# (COMPUTE & ) STORE RECOMMENDATION FOR THIS ARTICLE
-# (RECOMPUTE & ) STORE RECOMMENDATIONS FOR ALL ARTICLES
+# (COMPUTE & ) STORE RECOMMENDATION FOR THIS ARTICLE     <---  DEFERRED TO LATER VERSION
+# (RECOMPUTE & ) STORE RECOMMENDATIONS FOR ALL ARTICLES  <---  NECESSARY IN THIS VERSION?
+
 
 
 def get_number_of_files_in_user_corpus(f):
@@ -337,15 +333,14 @@ def format_clipping(tokenized_ids):
     cur = conn.cursor()
     # Remove html from the content and tokenize
 
+    counter = 1    # note - documents in corpus are indexed 1-up
     for cl_id in tokenized_ids:
       print "\ncl_id:\n"
       print cl_id
       print "\n"
-
       cur.execute("SELECT content_sans_html_tokenized FROM clippings WHERE id=(%s)", ([cl_id]) )
 
       tokenizedClipping= cur.fetchone()[0]    #[word for sent in sent_tokenize(cur.fetchone()[0]) for word in word_tokenize(sent)]
-
 
     print "\nbefore filtering:\n"
     print tokenizedClipping
@@ -444,7 +439,6 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
 
     return this_user_word_counts_list
 
-
 def corpus_to_index(corpus):
     tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
     corpus_tfidf = tfidf[corpus]      # wrap our corpus w/ the model - will be computed later
@@ -504,8 +498,11 @@ def findSimilaritiesToDocument(corpus, document_bowvector, user_id):      #, cli
 
     return similar_articles
 
-#model.add_documents(another_tfidf_corpus) # now LSI has been trained on tfidf_corpus + another_tfidf_corpus
-#   lsi_vec = model[tfidf_vec] # convert some new document into the LSI space, without affecting the model
+# with open(AllUsersMmCorpusFile) as f:
+#     for line in f.readlines():
+#         print line                  # ensure format match
+#     print "\n\n"
+
 
 # TODO   <-----------  <-----------  <-----------  <-----------  <-----------  
 # MAKE THE BELOW A FUNCTION - for populating a corpus of content that we can compare against:
