@@ -1,24 +1,9 @@
 'use strict';
 
 angular.module('caracolApp.services')
-.factory('AuthService', ['$q', '$http', function($q, $http) {
+.factory('AuthService', ['$q', '$http', '$cookieStore', function($q, $http, $cookieStore) {
   var service = {
-    
-    getCurrentUser: function() {
-      if (service.isAuthenticated()) {
-        return $q.when(service.currentUser);
-      } else {
-        return $http.get('/current_user', {
-          withCredentials: true
-        }).success(function(data) {
-          if (data.identifier) {
-            return service.currentUser = data.identifier;
-          }
-        });
-      }
-    },
-
-    currentUser: null,
+    currentUser: $cookieStore.get('user'),
 
     isAuthenticated: function() {
       return !!service.currentUser;
@@ -26,6 +11,7 @@ angular.module('caracolApp.services')
 
     setAuthenticated: function(data) {
       service.currentUser = data;
+      $cookieStore.put('user', data);
     },
 
     signup: function(username, password) {
@@ -76,6 +62,7 @@ angular.module('caracolApp.services')
         withCredentials: true
       })
       .success(function(data) {
+        $cookieStore.remove('user');
         d.resolve(data);
       }).error(function(data) {
         d.reject(data);

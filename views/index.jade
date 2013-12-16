@@ -17,10 +17,10 @@ block wrapper
           .nav-collapse.collapse(collapse="isCollapsed")
             // .nav, .navbar-search, .navbar-form, etc 
             ul.nav.pull-left.leftUL
-              li(ng-class='{active: active[0]}')
+              li(ng-class='{active: active[0]}', ng-click="intendedDest('/clippings')")
                 a.buttonContainer.clipNavButton(href='#/clippings')
                   .navButtonText My Clippings
-              li(ng-class='{active: active[1]}')
+              li(ng-class='{active: active[1]}', ng-click="intendedDest('/recommendations')")
                 a.buttonContainer.recNavButton(href='#/recommendations')
                   .navButtonText Recommendations
             ul.nav.pull-right

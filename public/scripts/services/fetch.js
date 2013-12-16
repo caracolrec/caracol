@@ -8,9 +8,9 @@ angular.module('caracolApp.services')
       var route, d = $q.defer();
 
       if (clippings_or_recs === 'clippings') {
-        route = '/fetchMyClippings';
+        route = '/fetchmyclippings';
       } else if (clippings_or_recs === 'recs') {
-        route = '/fetchMyRecommendations';
+        route = '/fetchmyrecommendations';
       }
 
       $http.get(route, {
