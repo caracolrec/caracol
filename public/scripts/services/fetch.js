@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('caracolApp.services')
 .factory('FetchService', ['$q', '$http', function($q, $http) {
   var service = {
