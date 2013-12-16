@@ -18,7 +18,6 @@ angular.module('caracolApp.controllers')
     AuthService.logout()
     .then(function(data){
       console.log('successfully logged out:', data);
-      AuthService.currentUser = null;
       console.log('is authenticated still:', AuthService.isAuthenticated());
       console.log('current user:', AuthService.currentUser);
       $scope.onLogOut();
