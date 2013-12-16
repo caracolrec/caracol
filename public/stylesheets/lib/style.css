@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'caracol';
-	src:url('fonts/caracol.eot');
-	src:url('fonts/caracol.eot?#iefix') format('embedded-opentype'),
-		url('fonts/caracol.ttf') format('truetype'),
-		url('fonts/caracol.woff') format('woff'),
-		url('fonts/caracol.svg#caracol') format('svg');
+	src:url('font/caracol.eot');
+	src:url('font/caracol.eot?#iefix') format('embedded-opentype'),
+		url('font/caracol.ttf') format('truetype'),
+		url('font/caracol.woff') format('woff'),
+		url('font/caracol.svg#caracol') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
