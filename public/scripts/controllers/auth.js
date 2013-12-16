@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('caracolApp.controllers')
 .controller('LoginCtrl', function($rootScope, $scope, $location, AuthService) {
   $rootScope.active = [false, false];

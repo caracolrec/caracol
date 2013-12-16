@@ -24,7 +24,8 @@
     "should": "~2.1.0",
     "when": "~2.7.0",
     "validator": "~2.0.0",
-    "bcrypt": "~0.7.7"
+    "bcrypt": "~0.7.7",
+    "bower": "~1.0.3"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
@@ -38,5 +39,8 @@
     "chai": "~1.8.1",
     "zerorpc": "~0.9.3",
     "grunt-mocha-cov": "0.0.7"
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/bower/bin/bower install"
   }
 }

@@ -178,11 +178,11 @@ exports.dbVote = dbVote = function(json){
     console.log(model[0].id);
     new tables.User_Clipping({id: model[0].id})
     .save({vote: json.vote}).then(function(model){
-      console.log('look what i did ma', model);
-    }, function(){
-      console.log('error saving to userclipping id');
+      console.log('successfully saved vote:', model);
+    }, function(error){
+      console.log('error saving to userclipping id:', error);
     });
-  }, function(){
-    console.log('welcome ot the danger zone');
+  }, function(error){
+    console.log('error voting:', error);
   });
 };

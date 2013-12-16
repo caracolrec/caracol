@@ -41,10 +41,9 @@ To get started working on caracol:
             - nltk
             - pyzmq
             - ZeroRPC
-    3. Install node.js dependencies using `npm`, and front-end dependencies using `bower`. From the root caracol directory:
+    3. Install node.js dependencies using `npm` (which will install front-end dependencies using `bower`). From the root caracol directory:
 
             npm install
-            bower install
 
 3. Test launching locally:
     1. From the root caracol directory:
