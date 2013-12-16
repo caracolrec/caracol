@@ -26,7 +26,6 @@ module.exports = function(app, passport, auth) {
         } else {
           console.log('sending up new user_id', user.id);
           req.session.auth = true;
-          req.session.id = user.id;
           req.session.user_id = user.id;
           res.send(200, {
             id: user.id,
@@ -46,7 +45,6 @@ module.exports = function(app, passport, auth) {
         if (error) {
           res.send(500, error);
         } else {
-          req.session.id = user.id;
           req.session.user_id = user.id;
           req.session.auth = true;
           res.send(200, {
