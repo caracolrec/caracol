@@ -38,6 +38,13 @@ angular.module('caracolApp.services')
       }
       console.log('lastId after getting latest batch of recs:', service.lastRecId);
       service.maxPageVisited += 1;
+    },
+    resetState: function() {
+      console.log('resetting recommendations state');
+      service.timeOfLastFetch = null;
+      service.maxPageVisited = 0;
+      service.currentClippings = [];
+      service.lastClippingId = 0;
     }
   };
 

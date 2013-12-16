@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('caracolApp.services')
-.factory('AuthService', ['$q', '$http', '$cookieStore', function($q, $http, $cookieStore) {
+.factory('AuthService', ['$q', '$http', '$cookieStore', 'ClippingsService', 'RecsService', function($q, $http, $cookieStore, ClippingsService, RecsService) {
   var service = {
     currentUser: $cookieStore.get('user'),
 
@@ -62,6 +62,9 @@ angular.module('caracolApp.services')
         withCredentials: true
       })
       .success(function(data) {
+        service.currentUser = null;
+        ClippingsService.resetState();
+        RecsService.resetState();
         $cookieStore.remove('user');
         d.resolve(data);
       }).error(function(data) {
