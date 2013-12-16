@@ -2,7 +2,7 @@
 
 angular.module('caracolApp.controllers')
 .controller('NavCtrl', function($rootScope, $scope, $location, AuthService) {
-  $rootScope.active = [false, false];
+  $rootScope.active = [false, false]; // this keeps track of which view the user is currently in
 
   $scope.$on('logged_in', function(event, username) {
     $scope.loggedIn = !!username;

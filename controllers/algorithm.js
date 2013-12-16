@@ -10,12 +10,3 @@ exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId, cal
     callback(error, res);
   });
 };
-
-// tokenizedClippings = [];
-// first_tokenized = 107 ;
-// last_tokenized =  165 ;
-// for(clippingId = first_tokenized; clippingId <= last_tokenized; clippingId++){
-//   tokenizedClippings.push(removeHTMLAndTokenize(clippingId));
-// }; 
-
-// console.log(tokenizedClippings);
