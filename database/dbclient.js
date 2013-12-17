@@ -113,8 +113,6 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   })
   .save()
   .then(function(model) {
-    console.log('finished saving the clipping');
-    console.log('model.id is:', model.id);
     insertUserClipping(user_id, model.id, callback);
     algorithm.removeHTMLAndTokenize(model.id, function(){});
   }, function(error){
@@ -128,10 +126,10 @@ exports.checkForClipping = checkForClipping = function(json, user_id, callback){
   .query()
   .where({title: json.title})
   .then(function(model){
-    console.log('heres the model', model, model.id);
+    console.log('heres the model', model, model[0].id);
     if (model.length) {
-      insertUserClipping(user_id, model.id, callback);
-      console.log("content model", model.id);
+      insertUserClipping(user_id, model[0].id, callback);
+      console.log("content model", model[0].id);
     } else {
       dbInsert(json, user_id, callback);
     }
