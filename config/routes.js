@@ -207,7 +207,7 @@ module.exports = function(app, passport, auth) {
         },
         function(response, callback){
           response.url = params.url;
-          dbClient.dbInsert(response, user_id, callback);
+          dbClient.checkForClipping(response, user_id, callback);
         },
         function(clipping_id, callback){
           clipping_id = clipping_id.toString();

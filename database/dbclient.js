@@ -96,24 +96,7 @@ exports.findUser = findUser = function(json, callback){
   });
 };
 
-var checkForClipping = function(json){
-  console.log('appear to be checking');
-  new tables.Clipping()
-  .query()
-  .where({content: json.content})
-  .then(function(model){
-    console.log("content model", model);
-  }, function(err){
-    console.log('error', error);
-  });
-};
-
 exports.dbInsert = dbInsert = function(json, user_id, callback){
-  //TODO prevent duplicate clippings by
-  //periodically scanning for duplicates in database  <--- or, rather do an index-lookup (on uri or title field) prior to insertion
-
-  //if so, capture that clipping id
-  //if not, return the new clipping id
   checkForClipping(json);
   new tables.Clipping({
     title: json.title,
@@ -137,6 +120,23 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   }, function(error){
     console.log('Error saving the clipping:', error);
     callback(error);
+  });
+};
+
+exports.checkForClipping = checkForClipping = function(json, user_id, callback){
+  new tables.Clipping()
+  .query()
+  .where({title: json.title})
+  .then(function(model){
+    console.log('heres the model', model, model.id);
+    if (model.length) {
+      insertUserClipping(user_id, model.id, callback);
+      console.log("content model", model.id);
+    } else {
+      dbInsert(json, user_id, callback);
+    }
+  }, function(err){
+    console.log('error', error);
   });
 };
 
