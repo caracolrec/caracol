@@ -211,7 +211,6 @@ module.exports = function(app, passport, auth) {
         },
         function(clipping_id, callback){
           clipping_id = clipping_id.toString();
-          console.log('clipping id before reply to client is:', clipping_id);
           res.send(200, clipping_id);
           callback(null);
         }
