@@ -98,7 +98,7 @@ exports.findUser = findUser = function(json, callback){
 
 var checkForClipping = function(json){
   console.log('appear to be checking');
-  new tables.Cliping()
+  new tables.Clipping()
   .query()
   .where({content: json.content})
   .then(function(model){
