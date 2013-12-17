@@ -175,7 +175,9 @@ module.exports = function(app, passport, auth) {
           });
         },
         function(error) {
-          console.log('error loading injection scripts', error);
+          if (error){
+            console.log('error loading injection scripts', error);
+          }
           res.end();
         }
       );
