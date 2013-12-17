@@ -98,7 +98,7 @@ exports.findUser = findUser = function(json, callback){
 
 exports.dbInsert = dbInsert = function(json, user_id, callback){
   //TODO prevent duplicate clippings by
-  //periodically scanning for duplictes in database  <--- or, rather do an index-lookup (on uri or title field) prior to insertion
+  //periodically scanning for duplicates in database  <--- or, rather do an index-lookup (on uri or title field) prior to insertion
 
   //if so, capture that clipping id
   //if not, return the new clipping id
@@ -113,7 +113,7 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
     date_published: json.date_published,
     dek: json.dek,
     lead_image_url: json.lead_image_url,
-    next_page_id: json.next_page_id,
+    //next_page_id: json.next_page_id, // occasionally parser returns a non-integer for this field which causes error
     rendered_pages: json.rendered_pages
   })
   .save()
@@ -123,7 +123,7 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
     insertUserClipping(user_id, model.id, callback);
     algorithm.removeHTMLAndTokenize(model.id, function(){});
   }, function(error){
-    console.log('Error saving the clipping');
+    console.log('Error saving the clipping:', error);
     callback(error);
   });
 };
@@ -178,11 +178,11 @@ exports.dbVote = dbVote = function(json){
     console.log(model[0].id);
     new tables.User_Clipping({id: model[0].id})
     .save({vote: json.vote}).then(function(model){
-      console.log('look what i did ma', model);
-    }, function(){
-      console.log('error saving to userclipping id');
+      console.log('successfully saved vote:', model);
+    }, function(error){
+      console.log('error saving to userclipping id:', error);
     });
-  }, function(){
-    console.log('welcome ot the danger zone');
+  }, function(error){
+    console.log('error voting:', error);
   });
 };

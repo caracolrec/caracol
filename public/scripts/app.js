@@ -6,7 +6,7 @@ angular.module('caracolApp', [
   'caracolApp.services',
   'caracolApp.controllers'
 ])
-.config(function ($routeProvider) {
+.config(function($routeProvider) {
   $routeProvider
     .when('/', {
       templateUrl: '/views/index.html',
@@ -28,13 +28,23 @@ angular.module('caracolApp', [
       redirectTo: '/'
     });
 })
+.config(function($httpProvider) {
+  $httpProvider.interceptors.push('caracolInterceptor');
+})
 .run(function($rootScope, $location, AuthService) {
+  if (AuthService.isAuthenticated()) {
+    $rootScope.loggedIn = true;
+    $rootScope.username = AuthService.currentUser.username;
+  } else {
+    $rootScope.loggedIn = false;
+    $rootScope.username = null;
+  }
   $rootScope.$on("$routeChangeStart", function(evt, next, current) {
-      if (!AuthService.isAuthenticated() &&
-          next.controller !== "LoginCtrl" && next.controller !== "MainCtrl"
-        ) {
-          $location.path('/login');
-          $rootScope.intendedDestination = next.originalPath || '/recommendations';
-      }
+    console.log('according to client-side, user is authenticated:', AuthService.isAuthenticated());
+    if (!AuthService.isAuthenticated() &&
+        next.controller !== "LoginCtrl" && next.controller !== "MainCtrl"
+      ) {
+        $location.path('/login');
+    }
   });
 });

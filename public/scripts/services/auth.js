@@ -1,22 +1,9 @@
-angular.module('caracolApp.services')
-.factory('AuthService', ['$q', '$http', function($q, $http) {
-  var service = {
-    
-    getCurrentUser: function() {
-      if (service.isAuthenticated()) {
-        return $q.when(service.currentUser);
-      } else {
-        return $http.get('/current_user', {
-          withCredentials: true
-        }).success(function(data) {
-          if (data.identifier) {
-            return service.currentUser = data.identifier;
-          }
-        });
-      }
-    },
+'use strict';
 
-    currentUser: null,
+angular.module('caracolApp.services')
+.factory('AuthService', ['$q', '$http', '$cookieStore', 'ClippingsService', 'RecsService', function($q, $http, $cookieStore, ClippingsService, RecsService) {
+  var service = {
+    currentUser: $cookieStore.get('user'),
 
     isAuthenticated: function() {
       return !!service.currentUser;
@@ -24,6 +11,7 @@ angular.module('caracolApp.services')
 
     setAuthenticated: function(data) {
       service.currentUser = data;
+      $cookieStore.put('user', data);
     },
 
     signup: function(username, password) {
@@ -74,6 +62,10 @@ angular.module('caracolApp.services')
         withCredentials: true
       })
       .success(function(data) {
+        service.currentUser = null;
+        ClippingsService.resetState();
+        RecsService.resetState();
+        $cookieStore.remove('user');
         d.resolve(data);
       }).error(function(data) {
         d.reject(data);

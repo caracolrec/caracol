@@ -10,3 +10,5 @@ python.json
 npm-debug.log
 dbCredentials.txt
 serverLogFile.log
+public/stylesheets/bookmarklet.css
+public/stylesheets/caracol.css

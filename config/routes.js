@@ -26,7 +26,6 @@ module.exports = function(app, passport, auth) {
         } else {
           console.log('sending up new user_id', user.id);
           req.session.auth = true;
-          req.session.id = user.id;
           req.session.user_id = user.id;
           res.send(200, {
             id: user.id,
@@ -46,7 +45,6 @@ module.exports = function(app, passport, auth) {
         if (error) {
           res.send(500, error);
         } else {
-          req.session.id = user.id;
           req.session.user_id = user.id;
           req.session.auth = true;
           res.send(200, {
@@ -193,7 +191,6 @@ module.exports = function(app, passport, auth) {
     var dbClient = require('../database/dbclient.js');
     var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
     var parser = require('../controllers/parser.js').parser;
-    
 
     app.post('/uri', auth.hasAuthorization, function(req, res){
       params = {
@@ -216,7 +213,39 @@ module.exports = function(app, passport, auth) {
           res.send(200, clipping_id);
           callback(null);
         }
-      ]);
+      ], function(error) {
+        if (error) {
+          res.send(500, error);
+        }
+      });
+    });
+
+    app.post('/testcorpus', function(req, res) {
+      params = {
+        url: decodeURIComponent(req.body.uri),
+        token: token
+      };
+      var user_id = 70; // this is the user_id for the testcorpus user
+      res.header("Access-Control-Allow-Origin", "*");
+      async.waterfall([
+        function(callback){
+          parser(params, callback);
+        },
+        function(response, callback){
+          response.url = params.url;
+          dbClient.dbInsert(response, user_id, callback);
+        },
+        function(clipping_id, callback){
+          clipping_id = clipping_id.toString();
+          console.log('clipping id before reply to client is:', clipping_id);
+          res.send(200, clipping_id);
+          callback(null);
+        }
+      ], function(error) {
+        if (error) {
+          res.send(500, error);
+        }
+      });
     });
 
     var handleFetching = function(clippings_or_recs, req, res) {
