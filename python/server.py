@@ -335,6 +335,9 @@ def add_user_clippings(self, cursor, clippings, clipping_ids_in_db, user_id):
     counter = 0  # note - documents in corpus are indexed 1-up, but when computing similarities, they are displayed as 0-up
     for clipping in clippings:
         cl_id = clipping_ids_in_db[counter]
+
+
+
         this_user_word_counts_list = add_clipping_to_user_corpus(None, cursor, clipping, cl_id, counter+1, UserIdDummy)
         counter = counter + 1
     return this_user_word_counts_list

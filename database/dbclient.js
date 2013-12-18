@@ -23,6 +23,7 @@ var insertUserClipping = function(user_id, clipping_id, callback){
     console.log('success to the user clipping table:', model.attributes);
     callback(null, model.attributes.clipping_id);
   }, function(error){
+    callback('there was an error saving the user_clipping');
     console.log('error adding to user_clippings', error);
   });
 };
@@ -115,7 +116,7 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
   .then(function(model) {
     insertUserClipping(user_id, model.id, callback);
     //algorithm.removeHTMLAndTokenize(model.id, function(){});
-    return algorithm.processNewArticle(model.id, user_id, function(){});
+    algorithm.processNewArticle(model.id, user_id, function(){});
   }, function(error){
     console.log('Error saving the clipping:', error);
     callback(error);

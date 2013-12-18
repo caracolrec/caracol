@@ -5,7 +5,7 @@ client.connect("tcp://127.0.0.1:4242");
 
 exports.processNewArticle = processNewArticle = function(clippingId, userId) {
 //exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId) {
-  return client.invoke("process_new_article", clippingId, function(error, res, more) {
+  return client.invoke("process_new_article", clippingId, userId, function(error, res, more) {
       console.log(res);
   });  
 };
