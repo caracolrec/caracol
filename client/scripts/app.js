@@ -1,35 +1,44 @@
 //angular app
+'use strict'
 
-var app = angular.module('app', ['app.controllers',
+var app = angular.module('app', ['ngRoute',
+                                 'app.controllers',
                                  'app.services',
                                  'app.directives'
                                  ]);
-
-app.run(function($rootScope, UploadService){
+app.run(function($rootScope, $location, UploadService){
   //check for session
   //if session do this
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
   var uri = encodeURIComponent(url);
-  $rootScope.hide = false;
+  $rootScope.hidden = false;
   UploadService.sendURI(uri)
   .then(function(data){
+    $location.path('/vote');
     console.log('saved clipping to db, id:', data);
-  }, function(data){
-    console.log('failed to save clipping to db', data);
+  }, function(error){
+    $location.path('/login');
+    console.log('failed to save clipping to db', error);
   });
-  //else
-  //change route to login
+
+  $rootScope.hide = function(){
+    $rootScope.hidden = !$rootScope.hidden;
+  };
 }).config(function ($routeProvider) {
   $routeProvider
-    .when('/', {
-      templateUrl: '/partials/login.html',
-      controller: 'MainCtrl'
-    })
     .when('/vote', {
       templateUrl: '/partials/vote.html',
+      controller: 'VoteCtrl'
+    })
+    .when('/recs', {
+      templateUrl: '/partials/recommendation.html',
+      controller: 'RecCtrl'
+    })
+    .when('/login', {
+      templateUrl: '/partials/login.html',
       controller: 'LoginCtrl'
     })
     .otherwise({
-      redirectTo: '/partials/login.html'
+      redirectTo: '/'
     });
 });

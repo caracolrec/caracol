@@ -1,12 +1,7 @@
-controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
+controllers.controller('VoteCtrl', function($scope, VoteService, $location, $rootScope){
   $scope.voted = false;
-
   $scope.log = function(vote){
     !!vote ? ($scope.like = true) : ($scope.dislike = true);
-  };
-
-  $scope.hide = function(){
-    $rootScope.hide = true;
   };
 
   $scope.vote = function(vote){
@@ -16,6 +11,12 @@ controllers.controller('VoteCtrl', function($scope, VoteService, $rootScope){
     VoteService.vote(vote, uri);
     $scope.log(vote);
     $scope.voted = true;
+    setTimeout(function(){
+      $rootScope.$apply(function(){
+        $rootScope.hide();
+      });
+    }, 750);
+    // $location.path('/recs');
   };
   
   $scope.revert = function(preference){

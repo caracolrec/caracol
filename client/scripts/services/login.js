@@ -1,9 +1,21 @@
-'use strict';
-
-angular.module('caracolApp.services')
-.factory('AuthService', ['$q', '$http', '$cookieStore', 'ClippingsService', 'RecsService', function($q, $http, $cookieStore, ClippingsService, RecsService) {
+services.factory('LoginService', function($q, $http) {
   var service = {
-    currentUser: $cookieStore.get('user'),
+    
+    getCurrentUser: function() {
+      if (service.isAuthenticated()) {
+        return $q.when(service.currentUser);
+      } else {
+        return $http.get('/current_user', {
+          withCredentials: true
+        }).success(function(data) {
+          if (data.identifier) {
+            return service.currentUser = data.identifier;
+          }
+        });
+      }
+    },
+
+    currentUser: null,
 
     isAuthenticated: function() {
       return !!service.currentUser;
@@ -11,28 +23,6 @@ angular.module('caracolApp.services')
 
     setAuthenticated: function(data) {
       service.currentUser = data;
-      $cookieStore.put('user', data);
-    },
-
-    signup: function(username, password) {
-      var d = $q.defer();
-      $http.post('/signup', {
-        params: {
-          username: username,
-          password: password
-        }
-      }, {
-        withCredentials: true
-      })
-      .success(function(data) {
-        console.log('thanks for signing up buddy:', data);
-        d.resolve(data);
-      })
-      .error(function(error) {
-        console.log('signup error', error);
-        d.reject(error);
-      });
-      return d.promise;
     },
 
     login: function(username, password) {
@@ -62,10 +52,6 @@ angular.module('caracolApp.services')
         withCredentials: true
       })
       .success(function(data) {
-        service.currentUser = null;
-        ClippingsService.resetState();
-        RecsService.resetState();
-        $cookieStore.remove('user');
         d.resolve(data);
       }).error(function(data) {
         d.reject(data);
@@ -74,4 +60,4 @@ angular.module('caracolApp.services')
     }
   };
   return service;
-}]);
+});

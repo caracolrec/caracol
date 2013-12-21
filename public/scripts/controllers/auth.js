@@ -1,16 +1,18 @@
+'use strict';
+
 angular.module('caracolApp.controllers')
 .controller('LoginCtrl', function($rootScope, $scope, $location, AuthService) {
   $rootScope.active = [false, false];
   $scope.user = {};
-  $scope.signedIn = false;
 
   $scope.login = function(){
     AuthService.login($scope.user.loginUser, $scope.user.loginPassword)
     .then(function(user){
       AuthService.setAuthenticated(user);
-      $scope.$emit('logged_in', user.username);
+      $scope.$emit('logged_in');
       console.log('current user is:', AuthService.currentUser);
-      console.log('$rootScope.intendedDestination', $rootScope.intendedDestination);
+      $rootScope.intendedDestination = $rootScope.intendedDestination || '/recommendations';
+      console.log('$rootScope.intendedDestination, just before redirect:', $rootScope.intendedDestination);
       $location.path($rootScope.intendedDestination);
     }, function(err) {
       console.log('error logging in:', err);
@@ -25,9 +27,10 @@ angular.module('caracolApp.controllers')
       .then(function(user){
         AuthService.setAuthenticated(user);
         console.log('signed up:', user);
-        $scope.$emit('logged_in', user.username)
+        $scope.$emit('logged_in')
         console.log('current user is:', AuthService.currentUser);
-        console.log('$rootScope.intendedDestination', $rootScope.intendedDestination);
+        $rootScope.intendedDestination = $rootScope.intendedDestination || '/recommendations';
+        console.log('$rootScope.intendedDestination, just before redirect:', $rootScope.intendedDestination);
         $location.path($rootScope.intendedDestination);
       }, function(err) {
         console.log('error signing up:', err);

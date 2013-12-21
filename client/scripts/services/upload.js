@@ -1,6 +1,8 @@
 services.factory('UploadService', function($q, $http){
   var service = {
+    uri: null,
     sendURI: function(uri){
+      service.uri = uri;
       var d = $q.defer();
       $http.post('/uri', {
         uri: uri

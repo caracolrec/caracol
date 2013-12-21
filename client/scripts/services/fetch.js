@@ -1,27 +1,25 @@
-'use strict';
-
-angular.module('caracolApp.services')
-.factory('FetchService', ['$q', '$http', function($q, $http) {
+services.factory('FetchService', ['$q', '$http', function($q, $http) {
   var service = {
     fetch: function(clippings_or_recs, lastId, batchSize) {
       console.log('lastId is:', lastId);
       var route, d = $q.defer();
 
       if (clippings_or_recs === 'clippings') {
-        route = '/fetchmyclippings';
+        route = '/fetchMyClippings';
       } else if (clippings_or_recs === 'recs') {
-        route = '/fetchmyrecommendations';
+        route = '/fetchMyRecommendations';
       }
 
       $http.get(route, {
         params: {
           lastId: lastId,
           batchSize: batchSize
-        },
+        }
+      }, {
         withCredentials: true
       })
       .success(function(data) {
-        console.log('success fetching:', data);
+        console.log('success fetching', ':', data);
         d.resolve(service.massage(data));
       })
       .error(function(reason) {

@@ -3,14 +3,14 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.js"></script>
-    <script src="bookmarklet/dependencies"></script>
-    <link href="http://fonts.googleapis.com/css?family=Signika+Negative:700" rel="stylesheet">
+    <script src="bookmarklet/dependencies" type="text/javascript"></script>
+    <link href="http://fonts.googleapis.com/css?family=Signika+Negative:700" rel="stylesheet" type="text/css">
     <link href="dist/bookmarklet/caracol.css" rel="stylesheet"></link>
   </head>
-  <body ng-app="app" ng-hide="hidden">
+  <body ng-app="app" ng-hide="hide">
     <div class="caracolContainer">
       <div class="component">
-        <button class="topcoat-button--quiet hide" ng-click="hide()">&times</button>
+        <button class="topcoat-button--quiet hide" ng-click="hide()">X</button>
         <div class="title">
           <img class="snail" src="images/caracol3.png">
           <div ng-view></div>

@@ -30,3 +30,5 @@ exports.processNewArticle = processNewArticle = function(clippingId, userId) {
 // }; 
 
 // console.log(tokenizedClippings);
+=======
+>>>>>>> eba821d07332802f34cf5c078ce6619d54be73b3

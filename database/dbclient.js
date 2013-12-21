@@ -47,7 +47,7 @@ exports.createUser = createUser = function(json, callback){
   var lowerUsername = json.username.toLocaleLowerCase();
   new tables.User()
   .query(function(qb) {
-    qb.where({username: lowerUsername})
+    qb.where({username: lowerUsername});
   })
   .fetch({require: true})
   .then(function(model){
@@ -97,12 +97,7 @@ exports.findUser = findUser = function(json, callback){
 };
 
 exports.dbInsert = dbInsert = function(json, user_id, callback){
-  //TODO prevent duplicate clippings by
-  //periodically scanning for duplictes in database  <--- or, rather do an index-lookup (on uri or title field) prior to insertion
-
-  //if so, capture that clipping id
-  //if not, return the new clipping id
-
+  checkForClipping(json);
   new tables.Clipping({
     title: json.title,
     content: json.content,
@@ -113,52 +108,65 @@ exports.dbInsert = dbInsert = function(json, user_id, callback){
     date_published: json.date_published,
     dek: json.dek,
     lead_image_url: json.lead_image_url,
-    next_page_id: json.next_page_id,
+    //next_page_id: json.next_page_id, // occasionally parser returns a non-integer for this field which causes error
     rendered_pages: json.rendered_pages
   })
   .save()
   .then(function(model) {
-    console.log('HAHHHAAA', model.id, user_id);
-    console.log('finished saving the clipping');
-    console.log('model.id is:', model.id);
     insertUserClipping(user_id, model.id, callback);
     //algorithm.removeHTMLAndTokenize(model.id, function(){});
     return algorithm.processNewArticle(model.id, user_id, function(){});
   }, function(error){
-    console.log('Error saving the clipping');
+    console.log('Error saving the clipping:', error);
     callback(error);
+  });
+};
+
+exports.checkForClipping = checkForClipping = function(json, user_id, callback){
+  new tables.Clipping()
+  .query()
+  .where({title: json.title})
+  .then(function(model){
+    if (json.title === ''){
+      dbInsert(json, user_id, callback);
+    } else if (model.length) {
+      insertUserClipping(user_id, model[0].id, callback);
+      console.log("content model", model[0].id);
+    } else {
+      dbInsert(json, user_id, callback);
+    }
+  }, function(err){
+    console.log('error', error);
   });
 };
 
 exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisId, batchSize, callback) {
   console.log('fetchClippingsOlderThanThisClippingId:',fetchOlderThanThisId);
   console.log('batchSize is:', batchSize);
-  var coll, compar;
+  var coll, orderBy;
   if (clippings_or_recs === 'clippings') {
-      compar = function(model) {
-      return -1 * model.id; // sort so that most recent clippings displayed first
-    };
-    coll = new tables.User_Clippings({ comparator: compar });
+    orderBy = ['id', 'desc'];
+    coll = new tables.User_Clippings();
   } else if (clippings_or_recs === 'recs') {
-    compar = 'rank';
-    coll = new tables.Recommendations({ comparator: compar });
+    orderBy = ['rank', 'asc'];
+    coll = new tables.Recommendations();
   }
 
   var queryBuilder;
   if (fetchOlderThanThisId === 0) {
     queryBuilder = function(qb) {
       qb
-      .orderBy('id', 'desc')
+      .where('user_id', '=', user_id)
+      .orderBy(orderBy[0], orderBy[1])
       .limit(batchSize);
-      // once user_id is working, add .where('user_id', '=', '*').andWhere
     };
   } else {
     queryBuilder = function(qb) {
       qb
       .where('id', '<', fetchOlderThanThisId)
-      .orderBy('id', 'desc')
+      .andWhere('user_id', '=', user_id)
+      .orderBy(orderBy[0], orderBy[1])
       .limit(batchSize);
-      // once user_id is working, add .where('user_id', '=', '*').andWhere
     };
   }
   coll.query(queryBuilder)
@@ -170,7 +178,6 @@ exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisI
     console.log('there was an error fetching', clippings_or_recs, 'from the db:', error);
     callback(error);
   });
-  // once user_id is working, add .query(function(qb){qb.where('user_id', '=', user_id)})
 };
 
 exports.dbVote = dbVote = function(json){
@@ -183,11 +190,11 @@ exports.dbVote = dbVote = function(json){
     console.log(model[0].id);
     new tables.User_Clipping({id: model[0].id})
     .save({vote: json.vote}).then(function(model){
-      console.log('look what i did ma', model);
-    }, function(){
-      console.log('error saving to userclipping id');
+      console.log('successfully saved vote:', model);
+    }, function(error){
+      console.log('error saving to userclipping id:', error);
     });
-  }, function(){
-    console.log('welcome ot the danger zone');
+  }, function(error){
+    console.log('error voting:', error);
   });
 };

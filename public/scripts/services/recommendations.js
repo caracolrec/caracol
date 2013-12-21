@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('caracolApp.services')
 .factory('RecsService', ['$q', 'FetchService', function($q, FetchService) {
   var service = {
@@ -31,9 +33,18 @@ angular.module('caracolApp.services')
     updateState: function(recs) {
       service.timeOfLastFetch = new Date().getTime();
       service.currentRecs = service.currentRecs.concat(recs);
-      service.lastRecId = service.currentRecs[service.currentRecs.length - 1].id;
+      if (service.currentRecs.length) {
+        service.lastRecId = service.currentRecs[service.currentRecs.length - 1].id;
+      }
       console.log('lastId after getting latest batch of recs:', service.lastRecId);
       service.maxPageVisited += 1;
+    },
+    resetState: function() {
+      console.log('resetting recommendations state');
+      service.timeOfLastFetch = null;
+      service.maxPageVisited = 0;
+      service.currentClippings = [];
+      service.lastClippingId = 0;
     }
   };
 

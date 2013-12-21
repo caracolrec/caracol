@@ -26,7 +26,7 @@ module.exports = function(app, passport, auth) {
         } else {
           console.log('sending up new user_id', user.id);
           req.session.auth = true;
-          req.session.id = user.id;
+          req.session.user_id = user.id;
           res.send(200, {
             id: user.id,
             username: user.username
@@ -45,7 +45,7 @@ module.exports = function(app, passport, auth) {
         if (error) {
           res.send(500, error);
         } else {
-          req.session.id = user.id;
+          req.session.user_id = user.id;
           req.session.auth = true;
           res.send(200, {
             id: user.id,
@@ -64,6 +64,7 @@ module.exports = function(app, passport, auth) {
     app.get('/bookmarklet/dependencies', function(req, res){
       async.eachSeries(
         ['./public/bower_components/underscore/underscore-min.js',
+         './public/bower_components/angular-route/angular-route.min.js',
          './dist/bookmarklet/bookmarkletApp.js'],
         function(filename, cb) {
           console.log('well these are good');
@@ -91,6 +92,37 @@ module.exports = function(app, passport, auth) {
         }
       });
     });
+
+    app.get('/partials/login.html', function(req, res){
+      fs.readFile('./dist/bookmarklet/partials/login.html', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
+      });
+    });
+
+    app.get('/partials/vote.html', function(req, res){
+      fs.readFile('./dist/bookmarklet/partials/vote.html', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
+      });
+    });
+
+    app.get('/partials/recommendation.html', function(req, res){
+      fs.readFile('./dist/bookmarklet/partials/recommendation.html', function(error, data){
+        if (error){
+          console.log(error);
+        } else {
+          res.end(data);
+        }
+      });
+    });
+
 
   /* -------------start of prefab MEAN routes-------------*/
     //Setting up the users api
@@ -130,8 +162,7 @@ module.exports = function(app, passport, auth) {
       });
     });
 
-    //
-    app.get('/app/:url/:t/*', auth.hasAuthorization, function(req, res){
+    app.get('/app/:url/:t/*', function(req, res){
       console.log('requesting app');
         async.eachSeries(
         ['./public/bower_components/jquery/jquery.min.js', './dist/bookmarklet/script.js'],
@@ -144,7 +175,9 @@ module.exports = function(app, passport, auth) {
           });
         },
         function(error) {
-          console.log('error loading injection scripts', error);
+          if (error){
+            console.log('error loading injection scripts', error);
+          }
           res.end();
         }
       );
@@ -160,14 +193,40 @@ module.exports = function(app, passport, auth) {
     var dbClient = require('../database/dbclient.js');
     var token = process.env.APPSETTING_readability_key || require(__dirname + '/config.js').token;
     var parser = require('../controllers/parser.js').parser;
-    
 
     app.post('/uri', auth.hasAuthorization, function(req, res){
       params = {
         url: decodeURIComponent(req.body.uri),
         token: token
       };
-      var user_id = req.session.id;
+      var user_id = req.session.user_id;
+      res.header("Access-Control-Allow-Origin", "*");
+      async.waterfall([
+        function(callback){
+          parser(params, callback);
+        },
+        function(response, callback){
+          response.url = params.url;
+          dbClient.checkForClipping(response, user_id, callback);
+        },
+        function(clipping_id, callback){
+          clipping_id = clipping_id.toString();
+          res.send(200, clipping_id);
+          callback(null);
+        }
+      ], function(error) {
+        if (error) {
+          res.send(500, error);
+        }
+      });
+    });
+
+    app.post('/testcorpus', function(req, res) {
+      params = {
+        url: decodeURIComponent(req.body.uri),
+        token: token
+      };
+      var user_id = 70; // this is the user_id for the testcorpus user
       res.header("Access-Control-Allow-Origin", "*");
       async.waterfall([
         function(callback){
@@ -183,18 +242,22 @@ module.exports = function(app, passport, auth) {
           res.send(200, clipping_id);
           callback(null);
         }
-      ]);
+      ], function(error) {
+        if (error) {
+          res.send(500, error);
+        }
+      });
     });
 
     var handleFetching = function(clippings_or_recs, req, res) {
       // improve this checking
       if (parseInt(req.query.lastId) < 0 || !req.query.batchSize) {
-        res.send(400, 'Poorly formed request')
+        res.send(400, 'Poorly formed request');
       // should also add handling for when user is not authorized --> respond with 401
       } else {
         async.waterfall([
           function(callback) {
-            dbClient.fetch(clippings_or_recs, req.session.id, parseInt(req.query.lastId), req.query.batchSize, callback);
+            dbClient.fetch(clippings_or_recs, req.session.user_id, parseInt(req.query.lastId), req.query.batchSize, callback);
           },
           function(clippings, callback) {
             console.log('about to send clippings back to client');

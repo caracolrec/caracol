@@ -17,10 +17,10 @@ block wrapper
           .nav-collapse.collapse(collapse="isCollapsed")
             // .nav, .navbar-search, .navbar-form, etc 
             ul.nav.pull-left.leftUL
-              li(ng-class='{active: active[0]}')
+              li(ng-class='{active: active[0]}', ng-click="intendedDest('/clippings')")
                 a.buttonContainer.clipNavButton(href='#/clippings')
                   .navButtonText My Clippings
-              li(ng-class='{active: active[1]}')
+              li(ng-class='{active: active[1]}', ng-click="intendedDest('/recommendations')")
                 a.buttonContainer.recNavButton(href='#/recommendations')
                   .navButtonText Recommendations
             ul.nav.pull-right
@@ -45,26 +45,6 @@ block wrapper
     .container(ng-view='')
     .push
 
-    // script(src='/bower_components/jquery/jquery.js')
-    script(src='/bower_components/angular/angular.js')
-    script(src='/bower_components/angular-route/angular-route.min.js')
-    script(src='/bower_components/angular-bootstrap/ui-bootstrap.js')
-    script(src='/bower_components/angular-bootstrap/ui-bootstrap-tpls.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/holder/2.0/holder.js')
-
-    script(src='/scripts/app.js')
-    script(src='/scripts/controllers/init.js')
-    script(src='/scripts/controllers/nav.js')
-    script(src='/scripts/controllers/main.js')
-    script(src='/scripts/controllers/clippings.js')
-    script(src='/scripts/controllers/recommendations.js')
-    script(src='/scripts/controllers/auth.js')
-    script(src='/scripts/services/init.js')
-    script(src='/scripts/services/fetch.js')
-    script(src='/scripts/services/clippings.js')
-    script(src='/scripts/services/recommendations.js')
-    script(src='/scripts/services/auth.js')
-
 block footer
   .footer
     .footerNavLeft
@@ -73,5 +53,5 @@ block footer
       .footerEntity
         a(href='/terms/caracol privacy policy and terms of service.txt') privacy policy / terms of service
     .footerNavRight
-      .copyright &copy; 2013
+      .copyright   &copy; 2013
 
