@@ -203,19 +203,24 @@ module.exports = function(app, passport, auth) {
       res.header("Access-Control-Allow-Origin", "*");
       async.waterfall([
         function(callback){
+          console.log('1')
           parser(params, callback);
         },
         function(response, callback){
+          console.log('2')
           response.url = params.url;
           dbClient.checkForClipping(response, user_id, callback);
         },
         function(clipping_id, callback){
+          console.log('3')
           clipping_id = clipping_id.toString();
           res.send(200, clipping_id);
           callback(null);
         }
       ], function(error) {
+        console.log('4')
         if (error) {
+          console.log('5')
           res.send(500, error);
         }
       });
