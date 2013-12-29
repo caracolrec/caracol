@@ -199,6 +199,7 @@ module.exports = function(app, passport, auth) {
         url: decodeURIComponent(req.body.uri),
         token: token
       };
+      console.log('0')
       var user_id = req.session.user_id;
       res.header("Access-Control-Allow-Origin", "*");
       async.waterfall([
