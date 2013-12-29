@@ -221,7 +221,7 @@ module.exports = function(app, passport, auth) {
       ], function(error) {
         console.log('4')
         if (error) {
-          console.log('6')
+          console.log('5')
           res.send(500, error);
         }
       });
