@@ -220,7 +220,7 @@ module.exports = function(app, passport, auth) {
       ], function(error) {
         console.log('4')
         if (error) {
-          console.log('5')
+          console.log('6')
           res.send(500, error);
         }
       });
