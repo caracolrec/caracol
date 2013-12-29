@@ -164,6 +164,8 @@ module.exports = function(app, passport, auth) {
 
     app.get('/app/:url/:t/*', function(req, res){
       console.log('requesting app');
+        
+      console.log('7');
         async.eachSeries(
         ['./public/bower_components/jquery/jquery.min.js', './dist/bookmarklet/script.js'],
         function(filename, cb) {
