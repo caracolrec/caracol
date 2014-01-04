@@ -21,6 +21,9 @@ sudo pip install lxml
 
 sudo pip install -U numpy
 sudo pip install -U pyyaml nltk
+sudo apt-get install gfortran libopenblas-dev liblapack-dev
+sudo apt-get install python-scipy
+sudo pip install --upgrade gensim
 
 # from command line, type:
 # python
