@@ -1,7 +1,8 @@
 var zerorpc = require("zerorpc");
+var pythonServer = require('../config/python.json');
 
 var client = new zerorpc.Client();
-client.connect("tcp://127.0.0.1:4242");
+client.connect("tcp://" + pythonServer.host + ":4242");
 
 exports.processNewArticle = processNewArticle = function(clippingId, userId) {
 //exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId) {
