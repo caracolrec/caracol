@@ -1,13 +1,9 @@
 import zerorpc
 import psycopg2 # the Python driver for Postgres
-from nltk import word_tokenize, sent_tokenize
 import json
 import os.path
 import string
 from bs4 import BeautifulSoup
-import logging
-from scipy import sparse
-from gensim import corpora, models, similarities
 import logging
 import math
 import lxml
