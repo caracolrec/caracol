@@ -3,11 +3,15 @@ var pythonServer = require('../config/python.json');
 
 var client = new zerorpc.Client();
 client.connect("tcp://" + pythonServer.host + ":4242");
+console.log('pythonServer is:', pythonServer.host);
 
 exports.processNewArticle = processNewArticle = function(clippingId, userId) {
 //exports.removeHTMLAndTokenize = removeHTMLAndTokenize = function(clippingId) {
   console.log('invoking process_new_article via ZeroRPC');
-  return client.invoke("process_new_article", clippingId, userId, function(error, res, more) {
+  client.invoke("process_new_article", clippingId, userId, function(error, res, more) {
+      if (error) {
+        console.log('error calling Python via zeroRPC:', error);
+      }
       console.log(res);
   });  
 };
