@@ -98,7 +98,6 @@ exports.findUser = findUser = function(json, callback){
 };
 
 exports.dbInsert = dbInsert = function(json, user_id, callback){
-  checkForClipping(json);
   new tables.Clipping({
     title: json.title,
     content: json.content,
@@ -133,6 +132,7 @@ exports.checkForClipping = checkForClipping = function(json, user_id, callback){
     } else if (model.length) {
       insertUserClipping(user_id, model[0].id, callback);
       console.log("content model", model[0].id);
+      // so if the article has already been saved, we don't want to call algorithm.processNewArticle again?
     } else {
       dbInsert(json, user_id, callback);
     }
@@ -142,7 +142,7 @@ exports.checkForClipping = checkForClipping = function(json, user_id, callback){
 };
 
 exports.fetch = fetch = function(clippings_or_recs, user_id, fetchOlderThanThisId, batchSize, callback) {
-  console.log('fetchClippingsOlderThanThisClippingId:',fetchOlderThanThisId);
+  console.log('fetchOlderThanThisId:',fetchOlderThanThisId);
   console.log('batchSize is:', batchSize);
   var coll, orderBy;
   if (clippings_or_recs === 'clippings') {
