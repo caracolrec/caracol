@@ -231,7 +231,7 @@ Recommendation = caracolPG.Model.extend({
   },
 
   permittedAttributes: [
-    'id', 'user_id', 'clipping_id', 'rank', 'computed_at'
+    'id', 'user_id', 'clipping_id', 'rank', 'computed_at'  //, 'score' //, 'computed_at'
   ],
 
   validate: function(){

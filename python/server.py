@@ -9,6 +9,7 @@ import logging
 from scipy import sparse
 from gensim import corpora, models, similarities
 import logging
+#import math
 
 
 #logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
@@ -35,7 +36,7 @@ TokensOnceFile = './tmp/tokens_once.dict'
 
 all_users_tokens_once_dict = corpora.Dictionary([[]])
 all_users_tokens_once_dict.load_from_text(TokensOnceFile)
-all_users_tokens_once_dict.add_documents([['word1', 'word2']])
+#all_users_tokens_once_dict.add_documents([['word1', 'word2']])
 all_users_tokens_once_dict.save_as_text(TokensOnceFile)
 
 all_users_tokens_once_object = {}
@@ -193,6 +194,24 @@ class RPC(object):
 
         filtered = filter(tokenized)
 
+
+
+        # process filtered  -->  b_o_w format
+
+
+
+        # fold b_o_w  --> user 80's corpus
+
+
+        # recompute recommendations
+
+
+
+        # update rankings in database  <--
+
+
+
+
        # IN FILE, DEFINE MAPPING BETWEEN CLIPPING_ID_IN_CORPUS and CLIPPING_ID_IN_DB
         # remember to 0-index CL_ID_IN_CORPUS
 
@@ -265,13 +284,13 @@ def get_number_of_files_in_user_corpus(f):
 
 
 def writeToUserMmCorpusFile(f, filtered, new_bow_vec, clipping_id_in_corpus):
-    
+
     summary_split = read_and_split_summary_line_of_user_corpus(f)
 
     nDocs  = summary_split[0]
     nWords = summary_split[1]
     nLines = summary_split[2]
-    
+
     #updates
     nDocs  = str(int(nDocs) + 1)       # one more document in corpus
     nLines = str(int(nLines) + len(new_bow_vec))
@@ -308,21 +327,23 @@ def format_clipping(tokenized_ids):
     counter = 1    # note - documents in corpus are indexed 1-up
 
     for cl_id in tokenized_ids:
-      print "\ncl_id:\n"
-      print cl_id
-      print "\n"
-      cur.execute("SELECT content_sans_html_tokenized FROM clippings WHERE id=(%s)", ([cl_id]) )
+        
+        if(not (cl_id % 10)):
+            print "\ncl_id:\n"
+            print cl_id
+            print "\n"
+        cur.execute("SELECT content_sans_html_tokenized FROM clippings WHERE id=(%s)", ([cl_id]) )
 
-      tokenizedClipping= cur.fetchone()[0]    #[word for sent in sent_tokenize(cur.fetchone()[0]) for word in word_tokenize(sent)]
+        tokenizedClipping= cur.fetchone()[0]    #[word for sent in sent_tokenize(cur.fetchone()[0]) for word in word_tokenize(sent)]
 
-    print "\nbefore filtering:\n"
-    print tokenizedClipping
+        # print "\nbefore filtering:\n"
+        # print tokenizedClipping
 
-    filtered = filter(tokenizedClipping)
-    clippings.append(filtered)
+        filtered = filter(tokenizedClipping)
+        clippings.append(filtered)
 
-    print "\nafter filtering:\n"
-    print filtered
+        # print "\nafter filtering:\n"
+        # print filtered
 
     cur.close()
     conn.close()
@@ -336,16 +357,15 @@ def add_user_clippings(self, cursor, clippings, clipping_ids_in_db, user_id):
     for clipping in clippings:
         cl_id = clipping_ids_in_db[counter]
 
-
-
-        this_user_word_counts_list = add_clipping_to_user_corpus(None, cursor, clipping, cl_id, counter+1, UserIdDummy)
+        print (counter + 1)
+        this_user_word_counts_list = add_clipping_to_user_corpus(None, cursor, clipping, cl_id, counter+1, user_id)
         counter = counter + 1
     return this_user_word_counts_list
 
 
 # Perhaps use the clipping_id_in_db as the clipping id we store for the corpus as well?
 
-def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipping_index_in_this_batch , user_id):
+def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipping_id_in_corpus , user_id):
 
     bow_vec = all_users_dict.doc2bow(filtered) #, allow_update=True)  # updates dictionary - don't want this until LATER ITERATION
                                                                    # note indices for doc2bow is initially off-by-one from the dictionary indexing
@@ -359,7 +379,14 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
         new_bow_vec.append((entry[0] + 1, entry[1]))
         ctr = ctr + 1
 
-    # RETURN HERE IF IT IS INDEED NECESSARY TO KNOW THE NUMBER OF DISTINCT WORDS THAT APPEAR IN A
+    # if clipping_id_in_corpus < 10:
+    #     print '\n\nn_b_v:'
+    #     print new_bow_vec
+    #     print '\n\nfiltered:'
+    #     print filtered
+
+
+    # RETURN HERE IF IT IS INDEED NECESSARY TO KNOW THE NUMBER OF DISTINCT WORDS THAT APPEAR IN A DOC
 
     this_user_word_counts_list = []
     IdMappingFile = UserCorporaIdToDbIdMapDir + str(user_id)
@@ -367,11 +394,12 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
     # only write to MmCorpusFile if we haven't seen the file before?
     try:
         with open(ThisUserMmCorpusFile, 'r+') as f:
-            print '\n\nSuccessully opened "ThisUserMmCorpusFile" for user # ' + user_id + '\n\n'
-            print 'Adding additional words to corpus: '
+            # print '\n\nSuccessully opened "ThisUserMmCorpusFile" for user # ' + user_id + '\n\n'
+            # print 'Adding additional words to corpus: '
 
-            nFilesInCorpus = get_number_of_files_in_user_corpus(f)
-            clipping_id_in_corpus = clipping_index_in_this_batch + nFilesInCorpus
+            #nFilesInCorpus = get_number_of_files_in_user_corpus(f)
+            #clipping_id_in_corpus = clipping_index_in_this_batch + nFilesInCorpus
+            
             writeToUserMmCorpusFile(f, filtered, new_bow_vec, clipping_id_in_corpus)
 
             ThisUserWordCountsFile = UserWordCountsDir + user_id
@@ -390,7 +418,7 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
 
         print '\n\n"ThisUserMmCorpusFile" not found for user # ' + user_id + ' \n\n Now creating this file \n\n'
 
-        clipping_id_in_corpus = clipping_index_in_this_batch      #  = 1, presumably
+        #clipping_id_in_corpus = clipping_index_in_this_batch      #  = 1, presumably
 
         with open(ThisUserMmCorpusFile, 'w+') as f:             # Create File
             f.write('%%MatrixMarket matrix coordinate real general\n') 
@@ -421,7 +449,7 @@ def corpus_to_index(corpus):
     lsi = models.LsiModel(corpus_tfidf, id2word=all_users_dict, num_topics=3)
     corpus_lsi = lsi[corpus_tfidf]
 
-    corpus_index = similarities.MatrixSimilarity(corpus_lsi)  # not lsi[corpus], yes?
+    corpus_index = similarities.MatrixSimilarity(corpus_lsi)       # not lsi[corpus], yes?
     corpus_index.save(AllUsersSimilarityFile)
 
     # print "\n\nprinting topics: \n\n"
@@ -438,33 +466,32 @@ def retrieve_user_corpus_to_db_id_mappings(user_id):
             id_map[corpus_id] = int(db_id)
     return id_map
 
-# Entering this function, the corpus should not yet contain the document
+# Entering this function, 'source_corpus' should not yet contain the target document
 # When a recommendation based on a user's entire corpus is sought, 
-# 'document' represents the user's full corpus, as a bag-of-words concatenation of all articles bookmarked by a user)
-# 
-def findSimilaritiesToDocument(corpus, document_bowvector, user_id):      #, clipping_ids_in_db):
+# 'document' represents that user's full corpus, as a bag-of-words concatenation of all articles bookmarked by a user),
+def findSimilaritiesToDocument(source_corpus, target_document_bowvector, user_id):      #, clipping_ids_in_db):
 
-    #  MM-deserialized corpus (as used in similarity testing) is 0-indexed
-    document_bowvector = word_counts_list_to_zero_indexing(document_bowvector)
+    #  MM-deserialized corpora (as used in similarity testing) is 0-indexed
+    target_document_bowvector = word_counts_list_to_zero_indexing(target_document_bowvector)
 
     # TODO: IN LATER ITERATION, USE 'SIMILARITY' instead of 'MATRIX SIMILARITY', load straight from the index, and add documents here 
 
-    [corpus_index, tfidf, lsi] = corpus_to_index(corpus)
+    [source_corpus_index, tfidf, lsi] = corpus_to_index(source_corpus)
 
-    doc_tfidf = tfidf[document_bowvector]          #uses the doc frequencies assoiated with 'corpus'
+    doc_tfidf = tfidf[target_document_bowvector]          #uses the doc frequencies assoiated with 'corpus'
     doc_lsi = lsi[doc_tfidf]                       # convert the query to LSI space
 
-    sims = corpus_index[doc_lsi]
+    sims = source_corpus_index[doc_lsi]
     sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
     id_map = retrieve_user_corpus_to_db_id_mappings(user_id)
 
     similar_articles = []
-    for (corpus_id, sim_score) in sims:
-        db_id = id_map[str(corpus_id)]
+    for (user_corpus_id, sim_score) in sims:
+        db_id = id_map[str(user_corpus_id)]
         similar_articles.append((db_id, sim_score))
 
-    #similar_articles = map( lambda (corpus_id, sim_score): ( int(id_map(corpus_id)), sim_score)   ,  sims)
+    #similar_articles = map( lambda (user_corpus_id, sim_score): ( int(id_map(user_corpus_id)), sim_score)   ,  sims)
 
     # USE MAPPING FROM CORPUS_ID TO CLIPPING_DB_ID     <----------------------------
 
@@ -473,6 +500,20 @@ def findSimilaritiesToDocument(corpus, document_bowvector, user_id):      #, cli
     print "\n\n"
 
     return similar_articles
+
+
+def number_this_batch_of_clipping_ids(clipping_ids, user_id):
+
+    ThisUserMmCorpusFile = UserMmCorporaDir + str(user_id) + '.mm'
+
+    try:
+        with open(ThisUserMmCorpusFile, 'r+') as f:
+            nFilesInCorpus = get_number_of_files_in_user_corpus(f)
+        clipping_ids = [(cl_id + nFilesInCorpus) for cl_id in clipping_ids]
+        return clipping_ids    
+    except:
+        return clipping_ids
+
 
 # with open(AllUsersMmCorpusFile) as f:
 #     for line in f.readlines():
@@ -492,18 +533,128 @@ def findSimilaritiesToDocument(corpus, document_bowvector, user_id):      #, cli
 # At that time, we'll have to exclude User A's articles from being recommended to her
 
 
-clipping_ids = [429]   #[2, 3, 290])
-clippings = format_clipping(clipping_ids)
+#clipping_ids = []   #[2, 3, 290])
 
-all_users_corpus = corpora.MmCorpus(AllUsersMmCorpusFile)
+
+
+
+
+
+
+
+# TO DO: test with n_users = 2, then n_users = 3
+
+n_users = 2
+clipping_ids = []
+clippings = []
+this_user_word_counts_list = []
+UserIdDummies = []
+user_corpora = []
+
+for i in range(0,n_users):
+    clipping_ids.append([])
+    clippings.append([])
+    this_user_word_counts_list.append([])           # alternatively, could append result of add_user_clippings
+    UserIdDummies.append('test_user_' + str(i))
+    user_corpora.append([])
+
+
+starts = [563, 579, 584, 586, 590, 594, 601, 602, 619, 622]  # , 632 ]
+ends =   [577, 582, 584, 588, 592, 599, 601, 617, 620, 630]  # , 636 ]    use 632-636 as tests 
+
+ctr = 0
+
+length = len(starts) - 1        #  -1 to preserve several articles for clipping test
+
+
+if (length != len(ends)):
+    print("Error! Clipping id mismatch")
+else:
+    for i in range(0,length):
+        for j in range(starts[i], ends[i]+1):
+            clipping_ids[ctr % n_users].append(j)
+            ctr = ctr + 1
+
+print "\n\nclipping_ids for test:\n\n"
+print(clipping_ids)
+
+
+for i in range(1,n_users):
+    clippings[i] = format_clipping(clippings[i])   #clippings[i] is i_th test user's clippings
+    ctr = ctr + 1
+
+
+
+# LOAD ALL USERS CORPUS AND / OR SOURCE CORPUS HERE
+
 
 # SOURCE CORPUS
 # add_to_source_corpus(None, cursor, clippings, cl_ids)   <--- Make this User 1  (or -1) in the db? 
 
-# USER CORPUS
-UserIdDummy = 'test_user_1'   # replace with real user_id
-this_user_word_counts_list = add_user_clippings(None, None, clippings, clipping_ids, UserIdDummy)
-recommendations = findSimilaritiesToDocument(all_users_corpus, this_user_word_counts_list, UserIdDummy)
+
+
+# index from 0 to modify test source corpus
+
+for i in range(1, n_users):
+    # USER CORPUS
+    # UserIdDummies[i] = 'test_user_' + str(i)   # replace with real user_id
+
+    clipping_ids[i] = number_this_batch_of_clipping_ids(clipping_ids[i], UserIdDummies[i])
+    print(clipping_ids[i])
+
+    # update corpus here:
+    this_user_word_counts_list[i] = add_user_clippings(None, None, clippings[i], clipping_ids[i], UserIdDummies[i]) 
+
+
+# index from 0 to modify test source corpus
+
+for i in range(1, n_users):
+
+    ThisUserMmCorpusFile = UserMmCorporaDir + 'test_user_' + str(i) + '.mm'
+
+    print(ThisUserMmCorpusFile)
+    user_corpora[i] = corpora.MmCorpus(ThisUserMmCorpusFile)
+    print(user_corpora[i])
+
+
+source_index = 0
+target_index = 1
+
+recommendations = findSimilaritiesToDocument(user_corpora[source_index], this_user_word_counts_list[target_index], UserIdDummies[source_index])   # <---- change Dummy
+
+
+first_unused_user_id = 79   # FIND IN DB
+
+
+conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
+cur = conn.cursor()
+
+for i in range(0,len(recommendations)):
+    user_id = first_unused_user_id + target_index
+    clipping_id = recommendations[i][0]
+    rank = i + 1
+    score = recommendations[i][1]
+    #score = int(math.floor(score * 1000))
+
+
+    # Remove html from the content and tokenize
+    # cur.execute("SELECT content FROM clippings WHERE id = (%s)", ([clipping_id]))
+    # content = cur.fetchone()[0]
+    # content_sans_html = BeautifulSoup(content, "lxml").get_text()
+    # print 'content_sans_html'
+    # print content_sans_html
+
+    cur.execute("INSERT INTO recommendations (user_id, clipping_id, rank) values (%s, %s, %s)", (user_id, clipping_id, rank))    # %s   ,score  (x2)
+
+    #cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
+    
+
+    #cur.execute("SELECT content_sans_html_tokenized FROM clippings")
+
+conn.commit()
+cur.close()
+conn.close()
+
 
 
 # all_users_dict = corpora.Dictionary(clippings)        <-----  USE IN TEST
