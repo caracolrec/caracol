@@ -12,11 +12,14 @@ app.run(function($rootScope, $location, UploadService){
   var url = (window.location !== window.parent.location) ? document.referrer: document.location;
   var uri = encodeURIComponent(url);
   $rootScope.hidden = false;
+  $rootScope.loading = true;
   UploadService.sendURI(uri)
   .then(function(data){
+    $rootScope.loading = false;
     $location.path('/vote');
     console.log('saved clipping to db, id:', data);
   }, function(error){
+    $rootScope.loading = false;
     $location.path('/login');
     console.log('failed to save clipping to db', error);
   });
