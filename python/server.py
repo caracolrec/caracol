@@ -51,7 +51,6 @@ with open(TokensOnceFile) as f:
 # for word in tokens_once_dict:
 #     tokens_once_object[word] = 1
 
-
 all_users_dict = corpora.Dictionary([[]])  # corpora.Dictionary([['blocker', 'vaccinated', 'werent', 'liked']])
 all_users_dict = all_users_dict.load_from_text(AllUsersDictionaryFile)
 
@@ -195,7 +194,6 @@ class RPC(object):
         filtered = filter(tokenized)
 
 
-
         # process filtered  -->  b_o_w format
 
 
@@ -203,9 +201,10 @@ class RPC(object):
         # fold b_o_w  --> user 80's corpus
 
 
+
         # recompute recommendations
 
-
+        #recommendations =  ...
 
         # update rankings in database  <--
 
@@ -539,121 +538,155 @@ def number_this_batch_of_clipping_ids(clipping_ids, user_id):
 
 
 
-
-
-
 # TO DO: test with n_users = 2, then n_users = 3
 
-n_users = 2
-clipping_ids = []
-clippings = []
-this_user_word_counts_list = []
-UserIdDummies = []
-user_corpora = []
-
-for i in range(0,n_users):
-    clipping_ids.append([])
-    clippings.append([])
-    this_user_word_counts_list.append([])           # alternatively, could append result of add_user_clippings
-    UserIdDummies.append('test_user_' + str(i))
-    user_corpora.append([])
-
-
-starts = [563, 579, 584, 586, 590, 594, 601, 602, 619, 622]  # , 632 ]
-ends =   [577, 582, 584, 588, 592, 599, 601, 617, 620, 630]  # , 636 ]    use 632-636 as tests 
-
-ctr = 0
-
-length = len(starts) - 1        #  -1 to preserve several articles for clipping test
-
-
-if (length != len(ends)):
-    print("Error! Clipping id mismatch")
-else:
-    for i in range(0,length):
-        for j in range(starts[i], ends[i]+1):
-            clipping_ids[ctr % n_users].append(j)
-            ctr = ctr + 1
-
-print "\n\nclipping_ids for test:\n\n"
-print(clipping_ids)
-
-
-for i in range(1,n_users):
-    clippings[i] = format_clipping(clippings[i])   #clippings[i] is i_th test user's clippings
-    ctr = ctr + 1
 
 
 
-# LOAD ALL USERS CORPUS AND / OR SOURCE CORPUS HERE
 
 
-# SOURCE CORPUS
-# add_to_source_corpus(None, cursor, clippings, cl_ids)   <--- Make this User 1  (or -1) in the db? 
+# n_users = 2
+# clipping_ids = []
+# clippings = []
+# this_user_word_counts_list = []
+# UserIdDummies = []
+# user_corpora = []
+
+# for i in range(0,n_users):
+#     clipping_ids.append([])
+#     clippings.append([])
+#     this_user_word_counts_list.append([])           # alternatively, could append result of add_user_clippings
+#     UserIdDummies.append('test_user_' + str(i))
+#     user_corpora.append([])
+
+
+# starts = [563, 579, 584, 586, 590, 594, 601, 602, 619, 622]  # , 632 ]
+# ends =   [577, 582, 584, 588, 592, 599, 601, 617, 620, 630]  # , 636 ]    use 632-636 as tests 
+
+# ctr = 0
+
+# length = len(starts) - 1        #  -1 to preserve several articles for clipping test
+
+
+# if (length != len(ends)):
+#     print("Error! Clipping id mismatch")
+# else:
+#     for i in range(0,length):
+#         for j in range(starts[i], ends[i]+1):
+#             clipping_ids[ctr % n_users].append(j)
+#             ctr = ctr + 1
+
+# print "\n\nclipping_ids for test:\n\n"
+# print(clipping_ids)
+
+
+# for i in range(1,n_users):
+#     clippings[i] = format_clipping(clippings[i])   #clippings[i] is i_th test user's clippings
+#     ctr = ctr + 1
 
 
 
-# index from 0 to modify test source corpus
-
-for i in range(1, n_users):
-    # USER CORPUS
-    # UserIdDummies[i] = 'test_user_' + str(i)   # replace with real user_id
-
-    clipping_ids[i] = number_this_batch_of_clipping_ids(clipping_ids[i], UserIdDummies[i])
-    print(clipping_ids[i])
-
-    # update corpus here:
-    this_user_word_counts_list[i] = add_user_clippings(None, None, clippings[i], clipping_ids[i], UserIdDummies[i]) 
+# # LOAD ALL USERS CORPUS AND / OR SOURCE CORPUS HERE
 
 
-# index from 0 to modify test source corpus
-
-for i in range(1, n_users):
-
-    ThisUserMmCorpusFile = UserMmCorporaDir + 'test_user_' + str(i) + '.mm'
-
-    print(ThisUserMmCorpusFile)
-    user_corpora[i] = corpora.MmCorpus(ThisUserMmCorpusFile)
-    print(user_corpora[i])
+# # SOURCE CORPUS
+# # add_to_source_corpus(None, cursor, clippings, cl_ids)   <--- Make this User 1  (or -1) in the db? 
 
 
-source_index = 0
-target_index = 1
 
-recommendations = findSimilaritiesToDocument(user_corpora[source_index], this_user_word_counts_list[target_index], UserIdDummies[source_index])   # <---- change Dummy
+# # index from 0 to modify test source corpus
+
+# for i in range(1, n_users):
+#     # USER CORPUS
+#     # UserIdDummies[i] = 'test_user_' + str(i)   # replace with real user_id
+
+#     clipping_ids[i] = number_this_batch_of_clipping_ids(clipping_ids[i], UserIdDummies[i])
+#     print(clipping_ids[i])
+
+#     # update corpus here:
+#     this_user_word_counts_list[i] = add_user_clippings(None, None, clippings[i], clipping_ids[i], UserIdDummies[i]) 
 
 
-first_unused_user_id = 79   # FIND IN DB
+# # index from 0 to modify test source corpus
 
+# for i in range(1, n_users):
+
+#     ThisUserMmCorpusFile = UserMmCorporaDir + 'test_user_' + str(i) + '.mm'
+
+#     print(ThisUserMmCorpusFile)
+#     user_corpora[i] = corpora.MmCorpus(ThisUserMmCorpusFile)
+#     print(user_corpora[i])
+
+
+# source_index = 0
+# target_index = 1
+
+
+
+# #recommendations = findSimilaritiesToDocument(user_corpora[source_index], this_user_word_counts_list[target_index], UserIdDummies[source_index])   # <---- change Dummy
+
+
+# first_unused_user_id = 79       # FIND IN DB
+
+
+
+recommendations = [(565, 0.92486143), (613, 0.91232473), (601, 0.91136891), (598, 0.90114456), (615, 0.88560283), (588, 0.87099564), (594, 0.86615199), (567, 0.86147535), (586, 0.86125553), (620, 0.83671224), (617, 0.79568994), (627, 0.78476983), (605, 0.76666486), (580, 0.97353566), (625, 0.96352261), (607, 0.75179595), (623, 0.73816913), (591, 0.73533684), (573, 0.72452962), (611, 0.58144253), (603, 0.4964034),(629, 0.71614552), (577, 0.71513528), (582, 0.68964207), (563, 0.6540947), (596, 0.65084851), (569, 0.61167115), (609, 0.45951509), (575, 0.26062244), (571, 0.14569993)]
 
 conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
 cur = conn.cursor()
 
+# UPSERT rankings in database  <--
 for i in range(0,len(recommendations)):
-    user_id = first_unused_user_id + target_index
+    user_id = 80
     clipping_id = recommendations[i][0]
     rank = i + 1
-    score = recommendations[i][1]
+    #score = recommendations[i][1]
     #score = int(math.floor(score * 1000))
 
-
-    # Remove html from the content and tokenize
-    # cur.execute("SELECT content FROM clippings WHERE id = (%s)", ([clipping_id]))
-    # content = cur.fetchone()[0]
-    # content_sans_html = BeautifulSoup(content, "lxml").get_text()
-    # print 'content_sans_html'
-    # print content_sans_html
-
-    cur.execute("INSERT INTO recommendations (user_id, clipping_id, rank) values (%s, %s, %s)", (user_id, clipping_id, rank))    # %s   ,score  (x2)
-
-    #cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
-    
-
-    #cur.execute("SELECT content_sans_html_tokenized FROM clippings")
+    cur.execute("UPDATE recommendations SET rank = (%s) WHERE user_id = (%s) AND clipping_id = (%s)", (rank, user_id, clipping_id)) 
 
 conn.commit()
 cur.close()
 conn.close()
+
+
+
+
+
+
+# MAKE THIS A FUNCTION
+
+
+
+# conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
+# cur = conn.cursor()
+
+# for i in range(0,len(recommendations)):
+#     user_id = first_unused_user_id + target_index
+#     clipping_id = recommendations[i][0]
+#     rank = i + 1
+#     score = recommendations[i][1]
+#     #score = int(math.floor(score * 1000))
+
+#     # Remove html from the content and tokenize
+#     # cur.execute("SELECT content FROM clippings WHERE id = (%s)", ([clipping_id]))
+#     # content = cur.fetchone()[0]
+#     # content_sans_html = BeautifulSoup(content, "lxml").get_text()
+#     # print 'content_sans_html'
+#     # print content_sans_html
+
+#     cur.execute("INSERT INTO recommendations (user_id, clipping_id, rank) values (%s, %s, %s)", (user_id, clipping_id, rank))    # %s   ,score  (x2)
+
+#     #cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
+
+#     #cur.execute("SELECT content_sans_html_tokenized FROM clippings")
+
+# conn.commit()
+# cur.close()
+# conn.close()
+
+
+
 
 
 
