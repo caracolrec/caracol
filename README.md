@@ -15,7 +15,6 @@
 Caracol is a tool for discovering articles from around the web that you'll like to read. Users use the caracol bookmarklet to clip notable articles they read and indicate whether they liked or disliked an article. Caracol processes the user's clippings and votes, and uses latent semantic analysis to recommend articles other users have clipped which the user might like.
 
 ##<a name="deployment-development"></a>Deployment / Development
-[![Coverage Status](https://coveralls.io/repos/michaelmunson1/caracol/badge.png)](https://coveralls.io/r/michaelmunson1/caracol)
 
 caracol is live at [http://caracol.cloudapp.net](http://caracol.cloudapp.net).
 
@@ -84,8 +83,6 @@ Back-end utilities:
 
 Testing:
 * Mocha
-* Travis CI
-* Coveralls
 
 ##<a name="challenges"></a>Challenges
 
