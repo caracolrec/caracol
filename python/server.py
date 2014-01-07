@@ -9,9 +9,10 @@ import logging
 from scipy import sparse
 from gensim import corpora, models, similarities
 import logging
+import math
 import lxml
 
-#import math
+
 
 #logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
@@ -90,12 +91,17 @@ with open(AllUsersDictionaryFile) as d:
 #     return dictionary
 
 
+
+
+logging.basicConfig()
+
 # Open connection to the database
 credentials = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/dbconfig.json"))))
 
 # Import config for Python server
 pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../config/python.json"))))
 #print pyserver
+
 
 
 
@@ -168,6 +174,8 @@ def trim(s):
       unicodeEnd = unicodeStart + 3
       s = s[:unicodeStart] + s[unicodeEnd:]
     return s
+
+
 
 
 class RPC(object):
@@ -296,9 +304,7 @@ def get_number_of_files_for_user(clipping_ids, user_id):
         #fold_in_new_user_clipping(self, cur, filtered, clipping_id, user_id):
 
     
-
 #        return "Completed processing of new article"
-
 
 def read_user_word_counts(wc_file):
     counts = {}
