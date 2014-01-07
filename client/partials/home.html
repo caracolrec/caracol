@@ -12,7 +12,7 @@
       <div class="component">
         <button class="topcoat-button--quiet hide" ng-click="hide()">&times</button>
         <div class="title">
-          <img class="snail" src="images/caracol3.png">
+          <img class="snail" ng-class="{'loading':loading}" src="images/caracol3.png">
           <div ng-view></div>
         </div>
       </div>

@@ -3491,11 +3491,11 @@ Everything below this line should be calculated using the variables above. This 
 /* Search */
 @font-face {
 	font-family: 'caracol';
-	src:url('fonts/caracol.eot');
-	src:url('fonts/caracol.eot?#iefix') format('embedded-opentype'),
-		url('fonts/caracol.ttf') format('truetype'),
-		url('fonts/caracol.woff') format('woff'),
-		url('fonts/caracol.svg#caracol') format('svg');
+	src:url('font/caracol.eot');
+	src:url('font/caracol.eot?#iefix') format('embedded-opentype'),
+		url('font/caracol.ttf') format('truetype'),
+		url('font/caracol.woff') format('woff'),
+		url('font/caracol.svg#caracol') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -3527,6 +3527,7 @@ button{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:2em;pad
 .hide{position:absolute;top:3%;right:3%}
 .component > button{padding:1.5% 3%;margin:0;font-size:.5em;background-color:#28343b;opacity:1}
 .component .snail{height:auto;width:auto;padding-top:3%;padding-bottom:2%;padding-left:10%;width:35%;height:25%;opacity:1}
+.snail .loading{padding-bottom:50px}
 .component > button:hover{background-color:#ffeed8;color:#f15a24}
 form button{margin:1% auto}
 input{display:block;margin:1% auto}
