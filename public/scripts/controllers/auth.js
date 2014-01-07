@@ -11,7 +11,7 @@ angular.module('caracolApp.controllers')
       AuthService.setAuthenticated(user);
       $scope.$emit('logged_in');
       console.log('current user is:', AuthService.currentUser);
-      $rootScope.intendedDestination = $rootScope.intendedDestination || '/recommendations';
+      $rootScope.intendedDestination = $rootScope.intendedDestination || '/clippings';
       console.log('$rootScope.intendedDestination, just before redirect:', $rootScope.intendedDestination);
       $location.path($rootScope.intendedDestination);
     }, function(err) {
@@ -29,7 +29,7 @@ angular.module('caracolApp.controllers')
         console.log('signed up:', user);
         $scope.$emit('logged_in')
         console.log('current user is:', AuthService.currentUser);
-        $rootScope.intendedDestination = $rootScope.intendedDestination || '/recommendations';
+        $rootScope.intendedDestination = $rootScope.intendedDestination || '/clippings';
         console.log('$rootScope.intendedDestination, just before redirect:', $rootScope.intendedDestination);
         $location.path($rootScope.intendedDestination);
       }, function(err) {

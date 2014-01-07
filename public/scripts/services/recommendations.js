@@ -43,8 +43,8 @@ angular.module('caracolApp.services')
       console.log('resetting recommendations state');
       service.timeOfLastFetch = null;
       service.maxPageVisited = 0;
-      service.currentClippings = [];
-      service.lastClippingId = 0;
+      service.currentRecs = [];
+      service.lastRecId = 0;
     }
   };
 
