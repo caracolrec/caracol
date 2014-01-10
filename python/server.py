@@ -13,7 +13,6 @@ import lxml
 
 #import math
 
-
 #logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 AllUsersMmCorpusFile     = './tmp/initCorp.mm'
@@ -100,7 +99,6 @@ pyserver = json.load(open(os.path.abspath(os.path.join(os.path.dirname(__file__)
 
 
 
-
 def filter(clipping):
     stopwords = "a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your"
     stopwords = stopwords.split(",")
@@ -161,7 +159,6 @@ def filter(clipping):
     return filtered
 
 
-
 def trim(s):
     if s.endswith(".\""): s = s[:-2]
     if s.endswith("\"") or s.endswith("."): s = s[:-1]
@@ -173,97 +170,101 @@ def trim(s):
     return s
 
 
-# class RPC(object):
+class RPC(object):
 
-def process_new_article(self, clipping_id, user_id):
-#def remove_html_and_tokenize_clipping_content(self, clipping_id):
-    # Open connection to the database
-    conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
-    cur = conn.cursor()
-    # Remove html from the content and tokenize
-    cur.execute("SELECT content FROM clippings WHERE id = (%s)", ([clipping_id]))
-    content = cur.fetchone()[0]
-    content_sans_html = BeautifulSoup(content, "lxml").get_text()
+    def process_new_article(self, clipping_id, user_id):
+    #def remove_html_and_tokenize_clipping_content(self, clipping_id):
+        # Open connection to the database
+        conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
+        cur = conn.cursor()
+        # Remove html from the content and tokenize
+        cur.execute("SELECT content FROM clippings WHERE id = (%s)", ([clipping_id]))
+        content = cur.fetchone()[0]
+        content_sans_html = BeautifulSoup(content, "lxml").get_text()
 
-    # print 'content_sans_html'
-    # print content_sans_html
+        # print 'content_sans_html'
+        # print content_sans_html
 
-    cur.execute("UPDATE clippings SET content_sans_html = (%s) WHERE id = (%s)", (content_sans_html, clipping_id))
-    cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
-    conn.commit()
-    cur.execute("SELECT content_sans_html_tokenized FROM clippings WHERE id = (%s)", (clipping_id, ))
-    
-    
-    tokenized = cur.fetchone()[0]
-    # Save the changes to the database
+        cur.execute("UPDATE clippings SET content_sans_html = (%s) WHERE id = (%s)", (content_sans_html, clipping_id))
+        cur.execute("UPDATE clippings SET content_sans_html_tokenized = (%s) WHERE id = (%s)", ([word for sent in sent_tokenize(content_sans_html) for word in word_tokenize(sent)], clipping_id))
+        conn.commit()
+        cur.execute("SELECT content_sans_html_tokenized FROM clippings WHERE id = (%s)", (clipping_id, ))
+        
+        
+        tokenized = cur.fetchone()[0]
+        # Save the changes to the database
 
-    # print("\n\ntokenized: \n\n")
-    # print tokenized
+        # print("\n\ntokenized: \n\n")
+        # print tokenized
 
-    filtered = filter(tokenized)
+        filtered = filter(tokenized)
 
-    clippings = [filtered]
-    clipping_ids = [clipping_id]
+        clippings = [filtered]
+        clipping_ids = [clipping_id]
 
-    UserIdDummy = 'test_user_1'
-
-    clipping_ids = number_this_batch_of_clipping_ids(clipping_ids, UserIdDummy)
-
-    print "\n\nclipping_ids:\n\n"
-    print clipping_ids
-
-    # clipping_ids = number_this_batch_of_clipping_ids(clipping_ids, user_id)  -- NOPE: ALREADY HAVE IT HERE
+        UserIdDummy = 'test_user_1'
 
 
-    this_user_word_counts_list = add_user_clippings(None, cur, clippings, clipping_ids, UserIdDummy)   # None -> self <------
+        # print('\n\nclipping_ids before number_this_batch_of_clipping_ids:\n\n')
+        # print(clipping_ids)
 
-    # index from 0 to modify test source corpus
+        # clipping_ids = number_this_batch_of_clipping_ids(clipping_ids, UserIdDummy)
 
-    #for i in range(1, n_users):
+        # print "\n\nclipping_ids:\n\n"
+        # print clipping_ids
 
-    SourcesIdDummy = 'test_user_0'
-    SourceMmCorpusFile = UserMmCorporaDir + SourcesIdDummy + '.mm'
-
-    print(SourceMmCorpusFile)
-    source_corpus = corpora.MmCorpus(SourceMmCorpusFile)
-    print(source_corpus)
-
-    recommendations = findSimilaritiesToDocument(source_corpus, this_user_word_counts_list, SourcesIdDummy)   # <---- change Dummy
-
-    print('storing recommendations!')
-
-    #$recommendations = [(565, 0.92486143), (613, 0.91232473), (601, 0.91136891), (598, 0.90114456), (615, 0.88560283), (588, 0.87099564), (594, 0.86615199), (567, 0.86147535), (586, 0.86125553), (620, 0.83671224), (617, 0.79568994), (627, 0.78476983), (605, 0.76666486), (580, 0.97353566), (625, 0.96352261), (607, 0.75179595), (623, 0.73816913), (591, 0.73533684), (573, 0.72452962), (611, 0.58144253), (603, 0.4964034),(629, 0.71614552), (577, 0.71513528), (582, 0.68964207), (563, 0.6540947), (596, 0.65084851), (569, 0.61167115), (609, 0.45951509), (575, 0.26062244), (571, 0.14569993)]
-
-    conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
-    cur = conn.cursor()
-
-    # UPSERT rankings in database  <--
-    for i in range(0,len(recommendations)):
-        user_id = 80
-        clipping_id = recommendations[i][0]
-        rank = i + 1
-        #score = recommendations[i][1]
-        #score = int(math.floor(score * 1000))
-
-        cur.execute("UPDATE recommendations SET rank = (%s) WHERE user_id = (%s) AND clipping_id = (%s)", (rank, user_id, clipping_id)) 
-        cur.execute("INSERT INTO recommendations (user_id, clipping_id, rank) values (%s, %s, %s)", (user_id, clipping_id, rank))
-
-    conn.commit()
-    cur.close()
-    conn.close()
+        # clipping_ids = number_this_batch_of_clipping_ids(clipping_ids, user_id)  -- NOPE: ALREADY HAVE IT HERE
 
 
-def number_this_batch_of_clipping_ids(clipping_ids, user_id):
+        this_user_word_counts_list = add_user_clippings(None, cur, clippings, clipping_ids, UserIdDummy)   # None -> self <------
+
+        # index from 0 to modify test source corpus
+
+        #for i in range(1, n_users):
+
+        SourcesIdDummy = 'test_user_0'
+        SourceMmCorpusFile = UserMmCorporaDir + SourcesIdDummy + '.mm'
+
+        print(SourceMmCorpusFile)
+        source_corpus = corpora.MmCorpus(SourceMmCorpusFile)
+        print(source_corpus)
+
+        recommendations = findSimilaritiesToDocument(source_corpus, this_user_word_counts_list, SourcesIdDummy)   # <---- change Dummy
+
+        print('storing recommendations!')
+
+        #$recommendations = [(565, 0.92486143), (613, 0.91232473), (601, 0.91136891), (598, 0.90114456), (615, 0.88560283), (588, 0.87099564), (594, 0.86615199), (567, 0.86147535), (586, 0.86125553), (620, 0.83671224), (617, 0.79568994), (627, 0.78476983), (605, 0.76666486), (580, 0.97353566), (625, 0.96352261), (607, 0.75179595), (623, 0.73816913), (591, 0.73533684), (573, 0.72452962), (611, 0.58144253), (603, 0.4964034),(629, 0.71614552), (577, 0.71513528), (582, 0.68964207), (563, 0.6540947), (596, 0.65084851), (569, 0.61167115), (609, 0.45951509), (575, 0.26062244), (571, 0.14569993)]
+
+        conn = psycopg2.connect(host=credentials["host"],database=credentials["database"],user=credentials["user"],password=credentials["password"])
+        cur = conn.cursor()
+
+        # UPSERT rankings in database  <--
+        for i in range(0,len(recommendations)):
+            user_id = 80
+            clipping_id = recommendations[i][0]
+            rank = i + 1
+            #score = recommendations[i][1]
+            #score = int(math.floor(score * 1000))
+
+            cur.execute("UPDATE recommendations SET rank = (%s) WHERE user_id = (%s) AND clipping_id = (%s)", (rank, user_id, clipping_id)) 
+            cur.execute("INSERT INTO recommendations (user_id, clipping_id, rank) values (%s, %s, %s)", (user_id, clipping_id, rank))
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+
+def get_number_of_files_for_user(clipping_ids, user_id):
 
     ThisUserMmCorpusFile = UserMmCorporaDir + str(user_id) + '.mm'
 
     try:
         with open(ThisUserMmCorpusFile, 'r+') as f:
             nFilesInCorpus = get_number_of_files_in_user_corpus(f)
-        clipping_ids = [(cl_id + nFilesInCorpus) for cl_id in clipping_ids]
-        return clipping_ids    
+        # clipping_ids = [(cl_id + nFilesInCorpus) for cl_id in clipping_ids]
+        return nFilesInCorpus
     except:
-        return clipping_ids
+        return 0
 
 
 
@@ -359,7 +360,6 @@ def writeToUserMmCorpusFile(f, filtered, new_bow_vec, clipping_id_in_corpus):
     nDocs  = summary_split[0]
     nWords = summary_split[1]
     nLines = summary_split[2]
-
     #updates
     nDocs  = str(int(nDocs) + 1)       # one more document in corpus
     nLines = str(int(nLines) + len(new_bow_vec))
@@ -421,13 +421,19 @@ def format_clipping(tokenized_ids):
     return clippings
 
 
-def add_user_clippings(self, cursor, clippings, clipping_ids_in_db, user_id):
+def add_user_clippings(self, cursor, clippings, clipping_ids_in_db, user_id):     # clipping_ids_in_corpus,
     counter = 0  # note - documents in corpus are indexed 1-up, but when computing similarities, they are displayed as 0-up
     for clipping in clippings:
-        cl_id = clipping_ids_in_db[counter]
 
+        print ("\n\ncount in this batch:\n\n")
         print (counter + 1)
-        this_user_word_counts_list = add_clipping_to_user_corpus(None, cursor, clipping, cl_id, counter+1, user_id)
+
+        nFilesInCorpus = get_number_of_files_for_user(clipping_ids_in_db, user_id)
+        cl_id_in_corpus = nFilesInCorpus + counter + 1
+        print ("\n\ncount in corpus:\n\n")
+        print cl_id_in_corpus
+
+        this_user_word_counts_list = add_clipping_to_user_corpus(None, cursor, clipping, clipping_ids_in_db[counter], cl_id_in_corpus, user_id)
         counter = counter + 1
     return this_user_word_counts_list
 
@@ -439,7 +445,6 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
     bow_vec = all_users_dict.doc2bow(filtered) #, allow_update=True)  # updates dictionary - don't want this until LATER ITERATION
                                                                    # note indices for doc2bow is initially off-by-one from the dictionary indexing
                                                                    # ask about this on mailing list?
-
     all_users_dict.save_as_text(AllUsersDictionaryFile)
 
     new_bow_vec = []
@@ -454,7 +459,6 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
     #     print '\n\nfiltered:'
     #     print filtered
 
-
     # RETURN HERE IF IT IS INDEED NECESSARY TO KNOW THE NUMBER OF DISTINCT WORDS THAT APPEAR IN A DOC
 
     this_user_word_counts_list = []
@@ -466,8 +470,8 @@ def add_clipping_to_user_corpus(self, cursor, filtered, clipping_id_in_db, clipp
             # print '\n\nSuccessully opened "ThisUserMmCorpusFile" for user # ' + user_id + '\n\n'
             # print 'Adding additional words to corpus: '
 
-            #nFilesInCorpus = get_number_of_files_in_user_corpus(f)
-            #clipping_id_in_corpus = clipping_index_in_this_batch + nFilesInCorpus
+            # nFilesInCorpus = get_number_of_files_in_user_corpus(f)
+            # clipping_id_in_corpus = clipping_index_in_this_batch + nFilesInCorpus
 
             writeToUserMmCorpusFile(f, filtered, new_bow_vec, clipping_id_in_corpus)
 
@@ -713,8 +717,8 @@ def findSimilaritiesToDocument(source_corpus, target_document_bowvector, user_id
 # conn.close()
 
 
-process_new_article(None, 566, 80)
-
+for id in range(566, 578, 2):
+    process_new_article(None, id, 80)
 
 
 # MAKE THIS A FUNCTION

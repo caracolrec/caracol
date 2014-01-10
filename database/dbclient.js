@@ -98,6 +98,8 @@ exports.findUser = findUser = function(json, callback){
 };
 
 exports.dbInsert = dbInsert = function(json, user_id, callback){
+
+  checkForClipping(json);
   new tables.Clipping({
     title: json.title,
     content: json.content,
