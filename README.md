@@ -16,8 +16,6 @@ Caracol is a tool for discovering articles from around the web that you'll like 
 
 ##<a name="deployment-development"></a>Deployment / Development
 
-caracol is live at [http://caracol.cloudapp.net](http://caracol.cloudapp.net).
-
 To get started working on caracol:
 
 1. Clone the repository on your development machine.
